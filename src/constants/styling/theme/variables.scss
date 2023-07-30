@@ -1,0 +1,45 @@
+// web colors
+$primary-color: #caaa19;
+$primary-color-alt: #8b6e0b;
+$secondary-color: #575757;
+$black: #000000;
+$white: #ffffff;
+$footer-background: #24374d;
+
+//text colors
+$primary-text-color: $white;
+$secondary-text-color: #8b6e0b;
+$third-text-color: $secondary-color;
+
+// fonts
+$primary-font: 'Source Code Pro', monospace;
+$secondary-font: 'Share Tech', sans-serif;
+$tertiary-font: 'Montserrat', sans-serif;
+
+//layout
+$max-width-layout: 1200px;
+
+// please notice this are some breakpoint to be used for apply breakpoint to the css rules
+@mixin breakpoint($size) {
+  @if $size == 'xs' {
+    @media (max-width: 361px) {
+      @content;
+    }
+  } @else if $size == 'sm' {
+    @media (max-width: 601px) {
+      @content;
+    }
+  } @else if $size == 'md' {
+    @media (max-width: 769px) {
+      @content;
+    }
+  } @else if $size == 'lg' {
+    @media (max-width: 901px) {
+      @content;
+    }
+  } @else if $size == 'xl' {
+    @media (max-width: 1201px) {
+      @content;
+    }
+  }
+}
