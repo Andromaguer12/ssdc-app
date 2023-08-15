@@ -47,37 +47,39 @@ export default function Login() {
   };
 
   return (
-      <Grid container className={styles.loginContainer} display={'flex'} flexDirection={'column'} alignItems={'center'} justifyContent={'center'}>
-        <Grid item display={'flex'} flexDirection={'column'} alignItems={'center'} className={styles.loginForm}>
-          <Typography variant='h5' align='center'>Sistema Suizo Dominó Competitivo</Typography>
-          <form className={styles.form} onSubmit={handleSubmit}>
-            <Typography variant="h5">Iniciar sesión</Typography>
-            <TextField
-              className={styles.input}
-              label="Email"
-              name="email"
-              type="email"
-              fullWidth
-              color='secondary'
-              value={formData.email}
-              onChange={handleChange}
-            />
-            <TextField
-              className={styles.input}
-              label="Contraseña"
-              name="password"
-              type="password"
-              fullWidth
-              color='secondary'
-              value={formData.password}
-              onChange={handleChange}
-            />
-            <Button fullWidth disableElevation className={styles.button} variant="contained" color="primary" type="submit">
-              Enviar
-            </Button>
-            {error && <CustomizedAlert noElevation type='error' message={error} />}
-          </form>
-        </Grid>
+    <Grid container className={styles.loginContainer}
+      display={'flex'} flexDirection={'column'} alignItems={'center'} justifyContent={'center'}
+    >
+      <Grid item display={'flex'} flexDirection={'column'} alignItems={'center'} className={styles.loginForm}>
+        <Typography variant='h5' align='center'>Sistema Suizo Dominó Competitivo</Typography>
+        <form className={styles.form} onSubmit={handleSubmit}>
+          <Typography variant="h5">Iniciar sesión</Typography>
+          <TextField
+            className={styles.input}
+            label="Email"
+            name="email"
+            type="email"
+            fullWidth
+            color='secondary'
+            value={formData.email}
+            onChange={handleChange}
+          />
+          <TextField
+            className={styles.input}
+            label="Contraseña"
+            name="password"
+            type="password"
+            fullWidth
+            color='secondary'
+            value={formData.password}
+            onChange={handleChange}
+          />
+          <Button fullWidth disableElevation className={styles.button} variant="contained" color="primary" type="submit">
+            Enviar
+          </Button>
+          {error && <CustomizedAlert noElevation type='error' message={error} />}
+        </form>
       </Grid>
+    </Grid>
   );
 }
