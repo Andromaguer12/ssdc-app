@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
-import { useAppDispatch } from '@/redux/store';
+import { useAppDispatch, useAppSelector } from '@/redux/store';
 import useFetchingContext from '@/contexts/backendConection/hook';
 import { Button, Grid, TextField, Typography } from '@mui/material';
 import CustomizedAlert from '@/components/CustomizedAlert/CustomizedAlert';
 import styles from './styles/Login.module.scss';
+import { useSelector } from 'react-redux';
+import { logInUser } from '@/redux/reducers/user/actions';
 
 type FormData = {
   email: string;
@@ -42,9 +44,13 @@ export default function Login() {
     } else {
       setError("");
 
-      // login real
+      dispatch(logInUser(formData));
+      router.push('/admin/dashboard')
     }
   };
+
+
+ 
 
   return (
     <Grid container className={styles.loginContainer}
