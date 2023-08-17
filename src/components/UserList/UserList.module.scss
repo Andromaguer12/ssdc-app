@@ -1,0 +1,19 @@
+.UserList{
+    background-color: #ffffff;
+    padding: 1.5rem;
+}
+.List {
+    list-style: none;
+}
+.List li {
+    display: flex;
+    border: solid 1px red;
+    align-items: center;
+    justify-content: space-evenly;
+}
+.List li div {
+    border: solid 1px green;
+    width: 15%;
+    display: flex;
+    justify-content: space-between;
+}

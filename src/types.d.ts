@@ -6,3 +6,8 @@ interface UserInitialState {
     phone: string,
     rank: Rank
 }
+
+interface TournamentInitialState {
+    name: string,
+    rules: string,
+}
