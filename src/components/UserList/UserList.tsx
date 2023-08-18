@@ -12,7 +12,7 @@ import Paper from '@mui/material/Paper';
 import style from './UserList.module.scss';
 import { useAppDispatch, useAppSelector } from '@/redux/store';
 import { Button, TextField } from '@mui/material';
-import { createUser } from '@/redux/reducers/user/actions';
+import { createUser, deleteUser } from '@/redux/reducers/user/actions';
 import CustomizedAlert from '../CustomizedAlert/CustomizedAlert';
 
 
@@ -54,7 +54,7 @@ export default function UserList() {
     return (
         <div className={style.UserList}>
             <div>
-                <h3>Registrar Torneo</h3>
+                <h3>Registrar Usuario</h3>
                 <form onSubmit={handleSubmit}>
                     <TextField
                         label="Nombre"
@@ -110,7 +110,7 @@ export default function UserList() {
                                 <TableCell align="right">{row.email}</TableCell>
                                 <TableCell align="right">{row.rank}</TableCell>
                                 <TableCell align="right"><button>Editar</button></TableCell>
-                                <TableCell align="right"><button>Eliminar</button></TableCell>
+                                <TableCell align="right"><button type='button' onClick={() => dispatch(deleteUser(row))}>Eliminar</button></TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
