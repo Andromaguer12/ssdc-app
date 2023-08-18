@@ -13,7 +13,6 @@ type FormData = {
 };
 
 export default function Login() {
-  const router = useRouter();
   const dispatch = useAppDispatch();
   const fbContext = useFirebaseContext();
 
@@ -22,6 +21,7 @@ export default function Login() {
     email: '',
     password: ''
   });
+  
 
   const [error, setError] = useState<string>('');
 

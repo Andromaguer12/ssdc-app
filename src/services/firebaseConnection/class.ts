@@ -1,17 +1,20 @@
 import { FirebaseApp } from 'firebase/app';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { collection, doc, getDoc, getDocs, getFirestore, query, where } from 'firebase/firestore'
 import initFirebaseFunction from './firebaseInitConfig';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 class Firebase {
   firebaseApp: FirebaseApp | null;
   auth: any;
+  db: any;
 
   constructor() {
     this.firebaseApp = null;
     initFirebaseFunction().then(res => {
       this.firebaseApp = res;
       this.auth = getAuth();
+      this.db = getFirestore(res)
     });
   }
 
@@ -21,6 +24,34 @@ class Firebase {
 
   async loginUser(email: string, password: string) {
     return signInWithEmailAndPassword(this.auth, email, password);
+  }
+
+  async getUserFromId(uid: string, accessToken: string) {
+    const userRef = query(collection(this.db, "users"), where("uid", "==", uid));
+    const docs = await getDocs(userRef);
+    const data: any[] = []
+
+    docs.forEach((doc) => {
+      data.push({
+        ...doc.data()
+      })
+    });
+
+    return data.length > 0 ? {...data[0], uid, accessToken} : undefined
+  }
+
+  async getUsersList() {
+    const userRef = query(collection(this.db, "users"));
+    const docs = await getDocs(userRef);
+    const data: any[] = []
+
+    docs.forEach((doc) => {
+      data.push({
+        ...doc.data()
+      })
+    });
+
+    return data
   }
 
   async registerUser() {

@@ -6,7 +6,11 @@ interface UserReducerInitialState {
   phone: string;
   rank: 'A' | 'B' | 'C';
   loadingUser: boolean;
+  loadingUsersList: boolean;
   error: string;
+  uid: string;
+  accessToken: string;
+  usersList: any[]
 }
 
 const initialState = {
@@ -14,16 +18,18 @@ const initialState = {
   email: '',
   phone: '',
   rank: 'C',
-  loadingUser: false
+  loadingUser: false,
+  loadingUsersList: false,
+  accessToken: '',
+  uid: ''
 } as UserReducerInitialState;
 
 export const userLoginFunction = createAsyncThunk(
   'users/userLoginFunction',
   async (params: { email: string; password: string; context: any }) => {
-    return params.context.loginUser({
-      email: params.email,
-      password: params.password
-    });
+    const auth = await params.context.loginUser(params.email, params.password);
+
+    return params.context.getUserFromId(auth.user.uid, auth.user.accessToken)
   }
 );
 
@@ -41,10 +47,14 @@ const userSlice = createSlice({
       state.email = action.payload?.email;
       state.phone = action.payload?.phone;
       state.rank = action.payload?.rank;
+      state.accessToken = action.payload.accessToken;
+      state.accessToken = action.payload.uid;
     });
     builder.addCase(userLoginFunction.rejected, (state, action: any) => {
+      state.loadingUser = false;
       state.error = action.error;
     });
+
   }
 });
 

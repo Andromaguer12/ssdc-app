@@ -2,10 +2,12 @@ import { configureStore } from '@reduxjs/toolkit';
 import thunkMiddleware from 'redux-thunk';
 import { combineReducers } from '@reduxjs/toolkit';
 import user from './reducers/user/actions';
+import usersList from './reducers/usersList/actions';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 
 const reducers = combineReducers({
-  user
+  user,
+  usersList
 });
 
 const store = configureStore({
