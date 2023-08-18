@@ -1,6 +1,6 @@
 import { createUser, updateUser } from '@/redux/reducers/user/actions';
 import { useAppDispatch } from '@/redux/store';
-import { Button, TextField } from '@mui/material';
+import { Button, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, TextField } from '@mui/material';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react'
 import CustomizedAlert from '../CustomizedAlert/CustomizedAlert';
@@ -78,6 +78,20 @@ const UserForm = ({ data, eventSubmit }: { data: UserInitialState | null, eventS
                 onChange={handleChange}
             />
             {/*Pendiente el ranking */}
+            <FormControl>
+            <FormLabel id="demo-radio-buttons-group-label">Ranking</FormLabel>
+                <RadioGroup
+                    aria-labelledby="demo-radio-buttons-group-label"
+                    defaultValue="C"
+                    name="rank"
+                    value={formData.phone}
+                    onChange={handleChange}
+                >
+                    <FormControlLabel value="A" control={<Radio />} label="A" />
+                    <FormControlLabel value="B" control={<Radio />} label="B" />
+                    <FormControlLabel value="C" control={<Radio />} label="C" />
+                </RadioGroup>
+            </FormControl>
             <Button disableElevation variant="contained" color="primary" type="submit">
                 Enviar
             </Button>

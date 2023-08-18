@@ -13,6 +13,8 @@ import UserForm from "@/components/UserForm/UserForm";
 
 import style from './UserList.module.scss';
 import ClearIcon from '@mui/icons-material/Clear';
+import ModeEditIcon from '@mui/icons-material/ModeEdit';
+import { DeleteForever } from '@mui/icons-material';
 
 
 export default function UserList() {
@@ -21,6 +23,13 @@ export default function UserList() {
     const dispatch = useAppDispatch();
     const [form, setForm] = useState(false);
     const [dataForm, setDataForm] = useState<UserInitialState>(users[0]);
+
+    const rankStyle = [
+        {id: 'A', style: '#faffb5'},
+        {id: 'B', style: '#badcf5'},
+        {id: 'C', style: '#f5bfba'}
+    ]
+
     return (
         <div className={style.UserList}>
             <TableContainer component={Paper}>
@@ -29,8 +38,8 @@ export default function UserList() {
                         <TableRow>
                             <TableCell>ID</TableCell>
                             <TableCell>Nombre</TableCell>
-                            <TableCell align="right">Telefono</TableCell>
-                            <TableCell align="right">Ranking</TableCell>
+                            <TableCell align="left">Telefono</TableCell>
+                            <TableCell align="center">Ranking</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -45,17 +54,17 @@ export default function UserList() {
                                 <TableCell component="th" scope="row">
                                     {row.name}
                                 </TableCell>
-                                <TableCell align="right">{row.email}</TableCell>
-                                <TableCell align="right">{row.rank}</TableCell>
-                                <TableCell align="right"><button type='button' onClick={() => {
-                                    setDataForm(row);
-                                    setForm(!form);
-                                }}>
-                                    Editar
-                                </button></TableCell>
-                                <TableCell align="right"><button type='button' onClick={() => dispatch(deleteUser(row))}>
-                                    Eliminar
-                                </button></TableCell>
+                                <TableCell align="left">{row.email}</TableCell>
+                                <TableCell align="center"><span style={{ backgroundColor: `${rankStyle.filter(item => item.id == row.rank)[0].style}` }}>{row.rank}</span></TableCell>
+                                <TableCell align="left">
+                                    <ModeEditIcon onClick={() => {
+                                        setDataForm(row);
+                                        setForm(!form);
+                                    }} />
+                                </TableCell>
+                                <TableCell align="left">
+                                    <DeleteForever onClick={() => dispatch(deleteUser(row))} />
+                                </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
