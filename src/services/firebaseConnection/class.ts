@@ -1,6 +1,6 @@
-import { FirebaseApp } from "firebase/app";
-import { getAuth } from 'firebase/auth'
-import initFirebaseFunction from "./firebaseInitConfig";
+import { FirebaseApp } from 'firebase/app';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import initFirebaseFunction from './firebaseInitConfig';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 class Firebase {
@@ -8,35 +8,32 @@ class Firebase {
   auth: any;
 
   constructor() {
-    this.firebaseApp = null
-    initFirebaseFunction().then((res) =>{
-      this.firebaseApp = res
-      console.log(res)
-      this.auth = getAuth(this.firebaseApp)
-    })
-
+    this.firebaseApp = null;
+    initFirebaseFunction().then(res => {
+      this.firebaseApp = res;
+      this.auth = getAuth();
+    });
   }
 
   /**
    * Users Api
    */
 
-  async loginUser() {
-    console.log('loginUser')
+  async loginUser(email: string, password: string) {
+    return signInWithEmailAndPassword(this.auth, email, password);
   }
 
   async registerUser() {
-    console.log('registerUser')
+    console.log('registerUser');
   }
 
   async logoutUser() {
-    console.log('logoutUser')
+    console.log('logoutUser');
   }
 
   /**
    * End Users Api
    */
-
 }
 
 export default Firebase;

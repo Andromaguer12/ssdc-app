@@ -3,7 +3,7 @@ import { RoutesClassification } from '../../typesDefs/constants/routes/types';
 export const AllRoutes = {
   ADMIN_LOGIN: '/admin/login',
   ADMIN_DASHBOARD: '/admin/dashboard/',
-  HOME: '/',
+  HOME: '/'
 };
 
 export const AppRoutes: RoutesClassification = {

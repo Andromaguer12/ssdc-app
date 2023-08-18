@@ -5,12 +5,12 @@ import user from './reducers/user/actions';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 
 const reducers = combineReducers({
-  user,
+  user
 });
 
 const store = configureStore({
   reducer: reducers,
-  middleware: (getDefaultMiddleware) =>
+  middleware: getDefaultMiddleware =>
     getDefaultMiddleware({ serializableCheck: false }).concat(thunkMiddleware)
 });
 

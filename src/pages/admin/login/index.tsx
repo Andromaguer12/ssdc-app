@@ -4,7 +4,7 @@ import Head from 'next/head';
 import Login from '@/components/pages/Login/Login';
 
 export default function HomeIndex() {
-  const router = useRouter()
+  const router = useRouter();
 
   return (
     <>

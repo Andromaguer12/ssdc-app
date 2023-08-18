@@ -14,7 +14,7 @@ const Module = ({ nextAPI }: { nextAPI: AppProps }) => {
   const router = useRouter();
   const { Component, pageProps } = nextAPI;
 
-  if ( 
+  if (
     router.pathname.includes(AllRoutes.HOME) ||
     router.pathname.includes(AllRoutes.ADMIN_LOGIN)
   ) {
@@ -35,7 +35,7 @@ export default function MyApp(props: AppProps) {
     <Provider store={store}>
       <FirebaseContext.Provider value={firebaseClass}>
         <ThemeProvider theme={theme}>
-            <Module nextAPI={props} />
+          <Module nextAPI={props} />
         </ThemeProvider>
       </FirebaseContext.Provider>
     </Provider>

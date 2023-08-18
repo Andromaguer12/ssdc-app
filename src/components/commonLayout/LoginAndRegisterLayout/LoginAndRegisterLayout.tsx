@@ -4,12 +4,14 @@ import { Grid } from '@mui/material';
 import styles from './styles/LoginAndRegisterLayout.module.scss';
 
 export default function LoginAndRegisterLayout({
-  children,
+  children
 }: ComponentProps<any>) {
   return (
     <>
       <Grid container className={styles.layout}>
-        <Grid item xs={12}>{children}</Grid>
+        <Grid item xs={12}>
+          {children}
+        </Grid>
       </Grid>
     </>
   );

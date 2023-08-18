@@ -49,16 +49,12 @@ export default function Footer() {
                   />
                 )}
                 <div className={styles.thisHeaders}>
-                  {section.title && (
-                    <p className={styles.title}>{''}</p>
-                  )}
-                  {section.text && (
-                    <p className={styles.text}>{''}</p>
-                  )}
+                  {section.title && <p className={styles.title}>{''}</p>}
+                  {section.text && <p className={styles.text}>{''}</p>}
                 </div>
                 {section?.itemsList && (
                   <div className={styles.thisHeaders}>
-                    {section?.itemsList?.map((item) => (
+                    {section?.itemsList?.map(item => (
                       <Link
                         className={
                           item.icon
@@ -71,7 +67,7 @@ export default function Footer() {
                         {item.icon && <>{FooterItemsIcons[item.icon]}</>}
                         <p>
                           {!item.icon ? '• ' : ''}
-                          {item.noTranslate ? item.name :''}
+                          {item.noTranslate ? item.name : ''}
                         </p>
                       </Link>
                     ))}

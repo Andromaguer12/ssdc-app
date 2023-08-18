@@ -7,7 +7,6 @@ import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import { HeaderButtons } from '../../../constants/components/commonLayout/Header/header';
 
 export default function Header() {
-
   return (
     <div className={styles.headerContainer}>
       <div className={styles.delimeter}>
@@ -15,7 +14,7 @@ export default function Header() {
           <div className={styles.image}></div>
         </div>
         <div className={styles.buttons}>
-          {HeaderButtons.map((button) => {
+          {HeaderButtons.map(button => {
             return (
               <Link
                 key={button.id}
