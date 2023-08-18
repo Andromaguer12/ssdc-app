@@ -1,6 +1,7 @@
 type Rank = "A" | "B" | "C"
 
 interface UserInitialState {
+    id: string,
     name: string,
     email: string,
     phone: string,
