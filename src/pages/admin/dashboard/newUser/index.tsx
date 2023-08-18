@@ -1,9 +1,9 @@
-import UserForm from '@/components/pages/UserForm/UserForm'
+import NewUser from '@/components/pages/NewUser/NewUser'
 import React from 'react'
 
 const NewUserIndex = () => {
   return (
-    <UserForm />
+    <NewUser />
   )
 }
 

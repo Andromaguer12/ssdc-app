@@ -30,7 +30,15 @@ const userSlice = createSlice({
       });
     },
     updateUser: (state, action) => {
-
+      const { payload }: { payload: UserInitialState } = action;
+      const findUser = state.find(user => user.id === payload.id);
+      if (findUser) {
+        const index = state.indexOf(findUser);
+        state[index] = {
+          ...state[index],
+          ...payload
+        }
+      }
     },
     deleteUser: (state, action) => {
       const { payload }: { payload: UserInitialState } = action;
@@ -43,5 +51,5 @@ const userSlice = createSlice({
 });
 
 
-export const { logInUser, createUser, deleteUser } = userSlice.actions
+export const { logInUser, createUser, deleteUser, updateUser } = userSlice.actions
 export default userSlice.reducer;

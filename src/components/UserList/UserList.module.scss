@@ -8,3 +8,30 @@
     margin: 1rem;
 }
 
+.UserListModal { 
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.331);
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.UserListModal section {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 7px;
+    position: relative;
+}
+
+.UserListModal section svg {
+    position: absolute;
+    right:0.5rem;
+    top: 0.5rem;
+    }
+
+.UserListModal section svg:hover {
+color: red;
+}
