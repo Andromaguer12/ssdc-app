@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
-import { useAppDispatch, useAppSelector } from '@/redux/store';
-import useFetchingContext from '@/contexts/backendConection/hook';
+import { useAppDispatch } from '@/redux/store';
 import { Button, Grid, TextField, Typography } from '@mui/material';
 import CustomizedAlert from '@/components/CustomizedAlert/CustomizedAlert';
 import styles from './styles/Login.module.scss';
-import { useSelector } from 'react-redux';
-import { logInUser } from '@/redux/reducers/user/actions';
+import useFirebaseContext from '@/contexts/firebaseConnection/hook';
+import { userLoginFunction } from '@/redux/reducers/user/actions';
 
 type FormData = {
   email: string;
@@ -14,23 +13,23 @@ type FormData = {
 };
 
 export default function Login() {
-  const router = useRouter();
   const dispatch = useAppDispatch();
-  const fContext = useFetchingContext();
+  const fbContext = useFirebaseContext();
 
   // Estado para los datos del formulario
   const [formData, setFormData] = useState<FormData>({
-    email: "",
-    password: "",
+    email: '',
+    password: ''
   });
+  
 
-  const [error, setError] = useState<string>("");
+  const [error, setError] = useState<string>('');
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    setFormData((prevFormData) => ({
+    setFormData(prevFormData => ({
       ...prevFormData,
-      [name]: value,
+      [name]: value
     }));
   };
 
@@ -40,12 +39,18 @@ export default function Login() {
 
     // Validar los datos del formulario
     if (!formData.email || !formData.password) {
-      setError("Por favor, rellena todos los campos");
+      setError('Por favor, rellena todos los campos');
     } else {
-      setError("");
+      setError('');
 
-      dispatch(logInUser(formData));
-      router.push('/admin/dashboard')
+      // login real
+      dispatch(
+        userLoginFunction({
+          context: fbContext,
+          email: formData.email,
+          password: formData.password
+        })
+      );
     }
   };
 
@@ -53,11 +58,24 @@ export default function Login() {
 
 
   return (
-    <Grid container className={styles.loginContainer}
-      display={'flex'} flexDirection={'column'} alignItems={'center'} justifyContent={'center'}
+    <Grid
+      container
+      className={styles.loginContainer}
+      display={'flex'}
+      flexDirection={'column'}
+      alignItems={'center'}
+      justifyContent={'center'}
     >
-      <Grid item display={'flex'} flexDirection={'column'} alignItems={'center'} className={styles.loginForm}>
-        <Typography variant='h5' align='center'>Sistema Suizo Dominó Competitivo</Typography>
+      <Grid
+        item
+        display={'flex'}
+        flexDirection={'column'}
+        alignItems={'center'}
+        className={styles.loginForm}
+      >
+        <Typography variant="h5" align="center">
+          Sistema Suizo Dominó Competitivo
+        </Typography>
         <form className={styles.form} onSubmit={handleSubmit}>
           <Typography variant="h5">Iniciar sesión</Typography>
           <TextField
@@ -66,7 +84,7 @@ export default function Login() {
             name="email"
             type="email"
             fullWidth
-            color='secondary'
+            color="secondary"
             value={formData.email}
             onChange={handleChange}
           />
@@ -76,14 +94,23 @@ export default function Login() {
             name="password"
             type="password"
             fullWidth
-            color='secondary'
+            color="secondary"
             value={formData.password}
             onChange={handleChange}
           />
-          <Button fullWidth disableElevation className={styles.button} variant="contained" color="primary" type="submit">
+          <Button
+            fullWidth
+            disableElevation
+            className={styles.button}
+            variant="contained"
+            color="primary"
+            type="submit"
+          >
             Enviar
           </Button>
-          {error && <CustomizedAlert noElevation type='error' message={error} />}
+          {error && (
+            <CustomizedAlert noElevation type="error" message={error} />
+          )}
         </form>
       </Grid>
     </Grid>

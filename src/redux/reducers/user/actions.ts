@@ -1,52 +1,60 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-
-const initialState: UserInitialState[] = [];
-const generateId = (array: UserInitialState[]) => {
-  return array.length > 0 ? '000' + (array.length + 1) : '0001';
+interface UserReducerInitialState {
+  name: string;
+  email: string;
+  phone: string;
+  rank: 'A' | 'B' | 'C';
+  loadingUser: boolean;
+  loadingUsersList: boolean;
+  error: string;
+  uid: string;
+  accessToken: string;
+  usersList: any[]
 }
+
+const initialState = {
+  name: '',
+  email: '',
+  phone: '',
+  rank: 'C',
+  loadingUser: false,
+  loadingUsersList: false,
+  accessToken: '',
+  uid: ''
+} as UserReducerInitialState;
+
+export const userLoginFunction = createAsyncThunk(
+  'users/userLoginFunction',
+  async (params: { email: string; password: string; context: any }) => {
+    const auth = await params.context.loginUser(params.email, params.password);
+
+    return params.context.getUserFromId(auth.user.uid, auth.user.accessToken)
+  }
+);
 
 const userSlice = createSlice({
   name: 'user',
   initialState,
-  reducers: {
-    logInUser: (state, action) => {
-      const { payload }: { payload: UserInitialState } = action;
+  reducers: {},
+  extraReducers: builder => {
+    builder.addCase(userLoginFunction.pending, (state, action: any) => {
+      state.loadingUser = true;
+    });
+    builder.addCase(userLoginFunction.fulfilled, (state, action: any) => {
+      state.loadingUser = false;
+      state.name = action.payload?.name;
+      state.email = action.payload?.email;
+      state.phone = action.payload?.phone;
+      state.rank = action.payload?.rank;
+      state.accessToken = action.payload.accessToken;
+      state.accessToken = action.payload.uid;
+    });
+    builder.addCase(userLoginFunction.rejected, (state, action: any) => {
+      state.loadingUser = false;
+      state.error = action.error;
+    });
 
-      state.push({
-        id: generateId(state),
-        name: payload.email,
-        email: payload.email,
-        rank: 'A',
-        phone: ''
-      })
-
-    },
-    createUser: (state, action) => {
-      const { payload }: { payload: UserInitialState } = action;
-      state.push({
-        ...payload,
-        id: generateId(state)
-      });
-    },
-    updateUser: (state, action) => {
-      const { payload }: { payload: UserInitialState } = action;
-      const findUser = state.find(user => user.id === payload.id);
-      if (findUser) {
-        const index = state.indexOf(findUser);
-        state[index] = {
-          ...state[index],
-          ...payload
-        }
-      }
-    },
-    deleteUser: (state, action) => {
-      const { payload }: { payload: UserInitialState } = action;
-      const findUser = state.find(user => user.id === payload.id);
-      if (findUser) {
-        state.splice(state.indexOf(findUser), 1);
-      }
-    }
   }
 });
 

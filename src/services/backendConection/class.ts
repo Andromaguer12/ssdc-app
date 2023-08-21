@@ -12,7 +12,7 @@ class BackendFetching {
   }
 
   httpCallable(url: string): (configs: RequestInit) => Promise<Response> {
-    return async (configs) =>
+    return async configs =>
       await fetch(this.backendApiUrl + url, {
         ...configs,
         headers: {
