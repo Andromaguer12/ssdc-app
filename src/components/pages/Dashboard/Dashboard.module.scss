@@ -19,7 +19,7 @@
     margin-top: 1.5rem;
     margin-left: 1.5rem 
 }
-.DashboardUserList a{
+.DashboardUserList span{
  text-decoration: none;
  background-color: rgb(0, 57, 148);
  color: white;
@@ -29,8 +29,9 @@
  padding: 0.5rem 1rem;
  margin-top: 1.5rem;
  margin-left: 1.5rem; 
- border-radius: 5px
+ border-radius: 5px;
+ cursor: pointer;
 }
-.DashboardUserList a:hover {
+.DashboardUserList span:hover {
     background-color: rgb(0, 35, 91);
 }

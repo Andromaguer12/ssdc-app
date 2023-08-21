@@ -1,0 +1,27 @@
+.Modal { 
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.331);
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.Modal section {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 7px;
+    position: relative;
+}
+
+.Modal section svg {
+    position: absolute;
+    right:0.5rem;
+    top: 0.5rem;
+    }
+
+.Modal section svg:hover {
+color: red;
+}

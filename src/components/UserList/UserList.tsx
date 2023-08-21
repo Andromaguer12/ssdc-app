@@ -9,15 +9,14 @@ import Paper from '@mui/material/Paper';
 import { useAppDispatch, useAppSelector } from '@/redux/store';
 //import { deleteUser, updateUser } from '@/redux/reducers/user/actions';
 
-import UserForm from "@/components/UserForm/UserForm";
-
 import style from './UserList.module.scss';
-import ClearIcon from '@mui/icons-material/Clear';
+
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import { DeleteForever } from '@mui/icons-material';
 import { UserReducerInitialState } from '@/redux/reducers/user/actions';
 import { getUsersList } from '@/redux/reducers/usersList/actions';
 import useFirebaseContext from '@/contexts/firebaseConnection/hook';
+import Modal from '../Modal/Modal';
 
 
 export default function UserList() {
@@ -81,12 +80,7 @@ export default function UserList() {
                     </TableBody>
                 </Table>
             </TableContainer>
-            {form && <div className={style.UserListModal}>
-                <section onSubmit={() => setForm(false)}>
-                    <ClearIcon onClick={() => setForm(false)} />
-                    <UserForm data={dataForm} eventSubmit='Update' />
-                </section>
-            </div>}
+            {form && <Modal setModal={() => setForm(false)} data={dataForm} />}
         </div>
     );
 }
