@@ -15,6 +15,7 @@ type FormData = {
 export default function Login() {
   const dispatch = useAppDispatch();
   const fbContext = useFirebaseContext();
+  const router = useRouter();
 
   // Estado para los datos del formulario
   const [formData, setFormData] = useState<FormData>({
@@ -48,9 +49,9 @@ export default function Login() {
         userLoginFunction({
           context: fbContext,
           email: formData.email,
-          password: formData.password
+          password: formData.password //12345ja
         })
-      );
+      ).then(() => router.push('/admin/dashboard'));
     }
   };
 

@@ -37,7 +37,7 @@ class Firebase {
       })
     });
 
-    return data.length > 0 ? {...data[0], uid, accessToken} : undefined
+    return data.length > 0 ? { ...data[0], uid, accessToken } : undefined
   }
 
   async getUsersList() {

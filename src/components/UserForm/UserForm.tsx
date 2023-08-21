@@ -1,24 +1,28 @@
-import { createUser, updateUser } from '@/redux/reducers/user/actions';
+//import { createUser, updateUser } from '@/redux/reducers/user/actions';
 import { useAppDispatch } from '@/redux/store';
 import { Button, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, TextField } from '@mui/material';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react'
 import CustomizedAlert from '../CustomizedAlert/CustomizedAlert';
+import { UserReducerInitialState } from '@/redux/reducers/user/actions';
 
 type Events = "Update" | "Create";
 
-const UserForm = ({ data, eventSubmit }: { data: UserInitialState | null, eventSubmit: Events }) => {
+const UserForm = ({ data, eventSubmit }: { data: UserReducerInitialState | null, eventSubmit: Events }) => {
     //const users = useAppSelector(state => state.user);
     const dispatch = useAppDispatch();
     const router = useRouter();
 
     // Estado para los datos del formulario
-    const [formData, setFormData] = useState<UserInitialState>(data || {
+    const [formData, setFormData] = useState<UserReducerInitialState>(data || {
         name: '',
         email: '',
         rank: 'C',
         phone: '',
-        id: ''
+        uid: '',
+        loadingUser: false,
+        error: '',
+        accessToken: '',
     });
     const [error, setError] = useState<string>("");
 
@@ -39,9 +43,9 @@ const UserForm = ({ data, eventSubmit }: { data: UserInitialState | null, eventS
         } else {
             setError("");
             if (eventSubmit === "Create") {
-                dispatch(createUser(formData));
+                //dispatch(createUser(formData));
             } else {
-                dispatch(updateUser(formData));
+               // dispatch(updateUser(formData));
             }
             router.push('/admin/dashboard');
         }

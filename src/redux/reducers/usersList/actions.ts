@@ -1,8 +1,9 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { Slice, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { UserReducerInitialState } from '../user/actions';
 
 interface UserListReducerInitialState {
   loadingUsersList: boolean;
-  usersListData: any[];
+  usersListData: UserReducerInitialState[];
   error: string;
 }
 
@@ -21,7 +22,7 @@ export const getUsersList = createAsyncThunk(
   }
 )
 
-const userListSlice = createSlice({
+const userListSlice: Slice<UserListReducerInitialState, {}, "user"> = createSlice({
   name: 'user',
   initialState,
   reducers: {},

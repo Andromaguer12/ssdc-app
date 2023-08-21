@@ -1,16 +1,14 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-interface UserReducerInitialState {
+export interface UserReducerInitialState {
   name: string;
   email: string;
   phone: string;
   rank: 'A' | 'B' | 'C';
   loadingUser: boolean;
-  loadingUsersList: boolean;
   error: string;
   uid: string;
   accessToken: string;
-  usersList: any[]
 }
 
 const initialState = {
@@ -19,7 +17,6 @@ const initialState = {
   phone: '',
   rank: 'C',
   loadingUser: false,
-  loadingUsersList: false,
   accessToken: '',
   uid: ''
 } as UserReducerInitialState;
@@ -41,14 +38,15 @@ const userSlice = createSlice({
     builder.addCase(userLoginFunction.pending, (state, action: any) => {
       state.loadingUser = true;
     });
-    builder.addCase(userLoginFunction.fulfilled, (state, action: any) => {
+    builder.addCase(userLoginFunction.fulfilled, (state, action) => {
+      const { payload }: { payload: UserReducerInitialState } = action;
       state.loadingUser = false;
-      state.name = action.payload?.name;
-      state.email = action.payload?.email;
-      state.phone = action.payload?.phone;
-      state.rank = action.payload?.rank;
-      state.accessToken = action.payload.accessToken;
-      state.accessToken = action.payload.uid;
+      state.name = payload.name;
+      state.email = payload.email;
+      state.phone = payload.phone;
+      state.rank = payload.rank;
+      state.accessToken = payload.accessToken;
+      state.accessToken = payload.uid;
     });
     builder.addCase(userLoginFunction.rejected, (state, action: any) => {
       state.loadingUser = false;
@@ -59,5 +57,5 @@ const userSlice = createSlice({
 });
 
 
-export const { logInUser, createUser, deleteUser, updateUser } = userSlice.actions
+//export const { createUser, deleteUser, updateUser } = userSlice.actions
 export default userSlice.reducer;
