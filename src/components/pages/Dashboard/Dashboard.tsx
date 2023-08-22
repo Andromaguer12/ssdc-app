@@ -12,7 +12,7 @@ const Dashboard = () => {
       <Typography variant="h3">Panel Administrativo</Typography>
       <div className={styles.DashboardUserList}>
         <Typography variant="h5">Lista de usuarios</Typography>
-        <span onClick={() => setForm(true)}>Registrar usuario</span>
+        <span className={styles.DashboardRegisterUser} onClick={() => setForm(true)}><Typography variant="button">Registrar usuario</Typography></span>
         <UserList />
       </div>
       {form && <Modal setModal={() => setForm(false)} data={null} />}

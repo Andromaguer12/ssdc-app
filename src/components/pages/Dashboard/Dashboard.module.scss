@@ -8,8 +8,8 @@
 }
 .DashboardUserList{
     display: flex;
-    justify-content: start;
-    align-items: start;
+    justify-content: flex-start;
+    align-items: flex-start;
     flex-direction: column;
     margin: 1.5rem;
     margin-top: 0.5rem;
@@ -19,7 +19,7 @@
     margin-top: 1.5rem;
     margin-left: 1.5rem 
 }
-.DashboardUserList span{
+.DashboardRegisterUser{
  text-decoration: none;
  background-color: rgb(0, 57, 148);
  color: white;
@@ -32,6 +32,6 @@
  border-radius: 5px;
  cursor: pointer;
 }
-.DashboardUserList span:hover {
+.DashboardRegisterUser:hover {
     background-color: rgb(0, 35, 91);
 }

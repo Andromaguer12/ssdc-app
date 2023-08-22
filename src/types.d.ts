@@ -1,4 +1,4 @@
-type Rank = "A" | "B" | "C"
+export type Rank = "A" | "B" | "C"
 
 interface UserInitialState {
     id: string,

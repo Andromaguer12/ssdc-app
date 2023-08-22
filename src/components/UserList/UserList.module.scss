@@ -5,12 +5,10 @@
 }
 
 
-.UserList div td span {
-   padding: 0.6rem;
-   border-radius: 4px;
-   
-}
 .UserList button {
     margin: 1rem;
 }
 
+.UserList table svg:hover {
+    color: rgb(0, 27, 134);
+}

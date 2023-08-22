@@ -22,17 +22,11 @@ import Modal from '../Modal/Modal';
 export default function UserList() {
 
     const fbContext = useFirebaseContext();
-
     const users = useAppSelector(state => state.usersList.usersListData);
     const dispatch = useAppDispatch();
+
     const [form, setForm] = useState(false);
     const [dataForm, setDataForm] = useState<UserReducerInitialState>(users[0]);
-
-    const rankStyle = [
-        { id: 'A', style: '#faffb5' },
-        { id: 'B', style: '#badcf5' },
-        { id: 'C', style: '#f5bfba' }
-    ]
 
     useEffect(() => {
         dispatch(getUsersList({
@@ -65,7 +59,9 @@ export default function UserList() {
                                     {row.name}
                                 </TableCell>
                                 <TableCell align="left">{row.phone}</TableCell>
-                                <TableCell align="center"><span style={{ backgroundColor: `${rankStyle.filter(item => item.id == row.rank)[0].style}` }}>{row.rank}</span></TableCell>
+                                <TableCell align="center" >
+                                    {row.rank}
+                                </TableCell>
                                 <TableCell align="left">
                                     <ModeEditIcon onClick={() => {
                                         setDataForm(row);
