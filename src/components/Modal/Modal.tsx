@@ -9,7 +9,7 @@ const Modal = ({ setModal, data }: { setModal: (boolean: boolean) => void, data:
     <div className={style.Modal}>
       <section onSubmit={() => setModal(false)}>
         <ClearIcon onClick={() => setModal(false)} />
-        <UserForm data={data} eventSubmit='Update' />
+        <UserForm data={data} eventSubmit='Create' />
       </section>
     </div>
   )

@@ -30,6 +30,13 @@ export const userLoginFunction = createAsyncThunk(
   }
 );
 
+export const userRegisterFunction = createAsyncThunk(
+  'users/userRegisterFunction',
+  async ( {context , data, id }: {context: any , data: UserReducerInitialState , id: string}) => {
+    return context.registerUser(data, id);
+  }
+)
+
 const userSlice = createSlice({
   name: 'user',
   initialState,
@@ -53,9 +60,29 @@ const userSlice = createSlice({
       state.error = action.error;
     });
 
+    //Register
+    builder.addCase(userRegisterFunction.pending, (state, action: any) => {
+      state.loadingUser = true;
+      console.log("PENDIENTE")
+    });
+    builder.addCase(userRegisterFunction.fulfilled, (state, action) => {
+      const { payload }: { payload: UserReducerInitialState } = action;
+      /*state.loadingUser = false;
+      state.name = payload.name;
+      state.email = payload.email;
+       state.phone = payload.phone;
+      state.rank = payload.rank;
+      state.accessToken = payload.accessToken;
+      state.accessToken = payload.uid; */
+    });
+    builder.addCase(userRegisterFunction.rejected, (state, action: any) => {
+       //state.loadingUser = false;
+      // state.error = action.error;
+      console.log("error" , action.error);
+      console.log("ERROR", action , state);
+    });
   }
 });
 
 
-//export const { createUser, deleteUser, updateUser } = userSlice.actions
 export default userSlice.reducer;

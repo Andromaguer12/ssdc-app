@@ -4,7 +4,8 @@ import { Button, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, Te
 import { useRouter } from 'next/router';
 import React, { useState } from 'react'
 import CustomizedAlert from '../CustomizedAlert/CustomizedAlert';
-import { UserReducerInitialState } from '@/redux/reducers/user/actions';
+import { UserReducerInitialState, userRegisterFunction } from '@/redux/reducers/user/actions';
+import useFirebaseContext from '@/contexts/firebaseConnection/hook';
 
 type Events = "Update" | "Create";
 
@@ -12,6 +13,7 @@ const UserForm = ({ data, eventSubmit }: { data: UserReducerInitialState | null,
     //const users = useAppSelector(state => state.user);
     const dispatch = useAppDispatch();
     const router = useRouter();
+    const fbContext = useFirebaseContext();
 
     // Estado para los datos del formulario
     const [formData, setFormData] = useState<UserReducerInitialState>(data || {
@@ -43,9 +45,14 @@ const UserForm = ({ data, eventSubmit }: { data: UserReducerInitialState | null,
         } else {
             setError("");
             if (eventSubmit === "Create") {
-                //dispatch(createUser(formData));
+                console.log("CREANDO")
+                dispatch(userRegisterFunction({
+                    context: fbContext,
+                    data: formData,
+                    id: "3243423"
+                }));
             } else {
-               // dispatch(updateUser(formData));
+                // dispatch(updateUser(formData));
             }
             router.push('/admin/dashboard');
         }
@@ -83,7 +90,7 @@ const UserForm = ({ data, eventSubmit }: { data: UserReducerInitialState | null,
             />
             {/*Pendiente el ranking */}
             <FormControl>
-            <FormLabel id="demo-radio-buttons-group-label">Ranking</FormLabel>
+                <FormLabel id="demo-radio-buttons-group-label">Ranking</FormLabel>
                 <RadioGroup
                     aria-labelledby="demo-radio-buttons-group-label"
                     defaultValue="C"

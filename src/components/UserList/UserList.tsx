@@ -38,7 +38,7 @@ export default function UserList() {
         dispatch(getUsersList({
             context: fbContext,
         }));
-    }, [])
+    }, [users])
 
     return (
         <div className={style.UserList}>
