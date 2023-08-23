@@ -1,6 +1,6 @@
 import { FirebaseApp } from 'firebase/app';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
-import { collection, doc, getDoc, getDocs, getFirestore, query, where, setDoc, addDoc } from 'firebase/firestore'
+import { collection, doc, getDoc, getDocs, getFirestore, query, where, setDoc, addDoc, deleteDoc } from 'firebase/firestore'
 import initFirebaseFunction from './firebaseInitConfig';
 import { UserReducerInitialState } from '@/redux/reducers/user/actions';
 
@@ -55,8 +55,12 @@ class Firebase {
     return data
   }
 
-  async registerUser(data: UserReducerInitialState, id: string) {
-    return await setDoc(doc(this.db, "users", id), data);
+  async registerUser(data: UserReducerInitialState) {
+    return await addDoc(collection(this.db, "users"), data)
+  }
+
+  async deleteUser(id: string) {
+    return await deleteDoc(doc(this.db, "users", id));
   }
 
   async logoutUser() {

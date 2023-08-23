@@ -13,10 +13,12 @@ import style from './UserList.module.scss';
 
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import { DeleteForever } from '@mui/icons-material';
-import { UserReducerInitialState } from '@/redux/reducers/user/actions';
+import { UserReducerInitialState, userDeleteFunction } from '@/redux/reducers/user/actions';
 import { getUsersList } from '@/redux/reducers/usersList/actions';
 import useFirebaseContext from '@/contexts/firebaseConnection/hook';
 import Modal from '../Modal/Modal';
+import { Skeleton, Stack } from '@mui/material';
+
 
 
 export default function UserList() {
@@ -25,58 +27,75 @@ export default function UserList() {
     const users = useAppSelector(state => state.usersList.usersListData);
     const dispatch = useAppDispatch();
 
-    const [form, setForm] = useState(false);
+    const [modal, setModal] = useState(false);
     const [dataForm, setDataForm] = useState<UserReducerInitialState>(users[0]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         dispatch(getUsersList({
             context: fbContext,
-        }));
+        })).then(() => setLoading(false));
     }, [users])
 
-    return (
-        <div className={style.UserList}>
-            <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>ID</TableCell>
-                            <TableCell>Nombre</TableCell>
-                            <TableCell align="left">Telefono</TableCell>
-                            <TableCell align="center">Ranking</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {users.map((row) => (
-                            <TableRow
-                                key={row.name}
-                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                            >
-                                <TableCell component="th" scope="row">
-                                    {row.uid}
-                                </TableCell>
-                                <TableCell component="th" scope="row">
-                                    {row.name}
-                                </TableCell>
-                                <TableCell align="left">{row.phone}</TableCell>
-                                <TableCell align="center" >
-                                    {row.rank}
-                                </TableCell>
-                                <TableCell align="left">
-                                    <ModeEditIcon onClick={() => {
-                                        setDataForm(row);
-                                        setForm(!form);
-                                    }} />
-                                </TableCell>
-                                <TableCell align="left">
-                                    <DeleteForever onClick={() => /*dispatch(deleteUser(row))*/ { }} />
-                                </TableCell>
+    if (!loading) {
+        return (
+            <div className={style.UserList}>
+                <TableContainer component={Paper}>
+                    <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>ID</TableCell>
+                                <TableCell>Nombre</TableCell>
+                                <TableCell align="left">Telefono</TableCell>
+                                <TableCell align="center">Ranking</TableCell>
                             </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-            {form && <Modal setModal={() => setForm(false)} data={dataForm} />}
-        </div>
-    );
-}
+                        </TableHead>
+                        <TableBody>
+                            {users.map((user) => (
+                                <TableRow
+                                    key={user.name}
+                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                >
+                                    <TableCell component="th" scope="row">
+                                        {user.uid}
+                                    </TableCell>
+                                    <TableCell component="th" scope="row">
+                                        {user.name}
+                                    </TableCell>
+                                    <TableCell align="left">{user.phone}</TableCell>
+                                    <TableCell align="center" >
+                                        {user.rank}
+                                    </TableCell>
+                                    <TableCell align="left">
+                                        <ModeEditIcon onClick={() => {
+                                            setDataForm(user);
+                                            setModal(!modal);
+                                        }} />
+                                    </TableCell>
+                                    <TableCell align="left">
+                                        <DeleteForever onClick={() => dispatch(userDeleteFunction({
+                                            context: fbContext,
+                                            id: "yai05szLzAMGgHUvO3uj"
+                                        }))} />
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+                {modal && <Modal setModal={() => setModal(false)} data={dataForm} />}
+            </div>
+        );
+    } else {
+        return (
+            <div className={style.UserList}>
+                <Stack spacing={1}>
+                    <Skeleton variant="rectangular" width={650} height={68} animation="wave" />
+                    <Skeleton variant="rounded" width={650} height={130} animation="wave" />
+                </Stack>
+            </div>
+        )
+    }
+};
+
+

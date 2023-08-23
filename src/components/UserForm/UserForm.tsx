@@ -42,8 +42,7 @@ const UserForm = ({ data, eventSubmit }: { data: UserReducerInitialState | null,
             console.log("CREANDO")
             dispatch(userRegisterFunction({
                 context: fbContext,
-                data: formData,
-                id: "3243423"
+                data: formData
             }));
         } else {
             // dispatch(updateUser(formData));

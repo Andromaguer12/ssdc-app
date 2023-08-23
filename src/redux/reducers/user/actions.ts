@@ -26,14 +26,21 @@ export const userLoginFunction = createAsyncThunk(
   async (params: { email: string; password: string; context: any }) => {
     const auth = await params.context.loginUser(params.email, params.password);
 
-    return params.context.getUserFromId(auth.user.uid, auth.user.accessToken)
+    return params.context.getUserFromId(auth.user.uid, auth.user.accessToken);
   }
 );
 
 export const userRegisterFunction = createAsyncThunk(
   'users/userRegisterFunction',
-  async ( {context , data, id }: {context: any , data: UserReducerInitialState , id: string}) => {
-    return context.registerUser(data, id);
+  async ({ context, data }: { context: any, data: UserReducerInitialState }) => {
+    return context.registerUser(data);
+  }
+)
+
+export const userDeleteFunction = createAsyncThunk(
+  'users/userDeleteFunction',
+  async ({ context, id }: { context: any, id: string }) => {
+    return context.deleteUser(id);
   }
 )
 
@@ -76,10 +83,10 @@ const userSlice = createSlice({
       state.accessToken = payload.uid; */
     });
     builder.addCase(userRegisterFunction.rejected, (state, action: any) => {
-       //state.loadingUser = false;
+      //state.loadingUser = false;
       // state.error = action.error;
-      console.log("error" , action.error);
-      console.log("ERROR", action , state);
+      console.log("error", action.error);
+      console.log("ERROR", action, state);
     });
   }
 });
