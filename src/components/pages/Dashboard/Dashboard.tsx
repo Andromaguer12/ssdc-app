@@ -11,8 +11,10 @@ const Dashboard = () => {
     <section className={styles.Dashboard}>
       <Typography variant="h3">Panel Administrativo</Typography>
       <div className={styles.DashboardUserList}>
-        <Typography variant="h5">Lista de usuarios</Typography>
-        <span className={styles.DashboardRegisterUser} onClick={() => setForm(true)}><Typography variant="button">Registrar usuario</Typography></span>
+        <div className={styles.DashboardUserListDiv}>
+          <Typography variant="h5">Lista de usuarios</Typography>
+          <span className={styles.DashboardRegisterUser} onClick={() => setForm(true)}><Typography variant="button">Registrar usuario</Typography></span>
+        </div>
         <UserList />
       </div>
       {form && <Modal setModal={() => setForm(false)} data={null} />}

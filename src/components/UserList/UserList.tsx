@@ -40,7 +40,7 @@ export default function UserList() {
         return (
             <div className={style.UserList}>
                 <TableContainer component={Paper}>
-                    <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                    <Table sx={{ minWidth: 150 }} aria-label="simple table">
                         <TableHead>
                             <TableRow>
                                 <TableCell>ID</TableCell>
@@ -54,6 +54,7 @@ export default function UserList() {
                                 <TableRow
                                     key={user.uid}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                    className={style.UserListRow}
                                 >
                                     <TableCell component="th" scope="row">
                                         {user.uid}
