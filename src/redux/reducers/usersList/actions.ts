@@ -2,15 +2,15 @@ import { Slice, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { UserReducerInitialState } from '../user/actions';
 
 interface UserListReducerInitialState {
-  loadingUsersList: boolean;
-  usersListData: UserReducerInitialState[];
+  loading: boolean;
+  data: UserReducerInitialState[];
   error: string;
 }
 
 const initialState = {
-  loadingUsersList: false,
+  loading: false,
   error: '',
-  usersListData: []
+  data: []
 } as UserListReducerInitialState;
 
 
@@ -28,11 +28,11 @@ const userListSlice: Slice<UserListReducerInitialState, {}, "user"> = createSlic
   reducers: {},
   extraReducers: builder => {
     builder.addCase(getUsersList.pending, (state, action: any) => {
-      state.loadingUsersList = true;
+      state.loading = true;
     });
     builder.addCase(getUsersList.fulfilled, (state, action: any) => {
-      state.loadingUsersList = false;
-      state.usersListData = action.payload;
+      state.loading = false;
+      state.data = action.payload;
     });
     builder.addCase(getUsersList.rejected, (state, action: any) => {
       state.error = action.error;

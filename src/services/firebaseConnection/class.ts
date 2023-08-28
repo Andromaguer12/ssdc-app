@@ -1,8 +1,9 @@
 import { FirebaseApp } from 'firebase/app';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { collection, doc, getDoc, getDocs, getFirestore, query, where, setDoc, addDoc, deleteDoc } from 'firebase/firestore'
 import initFirebaseFunction from './firebaseInitConfig';
 import { UserReducerInitialState } from '@/redux/reducers/user/actions';
+import { UserInterface } from '@/types';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 class Firebase {
@@ -55,8 +56,18 @@ class Firebase {
     return data
   }
 
-  async registerUser(data: UserReducerInitialState) {
-    return await addDoc(collection(this.db, "users"), data)
+  /*async registerUser(data: UserReducerInitialState) {
+    const rta =  await addDoc(collection(this.db, "users"), data);
+    return rta
+  } */
+
+  async registerUser(email: string, password: string, data: UserInterface) {
+    const res = await createUserWithEmailAndPassword(this.auth, email, password);
+    const dataToSend: UserInterface = {
+      ...data,
+      uid: res.user.uid
+    }
+    return addDoc(collection(this.db, "users"), dataToSend);
   }
 
   async deleteUser(id: string) {

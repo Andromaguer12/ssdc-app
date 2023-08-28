@@ -24,20 +24,19 @@ import { Skeleton, Stack } from '@mui/material';
 export default function UserList() {
 
     const fbContext = useFirebaseContext();
-    const users = useAppSelector(state => state.usersList.usersListData);
+    const userList = useAppSelector(state => state.usersList);
     const dispatch = useAppDispatch();
 
     const [modal, setModal] = useState(false);
-    const [dataForm, setDataForm] = useState<UserReducerInitialState>(users[0]);
+    const [dataForm, setDataForm] = useState<UserReducerInitialState>(userList.data[userList.data.length - 1]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         dispatch(getUsersList({
             context: fbContext,
         })).then(() => setLoading(false));
-    }, [users])
-
-    if (!loading) {
+    }, [userList.data])
+    if (!loading || !userList.loading) {
         return (
             <div className={style.UserList}>
                 <TableContainer component={Paper}>
@@ -51,9 +50,9 @@ export default function UserList() {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {users.map((user) => (
+                            {userList.data.map((user) => (
                                 <TableRow
-                                    key={user.name}
+                                    key={user.uid}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 >
                                     <TableCell component="th" scope="row">

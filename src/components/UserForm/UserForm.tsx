@@ -2,29 +2,27 @@ import React, { useState } from 'react'
 import { useAppDispatch } from '@/redux/store';
 import CustomizedAlert from '../CustomizedAlert/CustomizedAlert';
 import useFirebaseContext from '@/contexts/firebaseConnection/hook';
-
-import { UserReducerInitialState, userRegisterFunction } from '@/redux/reducers/user/actions';
 import { Button, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, TextField } from '@mui/material';
 
 import style from './UserForm.module.scss';
+import { userRegisterFunction } from '@/redux/reducers/user/actions';
+import { UserInterface } from '@/types';
+
 
 type Events = "Update" | "Create";
 
-const UserForm = ({ data, eventSubmit }: { data: UserReducerInitialState | null, eventSubmit: Events }) => {
+const UserForm = ({ data, eventSubmit }: { data: UserInterface | null, eventSubmit: Events }) => {
     const dispatch = useAppDispatch();
     const fbContext = useFirebaseContext();
     const [error, setError] = useState<string>("");
 
     // Estado para los datos del formulario
-    const [formData, setFormData] = useState<UserReducerInitialState>(data || {
+    const [formData, setFormData] = useState<UserInterface>(data || {
         name: '',
         email: '',
-        rank: 'C',
+        rank: "C",
         phone: '',
         uid: '',
-        loadingUser: false,
-        error: '',
-        accessToken: '',
     });
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,6 +40,7 @@ const UserForm = ({ data, eventSubmit }: { data: UserReducerInitialState | null,
             console.log("CREANDO")
             dispatch(userRegisterFunction({
                 context: fbContext,
+                email: formData.email,
                 data: formData
             }));
         } else {

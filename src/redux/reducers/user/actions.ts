@@ -1,25 +1,23 @@
+import { userPassword } from '@/constants/users/user-constanst';
+import { UserInterface } from '@/types';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-export interface UserReducerInitialState {
-  name: string;
-  email: string;
-  phone: string;
-  rank: 'A' | 'B' | 'C';
-  loadingUser: boolean;
-  error: string;
-  uid: string;
+export interface UserReducerInitialState extends UserInterface {
+  loadingUser: boolean,
   accessToken: string;
+  error: string;
 }
 
-const initialState = {
+const initialState: UserReducerInitialState = {
   name: '',
   email: '',
   phone: '',
-  rank: 'C',
+  rank: "C",
   loadingUser: false,
   accessToken: '',
-  uid: ''
-} as UserReducerInitialState;
+  uid: '',
+  error: ''
+};
 
 export const userLoginFunction = createAsyncThunk(
   'users/userLoginFunction',
@@ -32,8 +30,10 @@ export const userLoginFunction = createAsyncThunk(
 
 export const userRegisterFunction = createAsyncThunk(
   'users/userRegisterFunction',
-  async ({ context, data }: { context: any, data: UserReducerInitialState }) => {
-    return context.registerUser(data);
+  async ({ context, email, data }: { context: any, email: string, data: UserInterface }) => {
+    const rta = context.registerUser(email, userPassword, data);
+    console.log(rta);
+    return rta
   }
 )
 
@@ -73,7 +73,7 @@ const userSlice = createSlice({
       console.log("PENDIENTE")
     });
     builder.addCase(userRegisterFunction.fulfilled, (state, action) => {
-      const { payload }: { payload: UserReducerInitialState } = action;
+      //const { payload }: { payload: UserReducerInitialState } = action;
       /*state.loadingUser = false;
       state.name = payload.name;
       state.email = payload.email;
@@ -81,6 +81,10 @@ const userSlice = createSlice({
       state.rank = payload.rank;
       state.accessToken = payload.accessToken;
       state.accessToken = payload.uid; */
+      //state.uid = action.payload.id;
+      //console.log('payload', action.payload);
+      //console.log(action.payload.id)
+      //dconsole.log('state', state);
     });
     builder.addCase(userRegisterFunction.rejected, (state, action: any) => {
       //state.loadingUser = false;
