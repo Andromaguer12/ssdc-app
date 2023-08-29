@@ -5,7 +5,7 @@ import useFirebaseContext from '@/contexts/firebaseConnection/hook';
 import { Button, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, TextField } from '@mui/material';
 
 import style from './UserForm.module.scss';
-import { userRegisterFunction } from '@/redux/reducers/user/actions';
+import { userRegisterFunction, userUpdateFunction } from '@/redux/reducers/user/actions';
 import { UserInterface } from '@/types';
 
 
@@ -43,8 +43,12 @@ const UserForm = ({ data, eventSubmit }: { data: UserInterface | null, eventSubm
                 email: formData.email,
                 data: formData
             }));
-        } else {
-            // dispatch(updateUser(formData));
+        } else if (data) {
+            console.log(dispatch(userUpdateFunction({
+                context: fbContext,
+                data: data,
+                payload: formData
+            })));
         }
 
     };

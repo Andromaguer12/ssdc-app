@@ -6,6 +6,7 @@ export interface UserReducerInitialState extends UserInterface {
   loadingUser: boolean,
   accessToken: string;
   error: string;
+  id: string;
 }
 
 const initialState: UserReducerInitialState = {
@@ -16,7 +17,8 @@ const initialState: UserReducerInitialState = {
   loadingUser: false,
   accessToken: '',
   uid: '',
-  error: ''
+  error: '',
+  id: ''
 };
 
 export const userLoginFunction = createAsyncThunk(
@@ -33,6 +35,15 @@ export const userRegisterFunction = createAsyncThunk(
   async ({ context, email, data }: { context: any, email: string, data: UserInterface }) => {
     const rta = context.registerUser(email, userPassword, data);
     console.log(rta);
+    return rta
+  }
+)
+
+export const userUpdateFunction = createAsyncThunk(
+  'users/userUpdateFunction',
+  async ({ context, data, payload }: { context: any, data: UserInterface, payload: UserInterface }) => {
+    const rta = context.updateUser(data, payload);
+    console.log(rta)
     return rta
   }
 )
@@ -73,18 +84,7 @@ const userSlice = createSlice({
       console.log("PENDIENTE")
     });
     builder.addCase(userRegisterFunction.fulfilled, (state, action) => {
-      //const { payload }: { payload: UserReducerInitialState } = action;
-      /*state.loadingUser = false;
-      state.name = payload.name;
-      state.email = payload.email;
-       state.phone = payload.phone;
-      state.rank = payload.rank;
-      state.accessToken = payload.accessToken;
-      state.accessToken = payload.uid; */
-      //state.uid = action.payload.id;
-      //console.log('payload', action.payload);
-      //console.log(action.payload.id)
-      //dconsole.log('state', state);
+
     });
     builder.addCase(userRegisterFunction.rejected, (state, action: any) => {
       //state.loadingUser = false;

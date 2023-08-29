@@ -70,6 +70,14 @@ class Firebase {
     return addDoc(collection(this.db, "users"), dataToSend);
   }
 
+  async updateUser(data: UserReducerInitialState, payload: UserInterface) {
+    return await setDoc(doc(this.db, "users", data.uid), {
+      ...data,
+      ...payload
+    });
+// Necesito el id 
+  }
+
   async deleteUser(id: string) {
     return await deleteDoc(doc(this.db, "users", id));
   }
