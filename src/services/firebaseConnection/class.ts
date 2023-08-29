@@ -1,5 +1,5 @@
 import { FirebaseApp } from 'firebase/app';
-import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, deleteUser, getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { collection, doc, getDoc, getDocs, getFirestore, query, where, setDoc, addDoc, deleteDoc } from 'firebase/firestore'
 import initFirebaseFunction from './firebaseInitConfig';
 import { UserReducerInitialState } from '@/redux/reducers/user/actions';
@@ -56,30 +56,30 @@ class Firebase {
     return data
   }
 
-  /*async registerUser(data: UserReducerInitialState) {
-    const rta =  await addDoc(collection(this.db, "users"), data);
-    return rta
-  } */
-
-  async registerUser(email: string, password: string, data: UserInterface) {
+  async registerUser(email: string, password: string, data: UserReducerInitialState) {
     const res = await createUserWithEmailAndPassword(this.auth, email, password);
-    const dataToSend: UserInterface = {
+    const dataToSend: UserReducerInitialState = {
       ...data,
-      uid: res.user.uid
+      uid: res.user.uid,
     }
-    return addDoc(collection(this.db, "users"), dataToSend);
+    const newUserRef = doc(collection(this.db, "users"));
+    return setDoc(newUserRef, {
+      ...dataToSend,
+      id: newUserRef.id
+    })
+    //return addDoc(collection(this.db, "users"), dataToSend);
   }
 
   async updateUser(data: UserReducerInitialState, payload: UserInterface) {
-    return await setDoc(doc(this.db, "users", data.uid), {
+    return await setDoc(doc(this.db, "users", data.id), {
       ...data,
       ...payload
     });
-// Necesito el id 
   }
 
-  async deleteUser(id: string) {
-    return await deleteDoc(doc(this.db, "users", id));
+  async removeUser(user : UserReducerInitialState) {
+    await deleteUser(this.auth.currentUser);
+    return deleteDoc(doc(this.db, "users", user.id));
   }
 
   async logoutUser() {

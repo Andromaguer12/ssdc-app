@@ -57,7 +57,7 @@ export default function UserList() {
                                     className={style.UserListRow}
                                 >
                                     <TableCell component="th" scope="row">
-                                        {user.uid}
+                                        {user.id}
                                     </TableCell>
                                     <TableCell component="th" scope="row">
                                         {user.name}
@@ -75,7 +75,7 @@ export default function UserList() {
                                     <TableCell align="left">
                                         <DeleteForever onClick={() => dispatch(userDeleteFunction({
                                             context: fbContext,
-                                            id: "yai05szLzAMGgHUvO3uj"
+                                            user: user
                                         }))} />
                                     </TableCell>
                                 </TableRow>

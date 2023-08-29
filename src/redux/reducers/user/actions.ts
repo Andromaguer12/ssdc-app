@@ -50,8 +50,8 @@ export const userUpdateFunction = createAsyncThunk(
 
 export const userDeleteFunction = createAsyncThunk(
   'users/userDeleteFunction',
-  async ({ context, id }: { context: any, id: string }) => {
-    return context.deleteUser(id);
+  async ({ context, user }: { context: any, user: UserReducerInitialState }) => {
+    return context.removeUser(user);
   }
 )
 
@@ -92,7 +92,24 @@ const userSlice = createSlice({
       console.log("error", action.error);
       console.log("ERROR", action, state);
     });
+
+    //Delete
+    builder.addCase(userDeleteFunction.pending, (state, action: any) => {
+      state.loadingUser = true;
+      console.log("PENDIENTE")
+    });
+    builder.addCase(userDeleteFunction.fulfilled, (state, action) => {
+      console.log("borrado");
+    });
+    builder.addCase(userDeleteFunction.rejected, (state, action: any) => {
+      //state.loadingUser = false;
+      // state.error = action.error;
+      console.log("error", action.error);
+      console.log("ERROR", action, state);
+    });
   }
+
+  
 });
 
 

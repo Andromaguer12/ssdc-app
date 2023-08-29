@@ -36,6 +36,7 @@ const userListSlice: Slice<UserListReducerInitialState, {}, "user"> = createSlic
     });
     builder.addCase(getUsersList.rejected, (state, action: any) => {
       state.error = action.error;
+      console.log(action.error)
     });
   }
 });

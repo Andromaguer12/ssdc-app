@@ -5,19 +5,19 @@ import useFirebaseContext from '@/contexts/firebaseConnection/hook';
 import { Button, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, TextField } from '@mui/material';
 
 import style from './UserForm.module.scss';
-import { userRegisterFunction, userUpdateFunction } from '@/redux/reducers/user/actions';
+import { UserReducerInitialState, userRegisterFunction, userUpdateFunction } from '@/redux/reducers/user/actions';
 import { UserInterface } from '@/types';
 
 
 type Events = "Update" | "Create";
 
-const UserForm = ({ data, eventSubmit }: { data: UserInterface | null, eventSubmit: Events }) => {
+const UserForm = ({ data, eventSubmit }: { data: UserReducerInitialState | null, eventSubmit: Events }) => {
     const dispatch = useAppDispatch();
     const fbContext = useFirebaseContext();
     const [error, setError] = useState<string>("");
 
     // Estado para los datos del formulario
-    const [formData, setFormData] = useState<UserInterface>(data || {
+    const [formData, setFormData] = useState<UserInterface | UserReducerInitialState>(data || {
         name: '',
         email: '',
         rank: "C",
