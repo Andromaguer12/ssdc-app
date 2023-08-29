@@ -77,7 +77,7 @@ class Firebase {
     });
   }
 
-  async removeUser(user : UserReducerInitialState) {
+  async removeUser(user: UserReducerInitialState) {
     await deleteUser(this.auth.currentUser);
     return deleteDoc(doc(this.db, "users", user.id));
   }
