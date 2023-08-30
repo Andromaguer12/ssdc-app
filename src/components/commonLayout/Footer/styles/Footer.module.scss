@@ -1,0 +1,152 @@
+@import '../../../../constants/styling/theme/variables.scss';
+
+.container {
+  width: 100%;
+  background-color: $primary-color;
+  background-image: linear-gradient(to bottom right, $primary-color, #f0940b);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .top {
+    width: 100%;
+    padding: 25px 30px;
+    background-color: $primary-color-alt;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .button {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      p {
+        color: $primary-color;
+        font-family: $secondary-font;
+        font-weight: 500;
+        font-size: 22px;
+        text-transform: uppercase;
+        margin-top: 10px;
+      }
+    }
+  }
+
+  .delimeter {
+    display: flex;
+    flex-direction: row;
+    box-sizing: border-box;
+    justify-content: space-between;
+    align-items: center;
+    max-width: $max-width-layout;
+    width: 100%;
+
+    .containers {
+      min-width: 270px;
+      height: 220px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      align-items: baseline;
+
+      .logoIconFooter {
+        width: 200px;
+        height: 70px;
+        background-color: $primary-color-alt;
+        margin-bottom: 10px;
+      }
+
+      p {
+        font-family: $primary-font;
+      }
+
+      .thisHeaders {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+
+        .title {
+          font-weight: 700;
+          font-size: 18px;
+          margin-bottom: 10px;
+        }
+
+        .text {
+          font-size: 15px;
+          margin-bottom: 15px;
+        }
+
+        .listItems {
+          margin-left: 10px;
+          margin-bottom: 7px;
+          font-weight: bold;
+          text-decoration: none;
+          color: $black;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: space-between;
+
+          p {
+            font-size: 14px;
+          }
+
+          &__noBold {
+            margin-left: 10px;
+            margin-bottom: 7px;
+            font-weight: bold;
+            text-decoration: none;
+            color: $black;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+
+            p {
+              font-weight: 400;
+              font-family: $tertiary-font;
+              font-size: 14px;
+            }
+          }
+        }
+      }
+    }
+
+    .dividers {
+      width: 1px;
+      height: 220px;
+      background-color: $secondary-color;
+    }
+  }
+
+  .bottom {
+    width: 100%;
+    padding: 25px 30px;
+    background-color: $black;
+    margin-top: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .delimiter {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      align-items: center;
+      max-width: $max-width-layout;
+      width: 100%;
+    }
+
+    p {
+      color: $primary-text-color;
+      font-family: $primary-font;
+    }
+  }
+}

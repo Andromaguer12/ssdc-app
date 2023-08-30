@@ -1,0 +1,17 @@
+@import '../../../constants/styling/theme/variables.scss';
+
+.dashboard {
+  width: 100%;
+  height: 100vh;
+  background-image: linear-gradient(to top right, $black, $secondary-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: all ease 500ms;
+
+  .dashboardComponent {
+    max-width: $max-width-layout;
+    width: 100%;
+    height: 100%;
+  }
+}
