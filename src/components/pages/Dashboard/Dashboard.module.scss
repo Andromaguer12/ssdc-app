@@ -1,3 +1,5 @@
+@import '../../../constants/styling/theme/variables.scss';
+
 .Dashboard{
     background-color: white;
     min-height: 100vh;
@@ -30,7 +32,7 @@
 }
 .DashboardRegisterUser{
  text-decoration: none;
- background-color: rgb(0, 57, 148);
+ background-color: $primary-color;
  color: white;
  display: flex;
  align-items: center;
@@ -42,5 +44,5 @@
  cursor: pointer;
 }
 .DashboardRegisterUser:hover {
-    background-color: rgb(0, 35, 91);
+    background-color: $primary-color-alt;
 }

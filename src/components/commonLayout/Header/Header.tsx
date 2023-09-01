@@ -3,14 +3,15 @@ import { IconButton } from '@mui/material';
 import Link from 'next/link';
 import React from 'react';
 import styles from './Header.module.scss';
-import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import { HeaderButtons } from '../../../constants/components/commonLayout/Header/header';
+import { Menu } from '@/components/Menu/Menu';
 
 export default function Header() {
   return (
-    <div className={styles.headerContainer}>
-      <div className={styles.delimeter}>
-        <div className={styles.logoAndSearch}>
+    <header className={styles.headerContainer}>
+      <section className={styles.delimeter}>
+        <div className={styles.logoAndMenu}>
+          <Menu />
           <div className={styles.image}></div>
         </div>
         <div className={styles.buttons}>
@@ -19,20 +20,17 @@ export default function Header() {
               <Link
                 key={button.id}
                 className={styles.headerButton}
-                href={button.link}
+                href={"button.link"}
               >
-                'AKSHJGDHJKASD'
+                Buttons
               </Link>
             );
           })}
           <IconButton className={styles.iconButtons}>
-            <Language style={{ color: '#fff' }} />
-          </IconButton>
-          <IconButton>
-            <LinkedInIcon style={{ color: '#fff' }} />
+            <Language style={{ color: '#003994' }} />
           </IconButton>
         </div>
-      </div>
-    </div>
+      </section>
+    </header>
   );
 }

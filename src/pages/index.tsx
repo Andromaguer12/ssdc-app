@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Login from '@/components/pages/Login/Login';
 import { AllRoutes } from '@/constants/routes/routes';
+import Header from '@/components/commonLayout/Header/Header';
 // import Home from '../components/pages/home/components/Home';
 
 export default function HomeIndex() {
@@ -17,6 +18,7 @@ export default function HomeIndex() {
       <Head>
         <title>SSDC App</title>
       </Head>
+
       {/* <Home /> */}
     </>
   );

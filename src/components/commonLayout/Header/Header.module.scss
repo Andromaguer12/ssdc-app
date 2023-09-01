@@ -6,7 +6,10 @@
   flex-direction: column;
   align-items: center;
   padding: 15px 0 !important;
-
+  background-color: $white;
+  color: $primary-color;
+  
+  
   .delimeter {
     max-width: $max-width-layout;
     width: 100%;
@@ -14,8 +17,15 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    box-shadow: rgba(33, 35, 38, 0.1) 0px 10px 10px -10px;
+    
 
-    .logoAndSearch {
+    .logoAndMenu {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 20%;
+     
       .image {
         width: 70px;
         height: 50px;
@@ -30,18 +40,27 @@
 
       .headerButton {
         font-family: $primary-font;
-        color: $white;
         background: transparent;
         outline: none;
         border: none;
         margin: 15px 20px !important;
         font-size: 12px;
         text-decoration: none;
+        color: $primary-color;
       }
 
       .iconButtons {
         margin-right: 10px !important;
       }
     }
+    @media (max-width: 640px) {
+      .buttons {
+        display: none;
+      }
+      .logoAndMenu{
+        padding: 0px 1rem;
+        width: 100%;
+      }
   }
+}
 }
