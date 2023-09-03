@@ -17,7 +17,7 @@ import { UserReducerInitialState, userDeleteFunction } from '@/redux/reducers/us
 import { getUsersList } from '@/redux/reducers/usersList/actions';
 import useFirebaseContext from '@/contexts/firebaseConnection/hook';
 import Modal from '../Modal/Modal';
-import { Skeleton, Stack } from '@mui/material';
+import { Chip, Skeleton, Stack } from '@mui/material';
 
 
 
@@ -64,7 +64,7 @@ export default function UserList() {
                                     </TableCell>
                                     <TableCell align="left">{user.phone}</TableCell>
                                     <TableCell align="center" >
-                                        {user.rank}
+                                        <Chip label={user.rank} color="default" variant="outlined" />
                                     </TableCell>
                                     <TableCell align="left">
                                         <ModeEditIcon onClick={() => {

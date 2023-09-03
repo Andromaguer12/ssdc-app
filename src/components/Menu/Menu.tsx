@@ -7,9 +7,14 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
+import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
+import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import MenuIcon from '@mui/icons-material/Menu';
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import ChecklistIcon from '@mui/icons-material/Checklist';
+import { Collapse } from '@mui/material';
+import { ExpandLess, ExpandMore } from '@mui/icons-material';
 
 type Anchor = 'top' | 'left' | 'bottom' | 'right';
 
@@ -20,6 +25,12 @@ const Menu = () => {
         bottom: false,
         right: false,
     });
+
+    const [open, setOpen] = React.useState(true);
+
+    const handleClick = () => {
+        setOpen(!open);
+    };
 
     const toggleDrawer =
         (anchor: Anchor, open: boolean) =>
@@ -39,35 +50,65 @@ const Menu = () => {
         <Box
             sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
             role="presentation"
-            onClick={toggleDrawer(anchor, false)}
+            onClick={toggleDrawer(anchor, true)}
             onKeyDown={toggleDrawer(anchor, false)}
         >
             <List>
-                {['Usuarios', 'Torneos'].map((text, index) => (
-                    <ListItem key={text} disablePadding>
-                        <ListItemButton>
-                            <ListItemIcon>
-                                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                            </ListItemIcon>
-                            <ListItemText primary={text} />
-                        </ListItemButton>
-                    </ListItem>
-                ))}
+                <ListItem>
+                    <ListItemIcon>
+                        <AccountCircleIcon sx={{ fontSize: 50 }} />
+                    </ListItemIcon>
+                    <ListItemText primary={"Username"} secondary={"Admin"} />
+                </ListItem>
             </List>
             <Divider />
             <List>
-                {['Administrar Usuarios', 'Administrar Torneos'].map((text, index) => (
+                {['Usuarios'].map((text, index) => (
                     <ListItem key={text} disablePadding>
                         <ListItemButton>
                             <ListItemIcon>
-                                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                            <PeopleAltIcon />
                             </ListItemIcon>
                             <ListItemText primary={text} />
                         </ListItemButton>
                     </ListItem>
                 ))}
             </List>
-        </Box>
+            <List
+                sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
+                component="nav"
+                aria-labelledby="nested-list-subheader"
+            >
+                <ListItemButton onClick={() => {
+                    handleClick();
+                }}>
+                    <ListItemIcon>
+                        <EmojiEventsIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Torneos" />
+                    {open ? <ExpandLess /> : <ExpandMore />}
+                </ListItemButton>
+                <Collapse in={open} timeout="auto" unmountOnExit>
+                    <List component="div" disablePadding>
+                        <ListItemButton sx={{ pl: 4 }}>
+                            <ListItemIcon>
+                                <DriveFileRenameOutlineIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Administrar Toreneos" />
+                        </ListItemButton>
+                    </List>
+                    <List component="div" disablePadding>
+                        <ListItemButton sx={{ pl: 4 }}>
+                            <ListItemIcon>
+                                <ChecklistIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Torneos Activos" />
+                        </ListItemButton>
+                    </List>
+                </Collapse>
+            </List>
+
+        </Box >
     );
 
     return (
