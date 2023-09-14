@@ -1,5 +1,6 @@
+"use client"
 import React, { useState } from 'react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { useAppDispatch } from '@/redux/store';
 import { Button, Grid, TextField, Typography } from '@mui/material';
 import CustomizedAlert from '@/components/CustomizedAlert/CustomizedAlert';
@@ -22,7 +23,7 @@ export default function Login() {
     email: '',
     password: ''
   });
-  
+
 
   const [error, setError] = useState<string>('');
 

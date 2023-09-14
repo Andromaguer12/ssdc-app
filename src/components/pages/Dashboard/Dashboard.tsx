@@ -1,3 +1,4 @@
+"use client"
 import UserList from "@/components/UserList/UserList"
 import styles from './Dashboard.module.scss';
 import { Typography } from "@mui/material";
