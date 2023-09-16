@@ -16,6 +16,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ChecklistIcon from '@mui/icons-material/Checklist';
 import { Collapse } from '@mui/material';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
+import Link from 'next/link';
 
 type Anchor = 'top' | 'left' | 'bottom' | 'right';
 
@@ -68,7 +69,7 @@ const Menu = () => {
                     <ListItem key={text} disablePadding>
                         <ListItemButton>
                             <ListItemIcon>
-                            <PeopleAltIcon />
+                                <PeopleAltIcon />
                             </ListItemIcon>
                             <ListItemText primary={text} />
                         </ListItemButton>
@@ -95,7 +96,9 @@ const Menu = () => {
                             <ListItemIcon>
                                 <DriveFileRenameOutlineIcon />
                             </ListItemIcon>
-                            <ListItemText primary="Administrar Toreneos" />
+                            <Link href={'/tournaments'}>
+                                <ListItemText primary="Administrar Toreneos" />
+                            </Link>
                         </ListItemButton>
                     </List>
                     <List component="div" disablePadding>

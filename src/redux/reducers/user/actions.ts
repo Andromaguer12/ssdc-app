@@ -1,5 +1,5 @@
 import { userPassword } from '@/constants/users/user-constanst';
-import { UserInterface } from '@/types';
+import { UserInterface } from '@/typesDefs/constants/users/types';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 export interface UserReducerInitialState extends UserInterface {

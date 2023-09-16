@@ -5,7 +5,6 @@ import React from 'react'
 const DashboardAdminIndex = () => {
     return (
         <>
-            <Header />
             <Dashboard />
         </>
 

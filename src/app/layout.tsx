@@ -1,4 +1,5 @@
 "use client"
+import Header from "@/components/commonLayout/Header/Header"
 import theme from "@/constants/styling/theme/muiTheme"
 import FirebaseContext from "@/contexts/firebaseConnection/context"
 import store from "@/redux/store"
@@ -19,14 +20,15 @@ export default function RootLayout({
     <html lang="en">
 
       <body>
-      <Provider store={store}>
-      <FirebaseContext.Provider value={firebaseClass}>
-        <ThemeProvider theme={theme}>
-        {children}
-        </ThemeProvider>
-        </FirebaseContext.Provider> 
+        <Provider store={store}>
+          <FirebaseContext.Provider value={firebaseClass}>
+            <ThemeProvider theme={theme}>
+              <Header />
+              {children}
+            </ThemeProvider>
+          </FirebaseContext.Provider>
         </Provider>
-        </body>
+      </body>
     </html>
   )
 }

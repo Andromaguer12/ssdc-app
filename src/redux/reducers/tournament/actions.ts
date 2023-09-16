@@ -1,3 +1,4 @@
+import { TournamentInitialState } from '@/typesDefs/constants/tournaments/types';
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState: TournamentInitialState[] = [];
@@ -7,7 +8,8 @@ const tournamentSlice = createSlice({
     initialState,
     reducers: {
         addTournament: (state, action) => { //pendiente por agregar el tipo al payload
-           state.push(action.payload);
+            const { payload }: { payload: TournamentInitialState } = action;
+            state.push(payload);
         }
     }
 });
