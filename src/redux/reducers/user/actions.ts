@@ -33,9 +33,7 @@ export const userLoginFunction = createAsyncThunk(
 export const userRegisterFunction = createAsyncThunk(
   'users/userRegisterFunction',
   async ({ context, email, data }: { context: any, email: string, data: UserInterface }) => {
-    const rta = context.registerUser(email, userPassword, data);
-    console.log(rta);
-    return rta
+    return context.registerUser(email, userPassword, data);
   }
 )
 
@@ -43,7 +41,6 @@ export const userUpdateFunction = createAsyncThunk(
   'users/userUpdateFunction',
   async ({ context, data, payload }: { context: any, data: UserInterface, payload: UserInterface }) => {
     const rta = context.updateUser(data, payload);
-    console.log(rta)
     return rta
   }
 )
@@ -109,7 +106,7 @@ const userSlice = createSlice({
     });
   }
 
-  
+
 });
 
 

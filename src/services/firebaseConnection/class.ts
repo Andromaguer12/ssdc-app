@@ -3,7 +3,8 @@ import { createUserWithEmailAndPassword, deleteUser, getAuth, signInWithEmailAnd
 import { collection, doc, getDoc, getDocs, getFirestore, query, where, setDoc, addDoc, deleteDoc } from 'firebase/firestore'
 import initFirebaseFunction from './firebaseInitConfig';
 import { UserReducerInitialState } from '@/redux/reducers/user/actions';
-import { UserInterface } from '@/types';
+import { TablePlayers, TournamentFormat, TournamentInitialState } from '@/typesDefs/constants/tournaments/types';
+import { UserInterface } from '@/typesDefs/constants/users/types';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 class Firebase {
@@ -23,7 +24,6 @@ class Firebase {
   /**
    * Users Api
    */
-
   async loginUser(email: string, password: string) {
     return signInWithEmailAndPassword(this.auth, email, password);
   }
@@ -88,6 +88,39 @@ class Firebase {
 
   /**
    * End Users Api
+   */
+
+  /**
+   * Tournaments Api
+   */
+
+  async createTournament(
+    name: string,
+    rules: string,
+    format: TournamentFormat,
+    startDate: string,
+    endDate: string,
+    currentRound: number,
+    winner: UserInterface | null,
+    table: TablePlayers[]
+  ) {
+
+    const dataToSend: TournamentInitialState = {
+      name,
+      rules,
+      format,
+      startDate,
+      endDate,
+      currentRound,
+      winner,
+      table
+    }
+    const newTournamentRef = collection(this.db, "tournaments");
+    return addDoc(newTournamentRef, dataToSend);
+  }
+
+  /**
+   * End Tournament Api
    */
 }
 

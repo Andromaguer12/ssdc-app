@@ -11,7 +11,8 @@ type TablePlayers = {
     form: Form[],
     won: number,
     draw: number,
-    lost: number
+    lost: number,
+    poitns: number,
 }
 
 export interface TournamentInitialState {
