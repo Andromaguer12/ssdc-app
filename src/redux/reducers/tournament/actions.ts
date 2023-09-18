@@ -2,6 +2,12 @@ import { TablePlayers, TournamentFormat, TournamentInitialState } from '@/typesD
 import { UserInterface } from '@/typesDefs/constants/users/types';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
+export interface TournamentReducerInitialState extends TournamentInitialState {
+    successCreated: boolean,
+    error: string,
+    loading: boolean,
+}
+
 const initialState: TournamentReducerInitialState = {
     name: "",
     rules: "",
@@ -49,17 +55,13 @@ export const tournamentCreateFunction = createAsyncThunk(
             winner,
             table,
         );
-        
+
         console.log(tournamentCreated);
         return tournamentCreated
     }
 )
 
-interface TournamentReducerInitialState extends TournamentInitialState {
-    successCreated: boolean,
-    error: string,
-    loading: boolean,
-}
+
 
 const tournamentSlice = createSlice({
     name: 'tournament',

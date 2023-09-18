@@ -25,19 +25,19 @@ import { Chip, Skeleton, Stack } from '@mui/material';
 export default function UserList() {
 
     const fbContext = useFirebaseContext();
-    const userList = useAppSelector(state => state.usersList);
+    const userList = useAppSelector(state => state.usersList.data);
     const dispatch = useAppDispatch();
 
     const [modal, setModal] = useState(false);
-    const [dataForm, setDataForm] = useState<UserReducerInitialState>(userList.data[userList.data.length - 1]);
+    const [dataForm, setDataForm] = useState<UserReducerInitialState>(userList[userList.length - 1]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         dispatch(getUsersList({
             context: fbContext,
         })).then(() => setLoading(false));
-    }, [userList.data])
-    if (!loading || !userList.loading) {
+    }, [userList])
+    if (!loading) {
         return (
             <div className={style.UserList}>
                 <TableContainer component={Paper}>
@@ -51,7 +51,7 @@ export default function UserList() {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {userList.data.map((user) => (
+                            {userList.map((user) => (
                                 <TableRow
                                     key={user.uid}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -84,7 +84,7 @@ export default function UserList() {
                         </TableBody>
                     </Table>
                 </TableContainer>
-                {modal && <Modal setModal={() => setModal(false)} data={dataForm} />}
+                {modal && <Modal setModal={() => setModal(false)} data={dataForm} format="user" />}
             </div>
         );
     } else {

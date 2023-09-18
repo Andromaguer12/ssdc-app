@@ -1,0 +1,41 @@
+import { Slice, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { TournamentReducerInitialState } from "../tournament/actions";
+
+interface TournamentListReducerInitialState {
+    loading: boolean,
+    error: string,
+    data: TournamentReducerInitialState[]
+}
+
+const initialState = {
+    loading: false,
+    error: '',
+    data: []
+} as TournamentListReducerInitialState
+
+export const getTournamentsList = createAsyncThunk(
+    "tournaments/getTournamentsList",
+    async (params: { context: any }) => {
+        return params.context.getTournamentsList();
+    }
+)
+
+const tournamentsListSlice: Slice<TournamentListReducerInitialState, {}, 'tournaments'> = createSlice({
+    name: 'tournaments',
+    initialState: initialState,
+    reducers: {},
+    extraReducers: builder => {
+        builder.addCase(getTournamentsList.pending, (state, action: any) => {
+            state.loading = true;
+        });
+        builder.addCase(getTournamentsList.fulfilled, (state, action: any) => {
+            state.loading = false;
+            state.data = action.payload;
+        });
+        builder.addCase(getTournamentsList.rejected, (state, action: any) => {
+            state.error = action.error;
+            console.log(action.error)
+        });
+    }
+})
+export default tournamentsListSlice.reducer;

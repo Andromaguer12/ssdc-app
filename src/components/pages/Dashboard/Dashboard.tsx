@@ -18,7 +18,7 @@ const Dashboard = () => {
         </div>
         <UserList />
       </div>
-      {form && <Modal setModal={() => setForm(false)} data={null} />}
+      {form && <Modal setModal={() => setForm(false)} data={null} format="user"/>}
     </section>
   )
 }

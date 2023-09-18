@@ -1,11 +1,10 @@
-import { TournamentsList } from '@/components/TournamentsList/TournamentsList'
+import { Tournaments } from '@/components/pages/Tournaments/Tournaments'
 import React from 'react'
 
 const TournamentPage = () => {
     return (
         <>
-            <h2>Torneos</h2>
-            <TournamentsList />
+           <Tournaments />
         </>
 
     )

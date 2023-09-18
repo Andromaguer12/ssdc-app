@@ -94,6 +94,20 @@ class Firebase {
    * Tournaments Api
    */
 
+  async getTournamentsList() {
+    const tournamentsRef = query(collection(this.db, "tournaments"));
+    const docs = await getDocs(tournamentsRef);
+    const data: any[] = []
+
+    docs.forEach((doc) => {
+      data.push({
+        ...doc.data()
+      })
+    });
+
+    return data
+  }
+
   async createTournament(
     name: string,
     rules: string,
