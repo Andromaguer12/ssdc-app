@@ -1,10 +1,10 @@
 import { UserInterface } from "../users/types";
 
 type TournamentFormat = "individual" | "pairs" | "team";
-
+type TournamentGame = "Domino" | "Ajedrez"
 type Form = "L" | "W" | "D";
 
-type TablePlayers = {
+export type TablePlayers = {
     position: number,
     team: UserInterface[],
     playedRounds: number,
@@ -12,10 +12,10 @@ type TablePlayers = {
     won: number,
     draw: number,
     lost: number,
-    poitns: number,
+    points: number,
 }
 
-export interface TournamentInitialState {
+export interface TournamentInterface {
     name: string,
     rules: string,
     format: TournamentFormat,
@@ -23,6 +23,7 @@ export interface TournamentInitialState {
     endDate: string,
     currentRound: number,
     winner: UserInterface | null,
-    table: TablePlayers[]
+    table: TablePlayers[],
+    game: TournamentGame,
 }
 

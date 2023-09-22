@@ -3,6 +3,7 @@ import style from './Modal.module.scss'
 import ClearIcon from '@mui/icons-material/Clear';
 import UserForm from '../UserForm/UserForm';
 import { UserReducerInitialState } from '@/redux/reducers/user/actions';
+import { TournamentForm } from '../TournamentForm/TournamentForm';
 
 const Modal = ({ setModal, data, format }:
   { setModal: (boolean: boolean) => void, data: UserReducerInitialState | null, format: "tournament" | "user" }) => {
@@ -12,7 +13,7 @@ const Modal = ({ setModal, data, format }:
         <ClearIcon onClick={() => setModal(false)} className={style.ModalCloseICon} />
         {format === "user"
           ? <UserForm data={data} eventSubmit={data ? "Update" : "Create"} />
-          : <p>TournamentForm</p>}
+          : <TournamentForm />}
       </section>
     </div>
   )

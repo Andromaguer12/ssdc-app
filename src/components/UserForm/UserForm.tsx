@@ -36,7 +36,6 @@ const UserForm = ({ data, eventSubmit }: { data: UserReducerInitialState | null,
         event.preventDefault();
         setError("");
         if (eventSubmit === "Create") {
-            console.log("CREANDO")
             dispatch(userRegisterFunction({
                 context: fbContext,
                 email: formData.email,
