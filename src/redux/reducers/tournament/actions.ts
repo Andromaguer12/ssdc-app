@@ -1,3 +1,4 @@
+//import { TournamentReducerInitialState } from './actions';
 import { TournamentInterface } from '@/typesDefs/constants/tournaments/types';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
@@ -5,6 +6,7 @@ export interface TournamentReducerInitialState extends TournamentInterface {
     successCreated: boolean,
     error: string,
     loading: boolean,
+    id: string,
 }
 
 const initialState: TournamentReducerInitialState = {
@@ -30,21 +32,14 @@ const initialState: TournamentReducerInitialState = {
     successCreated: false,
     loading: false,
     error: '',
-    game: 'Ajedrez'
+    game: 'Ajedrez',
+    id: ''
 }
 
 export const tournamentCreateFunction = createAsyncThunk(
     'tournaments/tournamentCreateFunction',
     async ({ context, tournamentData }: { context: any, tournamentData: TournamentInterface }) => {
-        const { name, rules, format, startDate, endDate, currentRound, winner, table } = tournamentData;
-        console.log(name,
-            rules,
-            format,
-            startDate,
-            endDate,
-            currentRound,
-            winner,
-            table)
+        const { name, rules, format, startDate, endDate, currentRound, winner, table, game } = tournamentData;
         const tournamentCreated = await context.createTournament(
             name,
             rules,
@@ -54,9 +49,8 @@ export const tournamentCreateFunction = createAsyncThunk(
             currentRound,
             winner,
             table,
+            game
         );
-
-        console.log(tournamentCreated);
         return tournamentCreated
     }
 )
@@ -75,11 +69,25 @@ const tournamentSlice = createSlice({
             state.successCreated = true;
             state.loading = initialState.loading;
             state.error = initialState.error
+            console.log("creado")
         });
         builder.addCase(tournamentCreateFunction.rejected, (state, action: any) => {
             state.loading = false;
             state.error = action.error;
         });
+        /*
+        builder.addCase(tournamentGetById.pending, (state, action: any) => {
+            state.loading = true;
+        });
+        builder.addCase(tournamentGetById.fulfilled, (state, action) => {
+            const {payload} : {payload: TournamentReducerInitialState} = action
+            initialState = payload;
+        });
+        builder.addCase(tournamentGetById.rejected, (state, action: any) => {
+            state.loading = false;
+            state.error = action.error;
+        });
+        */
     }
 });
 

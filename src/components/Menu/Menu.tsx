@@ -14,9 +14,8 @@ import MenuIcon from '@mui/icons-material/Menu';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ChecklistIcon from '@mui/icons-material/Checklist';
-import { Collapse } from '@mui/material';
+import { Collapse, Link } from '@mui/material';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
-import Link from 'next/link';
 
 type Anchor = 'top' | 'left' | 'bottom' | 'right';
 
@@ -96,7 +95,7 @@ const Menu = () => {
                             <ListItemIcon>
                                 <DriveFileRenameOutlineIcon />
                             </ListItemIcon>
-                            <Link href={'/tournaments'}>
+                            <Link href={'/tournaments'} underline="none" color={"inherit"}>
                                 <ListItemText primary="Administrar Toreneos" />
                             </Link>
                         </ListItemButton>

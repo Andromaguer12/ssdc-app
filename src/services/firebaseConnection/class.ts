@@ -3,7 +3,7 @@ import { createUserWithEmailAndPassword, deleteUser, getAuth, signInWithEmailAnd
 import { collection, doc, getDoc, getDocs, getFirestore, query, where, setDoc, addDoc, deleteDoc } from 'firebase/firestore'
 import initFirebaseFunction from './firebaseInitConfig';
 import { UserReducerInitialState } from '@/redux/reducers/user/actions';
-import { TablePlayers, TournamentFormat, TournamentInitialState } from '@/typesDefs/constants/tournaments/types';
+import { TablePlayers, TournamentFormat, TournamentInterface } from '@/typesDefs/constants/tournaments/types';
 import { UserInterface } from '@/typesDefs/constants/users/types';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -108,6 +108,11 @@ class Firebase {
     return data
   }
 
+  async getTournamentById(id: string) {
+    const docRef = doc(this.db, "tournaments", id);
+    return (await getDoc(docRef)).data();
+  };
+
   async createTournament(
     name: string,
     rules: string,
@@ -116,10 +121,11 @@ class Firebase {
     endDate: string,
     currentRound: number,
     winner: UserInterface | null,
-    table: TablePlayers[]
+    table: TablePlayers[],
+    game: 'Ajedrez'
   ) {
 
-    const dataToSend: TournamentInitialState = {
+    const dataToSend: TournamentInterface = {
       name,
       rules,
       format,
@@ -127,10 +133,14 @@ class Firebase {
       endDate,
       currentRound,
       winner,
-      table
+      table,
+      game
     }
-    const newTournamentRef = collection(this.db, "tournaments");
-    return addDoc(newTournamentRef, dataToSend);
+    const newTournamentRef = doc(collection(this.db, "tournaments"));
+    return setDoc(newTournamentRef, {
+      ...dataToSend,
+      id: newTournamentRef.id,
+    });
   }
 
   /**

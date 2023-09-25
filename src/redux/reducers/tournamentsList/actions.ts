@@ -20,6 +20,13 @@ export const getTournamentsList = createAsyncThunk(
     }
 )
 
+export const tournamentGetById = createAsyncThunk(
+    'tournaments/tournamentGetById',
+    async({context , id} : {context: any , id: string}) => {
+        return context.getTournamentById(id);
+    }
+);
+
 const tournamentsListSlice: Slice<TournamentListReducerInitialState, {}, 'tournaments'> = createSlice({
     name: 'tournaments',
     initialState: initialState,
@@ -33,6 +40,17 @@ const tournamentsListSlice: Slice<TournamentListReducerInitialState, {}, 'tourna
             state.data = action.payload;
         });
         builder.addCase(getTournamentsList.rejected, (state, action: any) => {
+            state.error = action.error;
+            console.log(action.error)
+        });
+        builder.addCase(tournamentGetById.pending, (state, action: any) => {
+            state.loading = true;
+        });
+        builder.addCase(tournamentGetById.fulfilled, (state, action: any) => {
+            state.loading = false;
+            state.data = [action.payload];
+        });
+        builder.addCase(tournamentGetById.rejected, (state, action: any) => {
             state.error = action.error;
             console.log(action.error)
         });

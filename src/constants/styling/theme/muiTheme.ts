@@ -3,12 +3,12 @@ import { createTheme } from '@mui/material/styles';
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#3794e0',
-      dark: '#0035a7'
+      main: '#003994',
+      dark: '#002157'
     },
     secondary: {
       main: '#ffffff',
-      dark: '#e7e7e7'
+      dark: '#003994'
     },
     error: {
       main: '#FF4D4F',
@@ -25,7 +25,7 @@ const theme = createTheme({
     info: {
       main: '#FFFFFF',
       light: '#B8B8B8'
-    }
+    },
   },
   breakpoints: {
     values: {

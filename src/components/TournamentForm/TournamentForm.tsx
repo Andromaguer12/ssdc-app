@@ -46,14 +46,15 @@ const TournamentForm = () => {
 
 
 
-
+  const fecha = new Date();
+  const startDate = `${fecha.getDate()}/${fecha.getMonth()+1}/${fecha.getFullYear()}`
   // Estado para los datos del formulario
   const [usersName, setUsersName] = useState<string[]>([]);
   const [formData, setFormData] = useState<TournamentInterface>({
     name: "",
     rules: "",
     format: "individual",
-    startDate: "",
+    startDate: startDate,
     endDate: "",
     currentRound: 1,
     winner: null,
@@ -89,6 +90,7 @@ const TournamentForm = () => {
       context: fbContext,
       tournamentData: formData
     }));
+    console.log("submit");
   }
 
   useEffect(() => {
@@ -103,14 +105,14 @@ const TournamentForm = () => {
       const user = list[0];
       return user;
     });
-    const tableToAdd: TablePlayers[] = usersToAdd.map(user => ({
+    const tableToAdd: TablePlayers[] = usersToAdd.map((user, index) => ({
       team: [user],
       won: 0,
       form: [],
       draw: 0,
       lost: 0,
       points: 0,
-      position: usersToAdd.length + 1,
+      position: index + 1,
       playedRounds: 0
     }))
 
