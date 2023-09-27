@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useState } from 'react'
 import { TournamentReducerInitialState } from '@/redux/reducers/tournament/actions'
 import { Button, Typography } from '@mui/material';
 import Table from '@mui/material/Table';
@@ -11,8 +11,11 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import style from './TournamentInformation.module.scss';
 import { TablePlayers } from '@/typesDefs/constants/tournaments/types';
+import Modal from '@/components/Modal/Modal';
 
 const TournamentInformation = ({ tournament }: { tournament: TournamentReducerInitialState }) => {
+
+    const [modal, setModal] = useState<boolean>(false);
 
     if (tournament) {
         const matches: TablePlayers[][] = [];
@@ -21,6 +24,16 @@ const TournamentInformation = ({ tournament }: { tournament: TournamentReducerIn
             i = i + 2;
             matches.push(element);
         }
+
+        const compareFunction = (a: TablePlayers, b: TablePlayers) => {
+            if (a.points > b.points) {
+                return -1; // a va antes que b
+            } else {
+                return 1; // a va después de b
+            }
+        };
+        //tournament.table.sort(compareFunction);
+
         return (
             <section className={style.TournamentInformation}>
                 <div className={style.TournamentInformationHeader}>
@@ -30,7 +43,7 @@ const TournamentInformation = ({ tournament }: { tournament: TournamentReducerIn
                 <Typography variant="h6">Formato del torneo: {tournament.format}</Typography>
                 <Typography variant="h6">Fecha de inicio: {tournament.startDate}</Typography>
                 <Typography variant="h6">Rondas jugadas: {tournament.currentRound}</Typography>
-                <div>
+                <div className={style.TournamentInformationTable}>
                     <Typography variant="h4">Tabla de Posiciones</Typography>
                     <TableContainer component={Paper}>
                         <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -74,17 +87,22 @@ const TournamentInformation = ({ tournament }: { tournament: TournamentReducerIn
                                     >
                                         <TableCell align="center">{match[0].team[0].name}</TableCell>
                                         <TableCell align="center">VS</TableCell>
-                                        <TableCell align="center">{match[1]?.team[0].name ? match[1].team[0].name : "Sin rival"}</TableCell>
+                                        <TableCell align="center">{match[1]?.team[0].name
+                                            ? match[1].team[0].name
+                                            : "Sin rival"}
+                                        </TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>
                         </Table>
                     </TableContainer>
                     <Button fullWidth disableElevation variant="contained" color="primary"
+                        onClick={() => setModal(true)}
                         className={"style.TournamentFormButton"}>
                         Registrar resultados
                     </Button>
                 </div>
+                {modal && <Modal setModal={() => setModal(false)} format="matches" matchesData={matches} />}
             </section>
         )
     } else {

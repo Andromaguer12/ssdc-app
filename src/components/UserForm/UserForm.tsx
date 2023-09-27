@@ -10,7 +10,7 @@ import style from './UserForm.module.scss';
 
 type Events = "Update" | "Create";
 
-const UserForm = ({ data, eventSubmit }: { data: UserReducerInitialState | null, eventSubmit: Events }) => {
+const UserForm = ({ data, eventSubmit }: { data?: UserReducerInitialState | null, eventSubmit: Events }) => {
     const dispatch = useAppDispatch();
     const fbContext = useFirebaseContext();
     const [error, setError] = useState<string>("");
