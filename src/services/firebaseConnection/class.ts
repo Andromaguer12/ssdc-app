@@ -5,6 +5,7 @@ import initFirebaseFunction from './firebaseInitConfig';
 import { UserReducerInitialState } from '@/redux/reducers/user/actions';
 import { TablePlayers, TournamentFormat, TournamentInterface } from '@/typesDefs/constants/tournaments/types';
 import { UserInterface } from '@/typesDefs/constants/users/types';
+import { TournamentReducerInitialState } from '@/redux/reducers/tournament/actions';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 class Firebase {
@@ -143,6 +144,14 @@ class Firebase {
     });
   }
 
+  async updateTournament(tournament: TournamentReducerInitialState, payload: TournamentReducerInitialState) {
+    const table = payload.table
+    console.log('class' , table);
+    return await setDoc(doc(this.db, "tournaments", tournament.id), {
+      ...tournament,
+      table: table
+    });
+  }
   /**
    * End Tournament Api
    */

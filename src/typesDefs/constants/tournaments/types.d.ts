@@ -1,3 +1,4 @@
+import { UserReducerInitialState } from "@/redux/reducers/user/actions";
 import { UserInterface } from "../users/types";
 
 type TournamentFormat = "individual" | "pairs" | "team";
@@ -6,7 +7,7 @@ type Form = "L" | "W" | "D";
 
 export type TablePlayers = {
     position: number,
-    team: UserInterface[],
+    team: UserReducerInitialState[],
     playedRounds: number,
     form: Form[],
     won: number,

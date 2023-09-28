@@ -47,7 +47,7 @@ const TournamentForm = () => {
 
 
   const fecha = new Date();
-  const startDate = `${fecha.getDate()}/${fecha.getMonth()+1}/${fecha.getFullYear()}`
+  const startDate = `${fecha.getDate()}/${fecha.getMonth() + 1}/${fecha.getFullYear()}`
   // Estado para los datos del formulario
   const [usersName, setUsersName] = useState<string[]>([]);
   const [formData, setFormData] = useState<TournamentInterface>({
@@ -185,6 +185,7 @@ const TournamentForm = () => {
             </MenuItem>
           ))}
         </Select>
+        <p>Jugadores: {usersName.length}</p>
       </FormControl>
       {/* Validacion de datos del formulario*/}
       {(!formData.name || usersName.length < 20)

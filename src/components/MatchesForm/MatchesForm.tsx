@@ -3,19 +3,70 @@ import { TablePlayers } from '@/typesDefs/constants/tournaments/types'
 import { Button, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import style from './MatchesForm.module.scss';
+import { tournamentUpdateFunction } from '@/redux/reducers/tournament/actions';
+import { useAppDispatch, useAppSelector } from '@/redux/store';
+
+import useFirebaseContext from '@/contexts/firebaseConnection/hook';
+
 
 const MatchesForm = ({ data }: { data: TablePlayers[][] }) => {
-
+    const dispatch = useAppDispatch();
+    const fbContext = useFirebaseContext();
+    const tournament = useAppSelector(state => state.tournamentList.data[0]);
     const [winnersList, setWinnersList] = useState<string[]>([]);
+    const [tournamentToSend, setTournamentToSend] = useState(tournament);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const { value } = event.target;
-        setWinnersList((prevData) => ([...prevData, value]));
-        console.log(winnersList);
+        const { name, value } = event.target;
+        const matchRef = data[parseInt(name)]; // el name que se obtiene en el evento es el index del match
+        const idLoser = matchRef.filter(user => user.team[0].id !== value)[0].team[0].id;
+        setWinnersList([...winnersList.filter(id => id !== idLoser), value]);
+
     }
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        setTournamentToSend(prev => ({
+            ...prev,
+            currentRound: 10,
+            table: prev.table.map(player => {
+                if (winnersList.includes(player.team[0].id)) {
+                    console.log(`El jugado: ${player.team[0].name} es ganador`);
+                    return {
+                        ...player,
+                        points: player.points + 1
+                    };
+                }
+                return player
+            })
+        }));
+        dispatch(tournamentUpdateFunction({
+            context: fbContext,
+            payload: tournamentToSend,
+            tournament: tournament
+        }))
+    };
+
+    useEffect(() => {
+        setTournamentToSend(prev => ({
+            ...prev,
+            currentRound: 10,
+            table: prev.table.map(player => {
+                if (winnersList.includes(player.team[0].id)) {
+                    console.log(`El jugado: ${player.team[0].name} es ganador`);
+                    return {
+                        ...player,
+                        points: player.points + 1
+                    };
+                }
+                return player
+            })
+        }));
+        console.log(tournamentToSend);
+    }, [winnersList.length >= data.length]);
+
 
     return (
-        <section className={style.MatchesForm}>
+        <form className={style.MatchesForm} onSubmit={handleSubmit}>
             <Typography variant='h4'>Selecciona los ganadores de la ronda</Typography>
             <div className={style.MatchesFormGrid}>
                 {data.map((match, index) => (
@@ -23,15 +74,15 @@ const MatchesForm = ({ data }: { data: TablePlayers[][] }) => {
                         <FormLabel>{`Enfrentamiento ${index + 1}`}</FormLabel>
                         <RadioGroup
                             defaultValue="individual"
-                            name="format"
+                            name={`${index}`}
                             row
-                            value={winnersList.filter(item => item === match[0].team[0].name)[0]}
+                            value={winnersList.filter(item => item == match[0].team[0].name)[0]}
                             onChange={handleChange}
                         >
-                            <FormControlLabel value={match[0].team[0].name} control={<Radio />} label={match[0].team[0].name} />
-                            <FormControlLabel value={match[1]?.team[0].name
-                                ? match[1].team[0].name
-                                : "Sin rival"} control={<Radio />} label={match[1]?.team[0].name
+                            <FormControlLabel value={match[0].team[0].id} control={<Radio />} label={match[0].team[0].name} />
+                            <FormControlLabel value={match[1]?.team[0].id
+                                ? match[1].team[0].id
+                                : match[0].team[0].id} control={<Radio />} label={match[1]?.team[0].name
                                     ? match[1].team[0].name
                                     : "Sin rival"} />
                         </RadioGroup>
@@ -40,12 +91,12 @@ const MatchesForm = ({ data }: { data: TablePlayers[][] }) => {
 
             </div>
             <Button fullWidth disableElevation variant="contained" color="primary"
-            //onClick={'() => setModal(true)'}
+                type='submit'
             // className={"style.TournamentFormButton"}
             >
                 Confirmar
             </Button>
-        </section>
+        </form>
 
     )
 }

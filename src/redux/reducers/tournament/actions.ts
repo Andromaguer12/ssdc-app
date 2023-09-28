@@ -55,6 +55,13 @@ export const tournamentCreateFunction = createAsyncThunk(
     }
 )
 
+export const tournamentUpdateFunction = createAsyncThunk(
+    'tournaments/tournamentUpdateFunction',
+    async ({ context, tournament, payload }: { context: any, payload: TournamentReducerInitialState, tournament: TournamentReducerInitialState }) => {
+        return context.updateTournament(tournament, payload);
+
+    }
+)
 
 
 const tournamentSlice = createSlice({
@@ -75,19 +82,20 @@ const tournamentSlice = createSlice({
             state.loading = false;
             state.error = action.error;
         });
-        /*
-        builder.addCase(tournamentGetById.pending, (state, action: any) => {
+
+        builder.addCase(tournamentUpdateFunction.pending, (state, action: any) => {
             state.loading = true;
         });
-        builder.addCase(tournamentGetById.fulfilled, (state, action) => {
-            const {payload} : {payload: TournamentReducerInitialState} = action
-            initialState = payload;
+        builder.addCase(tournamentUpdateFunction.fulfilled, (state, action) => {
+            const { payload }: { payload: TournamentReducerInitialState } = action
+            console.log("payload" , payload);
         });
-        builder.addCase(tournamentGetById.rejected, (state, action: any) => {
+        builder.addCase(tournamentUpdateFunction.rejected, (state, action: any) => {
             state.loading = false;
             state.error = action.error;
+            console.log(action.error);
         });
-        */
+
     }
 });
 
