@@ -19,7 +19,7 @@ const TournamentInformation = ({ tournament }: { tournament: TournamentReducerIn
 
     if (tournament) {
         const tableToSort = [...tournament.table];
-        tableToSort.sort((a , b) => b.points - a.points);
+        tableToSort.sort((a, b) => b.points - a.points);
         const matches: TablePlayers[][] = [];
         for (let i = 0; i < tableToSort.length;) {
             const element = [tableToSort[i], tableToSort[i + 1 ? i + 1 : i]];
@@ -32,9 +32,11 @@ const TournamentInformation = ({ tournament }: { tournament: TournamentReducerIn
                     <Typography variant="h2">{tournament.name}</Typography>
                     <Typography variant="h6">({tournament.game})</Typography>
                 </div>
+                {tournament.currentRound > 5
+                    && <Typography variant="h6">Ganador: {tableToSort[0].team[0].name}</Typography>}
                 <Typography variant="h6">Formato del torneo: {tournament.format}</Typography>
                 <Typography variant="h6">Fecha de inicio: {tournament.startDate}</Typography>
-                <Typography variant="h6">Rondas jugadas: {tournament.currentRound}</Typography>
+                <Typography variant="h6">Rondas jugadas: {tournament.currentRound - 1}</Typography>
                 <div className={style.TournamentInformationTable}>
                     <Typography variant="h4">Tabla de Posiciones</Typography>
                     <TableContainer component={Paper}>
@@ -88,11 +90,11 @@ const TournamentInformation = ({ tournament }: { tournament: TournamentReducerIn
                             </TableBody>
                         </Table>
                     </TableContainer>
-                    <Button fullWidth disableElevation variant="contained" color="primary"
+                    {tournament.currentRound <= 5 && <Button fullWidth disableElevation variant="contained" color="primary"
                         onClick={() => setModal(true)}
                         className={"style.TournamentFormButton"}>
                         Registrar resultados
-                    </Button>
+                    </Button>}
                 </div>
                 {modal && <Modal setModal={() => setModal(false)} format="matches" matchesData={matches} />}
             </section>
