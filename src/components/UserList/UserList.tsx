@@ -84,7 +84,7 @@ export default function UserList() {
                         </TableBody>
                     </Table>
                 </TableContainer>
-                {modal && <Modal setModal={() => setModal(false)} data={dataForm} format="user" />}
+                {modal && <Modal setModal={() => setModal(false)} userData={dataForm} format="user" />}
             </div>
         );
     } else {

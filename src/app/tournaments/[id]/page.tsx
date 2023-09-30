@@ -17,7 +17,7 @@ const TournamentPage = ({ params }: { params: { id: string } }) => {
             context: fbContext,
             id: id
         }))
-    }, []);
+    }, [tournament]);
     return (
         <TournamentInformation tournament={tournament[0]} />
     )

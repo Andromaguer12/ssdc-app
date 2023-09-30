@@ -37,7 +37,7 @@ const Tournaments = () => {
                 </section>
                 <TournamentsList />
             </div>
-            {modal && <Modal setModal={() => setModal(false)} data={null} format="tournament" />}
+            {modal && <Modal setModal={() => setModal(false)} format="tournament" />}
         </section>
     )
 }

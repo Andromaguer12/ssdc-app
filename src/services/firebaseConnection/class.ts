@@ -146,10 +146,10 @@ class Firebase {
 
   async updateTournament(tournament: TournamentReducerInitialState, payload: TournamentReducerInitialState) {
     const table = payload.table
-    console.log('class' , table);
     return await setDoc(doc(this.db, "tournaments", tournament.id), {
       ...tournament,
-      table: table
+      table: table,
+      currentRound: payload.currentRound + 1,
     });
   }
   /**

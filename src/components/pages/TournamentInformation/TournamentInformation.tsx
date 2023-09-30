@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { TournamentReducerInitialState } from '@/redux/reducers/tournament/actions'
 import { Button, Typography } from '@mui/material';
 import Table from '@mui/material/Table';
@@ -18,22 +18,14 @@ const TournamentInformation = ({ tournament }: { tournament: TournamentReducerIn
     const [modal, setModal] = useState<boolean>(false);
 
     if (tournament) {
+        const tableToSort = [...tournament.table];
+        tableToSort.sort((a , b) => b.points - a.points);
         const matches: TablePlayers[][] = [];
-        for (let i = 0; i < tournament.table.length;) {
-            const element = [tournament.table[i], tournament.table[i + 1 ? i + 1 : i]];
+        for (let i = 0; i < tableToSort.length;) {
+            const element = [tableToSort[i], tableToSort[i + 1 ? i + 1 : i]];
             i = i + 2;
             matches.push(element);
         }
-
-        const compareFunction = (a: TablePlayers, b: TablePlayers) => {
-            if (a.points > b.points) {
-                return -1; // a va antes que b
-            } else {
-                return 1; // a va después de b
-            }
-        };
-        //tournament.table.sort(compareFunction);
-
         return (
             <section className={style.TournamentInformation}>
                 <div className={style.TournamentInformationHeader}>
@@ -57,7 +49,7 @@ const TournamentInformation = ({ tournament }: { tournament: TournamentReducerIn
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {tournament.table.map((team, index) => (
+                                {tableToSort.map((team, index) => (
                                     <TableRow
                                         key={index}
                                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}

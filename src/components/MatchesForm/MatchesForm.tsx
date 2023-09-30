@@ -25,18 +25,26 @@ const MatchesForm = ({ data }: { data: TablePlayers[][] }) => {
     }
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        // Agrega los puntos a los ganadores
         setTournamentToSend(prev => ({
             ...prev,
-            currentRound: 10,
             table: prev.table.map(player => {
                 if (winnersList.includes(player.team[0].id)) {
-                    console.log(`El jugado: ${player.team[0].name} es ganador`);
+                    //console.log(`El jugado: ${player.team[0].name} es ganador`);
                     return {
                         ...player,
-                        points: player.points + 1
+                        won: player.won + 1,
+                        points: player.points + 1,
+                        playedRounds: tournamentToSend.currentRound,
+                        lost: (tournamentToSend.currentRound) - (player.points + 1)
                     };
+                } else {
+                    return {
+                        ...player,
+                        playedRounds: tournamentToSend.currentRound,
+                        lost: (tournamentToSend.currentRound) - (player.points)
+                    }
                 }
-                return player
             })
         }));
         dispatch(tournamentUpdateFunction({
@@ -46,22 +54,28 @@ const MatchesForm = ({ data }: { data: TablePlayers[][] }) => {
         }))
     };
 
+    // Actualiza los resultados de los match
     useEffect(() => {
         setTournamentToSend(prev => ({
             ...prev,
-            currentRound: 10,
             table: prev.table.map(player => {
                 if (winnersList.includes(player.team[0].id)) {
-                    console.log(`El jugado: ${player.team[0].name} es ganador`);
                     return {
                         ...player,
-                        points: player.points + 1
+                        won: player.won + 1,
+                        points: player.points + 1,
+                        playedRounds: tournamentToSend.currentRound,
+                        lost: (tournamentToSend.currentRound) - (player.points + 1),
                     };
                 }
-                return player
+                return {
+                    ...player,
+                    playedRounds: tournamentToSend.currentRound,
+                    lost: (tournamentToSend.currentRound) - (player.points)
+                };
             })
         }));
-        console.log(tournamentToSend);
+        //console.log("playedRouds", tournamentToSend.table.map(player => player.playedRounds));
     }, [winnersList.length >= data.length]);
 
 
