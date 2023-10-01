@@ -10,9 +10,10 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { IconButton, Link, Menu, MenuItem } from '@mui/material';
+import { IconButton, Link, Menu, MenuItem, Skeleton, Stack } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { TournamentReducerInitialState } from '@/redux/reducers/tournament/actions';
+import style from './TournamentsList.module.scss';
 
 
 //Componente de menu para la list
@@ -79,13 +80,12 @@ const TournamentsList = () => {
     if (!loading) {
         return (
             <section>
-
                 <TableContainer component={Paper}>
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
                         <TableHead>
                             <TableRow>
                                 <TableCell>Torneo</TableCell>
-                                <TableCell align="right">Ganador</TableCell>
+                                <TableCell align="right">Estado</TableCell>
                                 <TableCell align="right">Participantes</TableCell>
                                 <TableCell align="right">Rondas</TableCell>
                                 <TableCell align="right">Fecha</TableCell>
@@ -97,12 +97,13 @@ const TournamentsList = () => {
                                 <TableRow
                                     key={tournament.name}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                    className={style.TournamentListRow}
                                 >
                                     <TableCell component="th" scope="row">
                                         {tournament.name}
                                     </TableCell>
                                     <TableCell align="right">
-                                        {tournament.winner ? tournament.winner.name : "En curso..."}
+                                        {tournament.currentRound > 5 ? "Terminado" : "En curso..."}
                                     </TableCell>
                                     <TableCell align="right">{tournament.table.length}</TableCell>
                                     <TableCell align="right">{tournament.currentRound}</TableCell>
@@ -118,7 +119,10 @@ const TournamentsList = () => {
             </section>
         )
     } else return (
-        <h2>LOADING</h2>
+        <Stack spacing={1}>
+                    <Skeleton variant="rectangular" width={850} height={68} animation="wave" />
+                    <Skeleton variant="rounded" width={850} height={130} animation="wave" />
+                </Stack>
     )
 }
 

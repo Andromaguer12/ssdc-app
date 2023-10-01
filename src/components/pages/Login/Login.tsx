@@ -60,7 +60,8 @@ export default function Login() {
 
 
   return (
-    <Grid
+    <section className={styles.Login}>
+      <Grid
       container
       className={styles.loginContainer}
       display={'flex'}
@@ -116,5 +117,7 @@ export default function Login() {
         </form>
       </Grid>
     </Grid>
+    </section>
+    
   );
 }

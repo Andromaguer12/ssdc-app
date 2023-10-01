@@ -23,7 +23,6 @@ export default function RootLayout({
         <Provider store={store}>
           <FirebaseContext.Provider value={firebaseClass}>
             <ThemeProvider theme={theme}>
-              <Header />
               {children}
             </ThemeProvider>
           </FirebaseContext.Provider>
