@@ -59,7 +59,7 @@ const Menu = () => {
                     <ListItemIcon>
                         <AccountCircleIcon sx={{ fontSize: 50 }} />
                     </ListItemIcon>
-                    <ListItemText primary={"Username"} secondary={"Admin"} />
+                    <ListItemText primary={"Usuario actual BETA"} secondary={"Admin"} />
                 </ListItem>
             </List>
             <Divider />
