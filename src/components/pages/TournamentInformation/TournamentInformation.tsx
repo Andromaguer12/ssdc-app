@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect, useState } from 'react'
-import { TournamentReducerInitialState } from '@/redux/reducers/tournament/actions'
+import { TournamentReducerInitialState, tournamentUpdateFunction } from '@/redux/reducers/tournament/actions'
 import { Button, Typography } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -12,9 +12,12 @@ import Paper from '@mui/material/Paper';
 import style from './TournamentInformation.module.scss';
 import { TablePlayers } from '@/typesDefs/constants/tournaments/types';
 import Modal from '@/components/Modal/Modal';
+import { useAppDispatch } from '@/redux/store';
+import useFirebaseContext from '@/contexts/firebaseConnection/hook';
 
 const TournamentInformation = ({ tournament }: { tournament: TournamentReducerInitialState }) => {
-
+    const dispatch = useAppDispatch();
+    const fbContext = useFirebaseContext();
     const [modal, setModal] = useState<boolean>(false);
 
     if (tournament) {
@@ -26,6 +29,16 @@ const TournamentInformation = ({ tournament }: { tournament: TournamentReducerIn
             i = i + 2;
             matches.push(element);
         }
+
+        //Pendiente por terminar
+       /* if( tournament.currentRound > 5) {
+            dispatch(tournamentUpdateFunction({
+                context: fbContext,
+                payload: {},
+                tournament: tournament
+            }))
+        } */
+
         return (
             <section className={style.TournamentInformation}>
                 <div className={style.TournamentInformationHeader}>

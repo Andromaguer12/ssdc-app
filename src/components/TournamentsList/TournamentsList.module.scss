@@ -1,0 +1,6 @@
+@import '../../constants/styling/theme/variables.scss';
+
+.TournamentListRow:nth-child(even){
+    background-color: $secondary-color;
+   }
+   
