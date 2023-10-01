@@ -1,0 +1,20 @@
+.Tournaments {
+    background-color: white;
+    min-height: 100vh;
+    max-width: 100vw;
+
+    h3 {
+        padding-top: 1.5rem;
+        margin-left: 1.5rem;
+    }
+
+    .TournamentsListContainer {
+        margin: 1.5rem;  
+        section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    }
+
+}

@@ -1,0 +1,17 @@
+.TournamentInformation {
+    margin: 1.5rem;
+    padding: 1.5rem;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+}  
+.TournamentInformationHeader{
+    display: flex;
+    align-items: end;
+}
+
+.TournamentInformationHeader h6{
+    margin-left: 0.5rem;
+    color: rgb(71, 71, 71);
+}
+.TournamentInformationTable{
+    margin: 2.5rem 0rem;
+}

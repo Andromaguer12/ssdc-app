@@ -1,0 +1,12 @@
+.MatchesForm{
+    h4{
+        text-align: center;
+    }
+}
+
+.MatchesFormGrid {
+    margin: 1.5rem 0rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 2.5rem;
+}
