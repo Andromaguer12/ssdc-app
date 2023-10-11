@@ -120,9 +120,9 @@ const TournamentsList = () => {
         )
     } else return (
         <Stack spacing={1}>
-                    <Skeleton variant="rectangular" width={850} height={68} animation="wave" />
-                    <Skeleton variant="rounded" width={850} height={130} animation="wave" />
-                </Stack>
+            <Skeleton variant="rectangular" width={850} height={68} animation="wave" />
+            <Skeleton variant="rounded" width={850} height={130} animation="wave" />
+        </Stack>
     )
 }
 

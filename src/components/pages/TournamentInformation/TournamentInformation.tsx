@@ -31,13 +31,13 @@ const TournamentInformation = ({ tournament }: { tournament: TournamentReducerIn
         }
 
         //Pendiente por terminar
-       /* if( tournament.currentRound > 5) {
-            dispatch(tournamentUpdateFunction({
-                context: fbContext,
-                payload: {},
-                tournament: tournament
-            }))
-        } */
+        /* if( tournament.currentRound > 5) {
+             dispatch(tournamentUpdateFunction({
+                 context: fbContext,
+                 payload: {},
+                 tournament: tournament
+             }))
+         } */
 
         return (
             <section className={style.TournamentInformation}>
@@ -82,33 +82,34 @@ const TournamentInformation = ({ tournament }: { tournament: TournamentReducerIn
                         </Table>
                     </TableContainer>
                 </div>
-                <div>
-                    <Typography variant="h4">Enfrentamientos</Typography>
-                    <TableContainer component={Paper}>
-                        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                            <TableBody>
-                                {matches.map((match, index) => (
-                                    <TableRow
-                                        key={index}
-                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                    >
-                                        <TableCell align="center">{match[0].team[0].name}</TableCell>
-                                        <TableCell align="center">VS</TableCell>
-                                        <TableCell align="center">{match[1]?.team[0].name
-                                            ? match[1].team[0].name
-                                            : "Sin rival"}
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                    {tournament.currentRound <= 5 && <Button fullWidth disableElevation variant="contained" color="primary"
-                        onClick={() => setModal(true)}
-                        className={"style.TournamentFormButton"}>
-                        Registrar resultados
-                    </Button>}
-                </div>
+                {tournament.currentRound <= 5
+                    && <div>
+                        <Typography variant="h4">Enfrentamientos</Typography>
+                        <TableContainer component={Paper}>
+                            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                                <TableBody>
+                                    {matches.map((match, index) => (
+                                        <TableRow
+                                            key={index}
+                                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                        >
+                                            <TableCell align="center">{match[0].team[0].name}</TableCell>
+                                            <TableCell align="center">VS</TableCell>
+                                            <TableCell align="center">{match[1]?.team[0].name
+                                                ? match[1].team[0].name
+                                                : "Sin rival"}
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                        <Button fullWidth disableElevation variant="contained" color="primary"
+                            onClick={() => setModal(true)}
+                            className={"style.TournamentFormButton"}>
+                            Registrar resultados
+                        </Button>
+                    </div>}
                 {modal && <Modal setModal={() => setModal(false)} format="matches" matchesData={matches} />}
             </section>
         )

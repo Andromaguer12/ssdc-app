@@ -188,10 +188,10 @@ const TournamentForm = () => {
         <p>Jugadores: {usersName.length}</p>
       </FormControl>
       {/* Validacion de datos del formulario*/}
-      {(!formData.name || usersName.length < 20 || !(usersName.length % 2 === 0))
+      {(!formData.name || usersName.length < 20 || !(usersName.length % 4 === 0))
         ? <Button fullWidth disableElevation variant="contained" color="primary" type="button"
           onClick={() => setError(formData.name
-            ? "El torneo debe tener al menos 20 integrantes y de numero de integrantes debe ser par"
+            ? `El torneo debe tener al menos 20 integrantes y de numero de integrantes debe ser multiplo de 4, es decir que el torneo no puede ser de ${usersName.length} integrantes`
             : "Por favor, rellena todos los campos")}
           className={style.TournamentFormButton}>
           Enviar
