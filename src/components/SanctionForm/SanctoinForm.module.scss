@@ -1,0 +1,17 @@
+.SanctionForm {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+   svg{
+        font-size: 5rem;
+        margin-bottom: 1rem;
+    }
+    h4{
+        margin-bottom: 1rem;
+    }
+    span {
+        margin-bottom: 1rem;
+    }
+}
