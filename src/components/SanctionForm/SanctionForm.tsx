@@ -7,8 +7,8 @@ const SanctionForm = () => {
     return (
         <form className={style.SanctionForm}>
             <GppBadIcon fontSize='large' color='primary' />
-            <Typography variant='h4'>Selecciona una sancion</Typography>
-            <Typography variant='caption'>La sanacion sera aplicada al jugador, y tendra un peso en el torneo</Typography>
+            <Typography variant='h4'>Selecciona una sanción</Typography>
+            <Typography variant='caption'>La sanción será aplicada al jugador, y tendrá un peso (-1 victoria) en el torneo</Typography>
             <ButtonGroup
                 disableElevation
                 variant="contained"
@@ -16,9 +16,10 @@ const SanctionForm = () => {
                 fullWidth={true}
                 size='large'
             >
-                <Button fullWidth={true} size='large'>Sancion 1</Button>
-                <Button fullWidth={true} size='large'>Sancion 2</Button>
+                <Button fullWidth={true} size='large'>Pase agachado</Button>
+                <Button fullWidth={true} size='large'>Cabra</Button>
             </ButtonGroup>
+            <Button fullWidth={true} size='large'>Confirmar</Button>
         </form>
     )
 }

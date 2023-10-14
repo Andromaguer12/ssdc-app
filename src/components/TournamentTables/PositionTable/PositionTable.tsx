@@ -64,6 +64,7 @@ const PositionTable = ({ data }: { data: TablePlayers[] }) => {
                         <TableCell align="center">Nombre</TableCell>
                         <TableCell align="center">Puntos</TableCell>
                         <TableCell align="center">Derrotas</TableCell>
+                        <TableCell align="center">Sancion</TableCell>
                         <TableCell align="center"></TableCell>
                     </TableRow>
                 </TableHead>
@@ -79,8 +80,9 @@ const PositionTable = ({ data }: { data: TablePlayers[] }) => {
                             </TableCell>
                             <TableCell align="center">{team.points}</TableCell>
                             <TableCell align="center">{team.lost}</TableCell>
+                            <TableCell align="center">{team.sanction ? team.sanction : ''}</TableCell>
                             <TableCell align="center">
-                                <ActionsPlayerMenu setModal={setModal}/>
+                                <ActionsPlayerMenu setModal={setModal} />
                             </TableCell>
                         </TableRow>
                     ))}

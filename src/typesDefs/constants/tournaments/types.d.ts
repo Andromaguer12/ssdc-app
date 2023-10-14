@@ -4,6 +4,7 @@ import { UserInterface } from "../users/types";
 type TournamentFormat = "individual" | "pairs" | "team";
 type TournamentGame = "Domino" | "Ajedrez"
 type Form = "L" | "W" | "D";
+type SanctionType = "Pase agachado" | "Cabra" | null;
 
 export type TablePlayers = {
     position: number,
@@ -14,6 +15,7 @@ export type TablePlayers = {
     draw: number,
     lost: number,
     points: number,
+    sanction: SanctionType,
 }
 
 export interface TournamentInterface {

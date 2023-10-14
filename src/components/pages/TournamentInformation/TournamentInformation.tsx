@@ -2,20 +2,13 @@
 import React, { useEffect, useState } from 'react'
 import { TournamentReducerInitialState, tournamentUpdateFunction } from '@/redux/reducers/tournament/actions'
 import { Button, Typography } from '@mui/material';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import style from './TournamentInformation.module.scss';
 import { TablePlayers } from '@/typesDefs/constants/tournaments/types';
 import Modal from '@/components/Modal/Modal';
 import { useAppDispatch } from '@/redux/store';
 import useFirebaseContext from '@/contexts/firebaseConnection/hook';
 import { PositionTable } from '@/components/TournamentTables/PositionTable/PositionTable';
 import { MatchesTable } from '@/components/TournamentTables/MatchesTable/MatchesTable';
+import style from './TournamentInformation.module.scss';
 
 const TournamentInformation = ({ tournament }: { tournament: TournamentReducerInitialState }) => {
     const dispatch = useAppDispatch();
@@ -41,13 +34,15 @@ const TournamentInformation = ({ tournament }: { tournament: TournamentReducerIn
              }))
          } */
 
+        const isTournamentFinish = (tournament.currentRound > 5) && (tableToSort[0].points !== tableToSort[1].points);
+
         return (
             <section className={style.TournamentInformation}>
                 <div className={style.TournamentInformationHeader}>
                     <Typography variant="h2">{tournament.name}</Typography>
                     <Typography variant="h6">({tournament.game})</Typography>
                 </div>
-                {tournament.currentRound > 5
+                {isTournamentFinish
                     && <Typography variant="h6">Ganador: {tableToSort[0].team[0].name}</Typography>}
                 <Typography variant="h6">Formato del torneo: {tournament.format}</Typography>
                 <Typography variant="h6">Fecha de inicio: {tournament.startDate}</Typography>
@@ -56,7 +51,7 @@ const TournamentInformation = ({ tournament }: { tournament: TournamentReducerIn
                     <Typography variant="h4">Tabla de Posiciones</Typography>
                     <PositionTable data={tableToSort} />
                 </div>
-                {tournament.currentRound <= 5
+                {!isTournamentFinish
                     && <div>
                         <Typography variant="h4">Enfrentamientos</Typography>
                         <MatchesTable data={matches} />

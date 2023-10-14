@@ -75,7 +75,6 @@ const MatchesForm = ({ data }: { data: TablePlayers[][] }) => {
                 };
             })
         }));
-        //console.log("playedRouds", tournamentToSend.table.map(player => player.playedRounds));
     }, [winnersList.length >= data.length]);
 
 
