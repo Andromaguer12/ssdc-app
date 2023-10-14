@@ -14,6 +14,8 @@ import { TablePlayers } from '@/typesDefs/constants/tournaments/types';
 import Modal from '@/components/Modal/Modal';
 import { useAppDispatch } from '@/redux/store';
 import useFirebaseContext from '@/contexts/firebaseConnection/hook';
+import { PositionTable } from '@/components/TournamentTables/PositionTable/PositionTable';
+import { MatchesTable } from '@/components/TournamentTables/MatchesTable/MatchesTable';
 
 const TournamentInformation = ({ tournament }: { tournament: TournamentReducerInitialState }) => {
     const dispatch = useAppDispatch();
@@ -52,58 +54,12 @@ const TournamentInformation = ({ tournament }: { tournament: TournamentReducerIn
                 <Typography variant="h6">Rondas jugadas: {tournament.currentRound - 1}</Typography>
                 <div className={style.TournamentInformationTable}>
                     <Typography variant="h4">Tabla de Posiciones</Typography>
-                    <TableContainer component={Paper}>
-                        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell align="center">Posicion</TableCell>
-                                    <TableCell align="center">Nombre</TableCell>
-                                    <TableCell align="center">Puntos</TableCell>
-                                    <TableCell align="center">Victorias</TableCell>
-                                    <TableCell align="center">Derrotas</TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {tableToSort.map((team, index) => (
-                                    <TableRow
-                                        key={index}
-                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                    >
-                                        <TableCell align="center">{index + 1}</TableCell>
-                                        <TableCell component="th" scope="row" align="center">
-                                            {team.team.map(user => user.name).toString()}
-                                        </TableCell>
-                                        <TableCell align="center">{team.points}</TableCell>
-                                        <TableCell align="center">{team.won}</TableCell>
-                                        <TableCell align="center">{team.lost}</TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
+                    <PositionTable data={tableToSort} />
                 </div>
                 {tournament.currentRound <= 5
                     && <div>
                         <Typography variant="h4">Enfrentamientos</Typography>
-                        <TableContainer component={Paper}>
-                            <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                                <TableBody>
-                                    {matches.map((match, index) => (
-                                        <TableRow
-                                            key={index}
-                                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                        >
-                                            <TableCell align="center">{match[0].team[0].name}</TableCell>
-                                            <TableCell align="center">VS</TableCell>
-                                            <TableCell align="center">{match[1]?.team[0].name
-                                                ? match[1].team[0].name
-                                                : "Sin rival"}
-                                            </TableCell>
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
+                        <MatchesTable data={matches} />
                         <Button fullWidth disableElevation variant="contained" color="primary"
                             onClick={() => setModal(true)}
                             className={"style.TournamentFormButton"}>
