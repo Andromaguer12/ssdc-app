@@ -50,7 +50,7 @@ const Modal = ({ setModal, userData, format, matchesData }:
         <div className={style.Modal}>
           <section onSubmit={() => setModal(false)}>
             <ClearIcon onClick={() => setModal(false)} className={style.ModalCloseICon} />
-            <SanctionForm />
+            {userData && <SanctionForm user={userData} format='cabra' />}
           </section>
         </div>
       )

@@ -66,7 +66,8 @@ const TournamentForm = () => {
       draw: 0,
       won: 0,
       lost: 0,
-      form: []
+      form: [],
+      sanction: null
     }],
     game: "Ajedrez"
   });
@@ -113,7 +114,8 @@ const TournamentForm = () => {
       lost: 0,
       points: 0,
       position: index + 1,
-      playedRounds: 0
+      playedRounds: 0,
+      sanction: null
     }))
 
     setFormData(prev => ({

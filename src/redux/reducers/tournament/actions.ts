@@ -23,6 +23,7 @@ const initialState: TournamentReducerInitialState = {
             team: [],
             playedRounds: 0,
             form: [],
+            sanction: null,
             won: 1,
             draw: 0,
             lost: 0,
@@ -88,7 +89,7 @@ const tournamentSlice = createSlice({
         });
         builder.addCase(tournamentUpdateFunction.fulfilled, (state, action) => {
             const { payload }: { payload: TournamentReducerInitialState } = action
-            console.log("payload" , payload);
+            console.log("payload", payload);
         });
         builder.addCase(tournamentUpdateFunction.rejected, (state, action: any) => {
             state.loading = false;

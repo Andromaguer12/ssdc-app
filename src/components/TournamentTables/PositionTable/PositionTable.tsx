@@ -4,17 +4,22 @@ import Paper from '@mui/material/Paper';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useState } from 'react';
 import Modal from '@/components/Modal/Modal';
+import { UserReducerInitialState } from '@/redux/reducers/user/actions';
 
 //Componente de menu para la list
 export default function ActionsPlayerMenu({ setModal }: { setModal: (boolean: boolean) => void }) {
+
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
+
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
     };
+
     const handleClose = () => {
         setAnchorEl(null);
     };
+
     return (
         <div>
             <IconButton
@@ -46,6 +51,7 @@ export default function ActionsPlayerMenu({ setModal }: { setModal: (boolean: bo
                     handleClose();
                     setModal(true);
                 }}>Sancionar jugador</MenuItem>
+
                 <MenuItem onClick={handleClose}>Eliminar jugador</MenuItem>
             </Menu>
         </div>
@@ -54,7 +60,7 @@ export default function ActionsPlayerMenu({ setModal }: { setModal: (boolean: bo
 
 const PositionTable = ({ data }: { data: TablePlayers[] }) => {
     const [modal, setModal] = useState<boolean>(false);
-
+    const [sanctionUser, setSanctionUser] = useState<UserReducerInitialState>(data[0].team[0]);
     return (
         <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -82,13 +88,15 @@ const PositionTable = ({ data }: { data: TablePlayers[] }) => {
                             <TableCell align="center">{team.lost}</TableCell>
                             <TableCell align="center">{team.sanction ? team.sanction : ''}</TableCell>
                             <TableCell align="center">
-                                <ActionsPlayerMenu setModal={setModal} />
+                                <div onClick={() => setSanctionUser(team.team[0])}>
+                                    <ActionsPlayerMenu setModal={setModal} />
+                                </div>
                             </TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
             </Table>
-            {modal && <Modal setModal={() => setModal(false)} format="sanction" />}
+            {modal && <Modal setModal={() => setModal(false)} format="sanction" userData={sanctionUser} />}
         </TableContainer>
     )
 }
