@@ -69,7 +69,7 @@ const TournamentForm = () => {
       form: [],
       sanction: null
     }],
-    game: "Ajedrez"
+    game: "Domino"
   });
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -154,13 +154,13 @@ const TournamentForm = () => {
       <FormControl fullWidth={true} >
         <FormLabel>Juego</FormLabel>
         <RadioGroup
-          defaultValue="Ajedrez"
+          defaultValue="Domino"
           name="game"
           row
           value={formData.game}
           onChange={handleChange}
         >
-          <FormControlLabel value="ajedrez" control={<Radio />} label="Ajedrez" />
+          {/* <FormControlLabel value="ajedrez" control={<Radio />} label="Ajedrez" /> */}
           <FormControlLabel value="domino" control={<Radio />} label="Domino" />
         </RadioGroup>
       </FormControl>

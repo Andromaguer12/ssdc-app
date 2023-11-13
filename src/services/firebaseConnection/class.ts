@@ -111,7 +111,18 @@ class Firebase {
 
   async getTournamentById(id: string) {
     const docRef = doc(this.db, "tournaments", id);
-    return (await getDoc(docRef)).data();
+    const roundsRef = query(collection(this.db, `tournaments/${id}/rounds`))
+    const mainRound = (await getDoc(docRef)).data();
+    const leftRoundsQuery = await getDocs(roundsRef);
+    const leftRounds: any[] = [];
+
+    leftRoundsQuery.forEach((doc) => {
+      leftRounds.push({
+        ...doc.data()
+      })
+    });
+
+    return [mainRound].concat(leftRounds)
   };
 
   async createTournament(
@@ -123,7 +134,7 @@ class Firebase {
     currentRound: number,
     winner: UserInterface | null,
     table: TablePlayers[],
-    game: 'Ajedrez'
+    game: 'Domino'
   ) {
 
     const dataToSend: TournamentInterface = {
@@ -146,7 +157,8 @@ class Firebase {
 
   async updateTournament(tournament: TournamentReducerInitialState, payload: TournamentReducerInitialState) {
     const table = payload.table
-    return await setDoc(doc(this.db, "tournaments", tournament.id), {
+    console.log(tournament)
+    return await addDoc(collection(this.db, `tournaments/${tournament.id}/rounds`),  {
       ...tournament,
       table: table,
       currentRound: payload.currentRound + 1,

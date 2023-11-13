@@ -12,9 +12,15 @@ import useFirebaseContext from '@/contexts/firebaseConnection/hook';
 const MatchesForm = ({ data }: { data: TablePlayers[][] }) => {
     const dispatch = useAppDispatch();
     const fbContext = useFirebaseContext();
-    const tournament = useAppSelector(state => state.tournamentList.data[0]);
+    const { data: tournament, loading } = useAppSelector(state => state.tournamentList);
     const [winnersList, setWinnersList] = useState<string[]>([]);
-    const [tournamentToSend, setTournamentToSend] = useState(tournament);
+    const [tournamentToSend, setTournamentToSend] = useState(null);
+
+    useEffect(() => {
+        if (tournament && tournament[0]?.length > 0) {
+          setTournamentToSend(tournament[0][tournament[0].length-1])
+        }
+      }, [tournament])
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
@@ -26,27 +32,33 @@ const MatchesForm = ({ data }: { data: TablePlayers[][] }) => {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         // Agrega los puntos a los ganadores
-        setTournamentToSend(prev => ({
-            ...prev,
-            table: prev.table.map(player => {
-                if (winnersList.includes(player.team[0].id)) {
-                    //console.log(`El jugado: ${player.team[0].name} es ganador`);
-                    return {
-                        ...player,
-                        won: player.won + 1,
-                        points: player.points + 1,
-                        playedRounds: tournamentToSend.currentRound,
-                        lost: (tournamentToSend.currentRound) - (player.points + 1)
-                    };
-                } else {
-                    return {
-                        ...player,
-                        playedRounds: tournamentToSend.currentRound,
-                        lost: (tournamentToSend.currentRound) - (player.points)
+        setTournamentToSend(prev => {
+            if (prev !== null) {
+                return (
+                    {
+                        ...prev,
+                        table: prev.table.map(player => {
+                            if (winnersList.includes(player.team[0].id)) {
+                                return {
+                                    ...player,
+                                    won: player.won + 1,
+                                    points: player.points + 1,
+                                    playedRounds: tournamentToSend.currentRound,
+                                    lost: (tournamentToSend.currentRound) - (player.points + 1)
+                                };
+                            } else {
+                                return {
+                                    ...player,
+                                    playedRounds: tournamentToSend.currentRound,
+                                    lost: (tournamentToSend.currentRound) - (player.points)
+                                }
+                            }
+                        })
                     }
-                }
-            })
-        }));
+                )
+            }
+            return null
+        });
         dispatch(tournamentUpdateFunction({
             context: fbContext,
             payload: tournamentToSend,
@@ -56,26 +68,33 @@ const MatchesForm = ({ data }: { data: TablePlayers[][] }) => {
 
     // Actualiza los resultados de los match
     useEffect(() => {
-        setTournamentToSend(prev => ({
-            ...prev,
-            table: prev.table.map(player => {
-                if (winnersList.includes(player.team[0].id)) {
-                    return {
-                        ...player,
-                        won: player.won + 1,
-                        points: player.points + 1,
-                        playedRounds: tournamentToSend.currentRound,
-                        lost: (tournamentToSend.currentRound) - (player.points + 1),
-                    };
-                }
-                return {
-                    ...player,
-                    playedRounds: tournamentToSend.currentRound,
-                    lost: (tournamentToSend.currentRound) - (player.points)
-                };
-            })
-        }));
-    }, [winnersList.length >= data.length]);
+        if(tournamentToSend) {
+            setTournamentToSend(prev => {
+                if(prev !== null) {
+                    return ({
+                        ...prev,
+                        table: prev.table.map(player => {
+                            if (winnersList.includes(player.team[0].id)) {
+                                return {
+                                    ...player,
+                                    won: player.won + 1,
+                                    points: player.points + 1,
+                                    playedRounds: tournamentToSend.currentRound,
+                                    lost: (tournamentToSend.currentRound) - (player.points + 1),
+                                };
+                            }
+                            return {
+                                ...player,
+                                playedRounds: tournamentToSend.currentRound,
+                                lost: (tournamentToSend.currentRound) - (player.points)
+                            };
+                        })
+                    })
+                } 
+                return null
+            });
+        }
+    }, [winnersList, data, tournamentToSend]);
 
 
     return (

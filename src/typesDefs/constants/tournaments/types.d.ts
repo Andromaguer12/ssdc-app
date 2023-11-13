@@ -28,5 +28,12 @@ export interface TournamentInterface {
     winner: UserInterface | null,
     table: TablePlayers[],
     game: TournamentGame,
+    tournamentId: string,
+}
+
+export interface TournamentRoundsInfo {
+    rounds: TournamentInterface[],
+    id: string,
+    name: string
 }
 

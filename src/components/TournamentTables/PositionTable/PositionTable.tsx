@@ -65,28 +65,28 @@ const PositionTable = ({ data }: { data: TablePlayers[] }) => {
         <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableHead>
-                    <TableRow>
-                        <TableCell align="center">Posicion</TableCell>
-                        <TableCell align="center">Nombre</TableCell>
-                        <TableCell align="center">Puntos</TableCell>
-                        <TableCell align="center">Derrotas</TableCell>
-                        <TableCell align="center">Sancion</TableCell>
-                        <TableCell align="center"></TableCell>
+                    <TableRow sx={{ background: "#003994" }}>
+                        <TableCell sx={{color: '#fff'}} align="center">Posicion</TableCell>
+                        <TableCell sx={{color: '#fff'}} align="center">Nombre</TableCell>
+                        <TableCell sx={{color: '#fff'}} align="center">Puntos</TableCell>
+                        <TableCell sx={{color: '#fff'}} align="center">Derrotas</TableCell>
+                        <TableCell sx={{color: '#fff'}} align="center">Sancion</TableCell>
+                        <TableCell sx={{color: '#fff'}} align="center">Accion</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {data.map((team, index) => (
                         <TableRow
                             key={index}
-                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                            sx={{ '&:last-child td, &:last-child th': { border: 0 }, background: index % 2 === 0 ? '#e7e7e7' : '#ffffff' }}
                         >
                             <TableCell align="center">{index + 1}</TableCell>
-                            <TableCell component="th" scope="row" align="center">
+                            <TableCell component="th" scope="row" sx={{ fontWeight: 700, fontSize: '18px' }} align="center">
                                 {team.team.map(user => user.name).toString()}
                             </TableCell>
-                            <TableCell align="center">{team.points}</TableCell>
-                            <TableCell align="center">{team.lost}</TableCell>
-                            <TableCell align="center">{team.sanction ? team.sanction : ''}</TableCell>
+                            <TableCell align="center" sx={{ color: team.points > 0 ? 'green' : 'red', fontWeight: 700}}>{team.points}</TableCell>
+                            <TableCell align="center" sx={{ color: "blue" }}>{team.lost}</TableCell>
+                            <TableCell align="center">{team.sanction ? team.sanction : 'Sin sancion'}</TableCell>
                             <TableCell align="center">
                                 <div onClick={() => setSanctionUser(team.team[0])}>
                                     <ActionsPlayerMenu setModal={setModal} />

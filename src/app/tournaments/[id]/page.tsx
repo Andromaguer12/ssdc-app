@@ -4,22 +4,33 @@ import useFirebaseContext from '@/contexts/firebaseConnection/hook';
 import { tournamentGetById } from '@/redux/reducers/tournamentsList/actions';
 //import { tournamentGetById } from '@/redux/reducers/tournament/actions';
 import { useAppDispatch, useAppSelector } from '@/redux/store';
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
 const TournamentPage = ({ params }: { params: { id: string } }) => {
 
     const { id } = params;
     const fbContext = useFirebaseContext();
     const dispatch = useAppDispatch();
-    const tournament = useAppSelector(state => state.tournamentList.data);
+    const { data: tournament, loading } = useAppSelector(state => state.tournamentList);
+    const [currentRound, setCurrentRound] = useState(null)
     useEffect(() => {
         dispatch(tournamentGetById({
             context: fbContext,
             id: id
         }))
-    }, [tournament]);
+    }, []);
+
+    useEffect(() => {
+      if (tournament && tournament[0]?.length > 0) {
+        setCurrentRound(tournament[0][tournament[0].length-1])
+      }
+    }, [tournament])
+    
+
     return (
-        <TournamentInformation tournament={tournament[0]} />
+        <>
+            {currentRound && !loading && <TournamentInformation tournament={currentRound} />}
+        </>
     )
 }
 

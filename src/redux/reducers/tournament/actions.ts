@@ -33,7 +33,7 @@ const initialState: TournamentReducerInitialState = {
     successCreated: false,
     loading: false,
     error: '',
-    game: 'Ajedrez',
+    game: 'Domino',
     id: ''
 }
 
@@ -60,7 +60,6 @@ export const tournamentUpdateFunction = createAsyncThunk(
     'tournaments/tournamentUpdateFunction',
     async ({ context, tournament, payload }: { context: any, payload: TournamentReducerInitialState, tournament: TournamentReducerInitialState }) => {
         return context.updateTournament(tournament, payload);
-
     }
 )
 
