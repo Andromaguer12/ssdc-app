@@ -30,7 +30,8 @@ const TournamentInformation = () => {
         useEffect(() => {
             if (tournaments && tournaments[0]?.length > 0) {
                 setCurrentTournament(tournaments[0][tournaments[0].length-1] as TournamentReducerInitialState)
-                setRounds(tournaments[0] as unknown as TournamentReducerInitialState[])
+                const hereRounds = tournaments.length > 0 && tournaments[0].length > 0 ? [...tournaments[0]].sort((a,b) => Number(a.currentRound) - Number(b.currentRound)) : []
+                setRounds(hereRounds)
             }
           }, [tournaments])
 

@@ -13,12 +13,20 @@ const TournamentPage = ({ params }: { params: { id: string } }) => {
     const dispatch = useAppDispatch();
     const { data: tournament, loading } = useAppSelector(state => state.tournamentList);
     const [currentRound, setCurrentRound] = useState(null)
+    const { updateTournament:{ success: successUpdated } } = useAppSelector(({ tournament }) => tournament)
+    
     useEffect(() => {
         dispatch(tournamentGetById({
             context: fbContext,
             id: id
         }))
     }, []);
+
+    useEffect(() => {
+      if(successUpdated) {
+        dispatch(tournamentGetById({ context: fbContext, id }))
+      }
+    }, [successUpdated])
 
     useEffect(() => {
       if (tournament && tournament[0]?.length > 0) {

@@ -1,12 +1,13 @@
 'use client'
 import { TablePlayers } from '@/typesDefs/constants/tournaments/types'
 import { Button, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, Typography } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import style from './MatchesForm.module.scss';
-import { tournamentUpdateFunction } from '@/redux/reducers/tournament/actions';
+import { TournamentReducerInitialState, tournamentUpdateFunction } from '@/redux/reducers/tournament/actions';
 import { useAppDispatch, useAppSelector } from '@/redux/store';
 
 import useFirebaseContext from '@/contexts/firebaseConnection/hook';
+import { tournamentGetById } from '@/redux/reducers/tournamentsList/actions';
 
 
 const MatchesForm = ({ data }: { data: TablePlayers[][] }) => {
@@ -14,14 +15,16 @@ const MatchesForm = ({ data }: { data: TablePlayers[][] }) => {
     const fbContext = useFirebaseContext();
     const { data: tournament, loading } = useAppSelector(state => state.tournamentList);
     const [winnersList, setWinnersList] = useState<string[]>([]);
-    const [tournamentToSend, setTournamentToSend] = useState(null);
+    const [tournamentToSend, setTournamentToSend] = useState<TournamentReducerInitialState>(null);
+
 
     useEffect(() => {
         if (tournament && tournament[0]?.length > 0) {
           setTournamentToSend(tournament[0][tournament[0].length-1])
         }
       }, [tournament])
-
+    
+       
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
         const matchRef = data[parseInt(name)]; // el name que se obtiene en el evento es el index del match
@@ -29,42 +32,45 @@ const MatchesForm = ({ data }: { data: TablePlayers[][] }) => {
         setWinnersList([...winnersList.filter(id => id !== idLoser), value]);
 
     }
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        // Agrega los puntos a los ganadores
-        setTournamentToSend(prev => {
-            if (prev !== null) {
-                return (
-                    {
-                        ...prev,
-                        table: prev.table.map(player => {
-                            if (winnersList.includes(player.team[0].id)) {
-                                return {
-                                    ...player,
-                                    won: player.won + 1,
-                                    points: player.points + 1,
-                                    playedRounds: tournamentToSend.currentRound,
-                                    lost: (tournamentToSend.currentRound) - (player.points + 1)
-                                };
-                            } else {
-                                return {
-                                    ...player,
-                                    playedRounds: tournamentToSend.currentRound,
-                                    lost: (tournamentToSend.currentRound) - (player.points)
+    const handleSubmit = useCallback(
+        (event: React.FormEvent<HTMLFormElement>) => {
+            event.preventDefault();
+            // Agrega los puntos a los ganadores
+            setTournamentToSend(prev => {
+                if (prev !== null) {
+                    return (
+                        {
+                            ...prev,
+                            table: prev.table.map(player => {
+                                if (winnersList.includes(player.team[0].id)) {
+                                    return {
+                                        ...player,
+                                        won: player.won + 1,
+                                        points: player.points + 1,
+                                        playedRounds: tournamentToSend.currentRound,
+                                        lost: (tournamentToSend.currentRound) - (player.points + 1)
+                                    };
+                                } else {
+                                    return {
+                                        ...player,
+                                        playedRounds: tournamentToSend.currentRound,
+                                        lost: (tournamentToSend.currentRound) - (player.points)
+                                    }
                                 }
-                            }
-                        })
-                    }
-                )
-            }
-            return null
-        });
-        dispatch(tournamentUpdateFunction({
-            context: fbContext,
-            payload: tournamentToSend,
-            tournament: tournament
-        }))
-    };
+                            })
+                        }
+                    )
+                }
+                return null
+            });
+            dispatch(tournamentUpdateFunction({
+                context: fbContext,
+                payload: tournamentToSend,
+            }))
+        },
+      [tournamentToSend],
+    )
+    
 
     // Actualiza los resultados de los match
     useEffect(() => {

@@ -155,11 +155,10 @@ class Firebase {
     });
   }
 
-  async updateTournament(tournament: TournamentReducerInitialState, payload: TournamentReducerInitialState) {
+  async updateTournament(payload: TournamentReducerInitialState) {
     const table = payload.table
-    console.log(tournament)
-    return await addDoc(collection(this.db, `tournaments/${tournament.id}/rounds`),  {
-      ...tournament,
+    return await addDoc(collection(this.db, `tournaments/${payload.id}/rounds`),  {
+      ...payload,
       table: table,
       currentRound: payload.currentRound + 1,
     });

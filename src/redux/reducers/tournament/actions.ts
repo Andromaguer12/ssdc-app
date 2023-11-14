@@ -7,6 +7,11 @@ export interface TournamentReducerInitialState extends TournamentInterface {
     error: string,
     loading: boolean,
     id: string,
+    updateTournament: {
+        loading: boolean,
+        success: boolean,
+        error: any | null
+    }
 }
 
 const initialState: TournamentReducerInitialState = {
@@ -34,7 +39,12 @@ const initialState: TournamentReducerInitialState = {
     loading: false,
     error: '',
     game: 'Domino',
-    id: ''
+    id: '',
+    updateTournament: {
+        loading: false,
+        success: false,
+        error: null
+    }
 }
 
 export const tournamentCreateFunction = createAsyncThunk(
@@ -58,8 +68,8 @@ export const tournamentCreateFunction = createAsyncThunk(
 
 export const tournamentUpdateFunction = createAsyncThunk(
     'tournaments/tournamentUpdateFunction',
-    async ({ context, tournament, payload }: { context: any, payload: TournamentReducerInitialState, tournament: TournamentReducerInitialState }) => {
-        return context.updateTournament(tournament, payload);
+    async ({ context, payload }: { context: any, payload: TournamentReducerInitialState, tournament: TournamentReducerInitialState }) => {
+        return context.updateTournament(payload);
     }
 )
 
@@ -76,7 +86,6 @@ const tournamentSlice = createSlice({
             state.successCreated = true;
             state.loading = initialState.loading;
             state.error = initialState.error
-            console.log("creado")
         });
         builder.addCase(tournamentCreateFunction.rejected, (state, action: any) => {
             state.loading = false;
@@ -84,16 +93,19 @@ const tournamentSlice = createSlice({
         });
 
         builder.addCase(tournamentUpdateFunction.pending, (state, action: any) => {
-            state.loading = true;
+            state.updateTournament.loading = true;
+            state.updateTournament.success = false;
+            state.updateTournament.error = null;
         });
         builder.addCase(tournamentUpdateFunction.fulfilled, (state, action) => {
-            const { payload }: { payload: TournamentReducerInitialState } = action
-            console.log("payload", payload);
+            state.updateTournament.loading = false;
+            state.updateTournament.success = true;
+            state.updateTournament.error = null;
         });
         builder.addCase(tournamentUpdateFunction.rejected, (state, action: any) => {
-            state.loading = false;
-            state.error = action.error;
-            console.log(action.error);
+            state.updateTournament.loading = false;
+            state.updateTournament.success = false;
+            state.updateTournament.error = action.error || action.payload;
         });
 
     }
