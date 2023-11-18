@@ -17,6 +17,7 @@ export interface TournamentReducerInitialState extends TournamentInterface {
 const initialState: TournamentReducerInitialState = {
     name: "",
     rules: "",
+    tournamentId: "",
     format: "individual",
     startDate: "",
     endDate: "",

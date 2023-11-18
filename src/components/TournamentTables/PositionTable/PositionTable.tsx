@@ -66,12 +66,12 @@ const PositionTable = ({ data }: { data: TablePlayers[] }) => {
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableHead>
                     <TableRow sx={{ background: "#003994" }}>
-                        <TableCell sx={{color: '#fff'}} align="center">Posicion</TableCell>
-                        <TableCell sx={{color: '#fff'}} align="center">Nombre</TableCell>
-                        <TableCell sx={{color: '#fff'}} align="center">Puntos</TableCell>
-                        <TableCell sx={{color: '#fff'}} align="center">Derrotas</TableCell>
-                        <TableCell sx={{color: '#fff'}} align="center">Sancion</TableCell>
-                        <TableCell sx={{color: '#fff'}} align="center">Accion</TableCell>
+                        <TableCell sx={{ color: '#fff' }} align="center">Posicion</TableCell>
+                        <TableCell sx={{ color: '#fff' }} align="center">Nombre</TableCell>
+                        <TableCell sx={{ color: '#fff' }} align="center">Puntos</TableCell>
+                        <TableCell sx={{ color: '#fff' }} align="center">Derrotas</TableCell>
+                        <TableCell sx={{ color: '#fff' }} align="center">Sancion</TableCell>
+                        <TableCell sx={{ color: '#fff' }} align="center">Accion</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -84,7 +84,7 @@ const PositionTable = ({ data }: { data: TablePlayers[] }) => {
                             <TableCell component="th" scope="row" sx={{ fontWeight: 700, fontSize: '18px' }} align="center">
                                 {team.team.map(user => user.name).toString()}
                             </TableCell>
-                            <TableCell align="center" sx={{ color: team.points > 0 ? 'green' : 'red', fontWeight: 700}}>{team.points}</TableCell>
+                            <TableCell align="center" sx={{ color: team.points > 0 ? 'green' : 'red', fontWeight: 700 }}>{team.points}</TableCell>
                             <TableCell align="center" sx={{ color: "blue" }}>{team.lost}</TableCell>
                             <TableCell align="center">{team.sanction ? team.sanction : 'Sin sancion'}</TableCell>
                             <TableCell align="center">

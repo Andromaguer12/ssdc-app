@@ -15,16 +15,48 @@ const MatchesForm = ({ data }: { data: TablePlayers[][] }) => {
     const fbContext = useFirebaseContext();
     const { data: tournament, loading } = useAppSelector(state => state.tournamentList);
     const [winnersList, setWinnersList] = useState<string[]>([]);
-    const [tournamentToSend, setTournamentToSend] = useState<TournamentReducerInitialState>(null);
+    const [tournamentToSend, setTournamentToSend] = useState<TournamentReducerInitialState>({
+        name: "",
+        rules: "",
+        format: "individual",
+        startDate: "",
+        endDate: "",
+        tournamentId: "",
+        currentRound: 1,
+        winner: null,
+        table: [
+            {
+                position: 0,
+                team: [],
+                playedRounds: 0,
+                form: [],
+                sanction: null,
+                won: 1,
+                draw: 0,
+                lost: 0,
+                points: 0
+            }
+        ],
+        successCreated: false,
+        loading: false,
+        error: '',
+        game: 'Domino',
+        id: '',
+        updateTournament: {
+            loading: false,
+            success: false,
+            error: null
+        }
+    });
 
 
     useEffect(() => {
-        if (tournament && tournament[0]?.length > 0) {
-          setTournamentToSend(tournament[0][tournament[0].length-1])
+        if (tournament && tournament[0]?.name.length > 0) {
+            setTournamentToSend(tournament[0])
         }
-      }, [tournament])
-    
-       
+    }, [tournament])
+
+
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
         const matchRef = data[parseInt(name)]; // el name que se obtiene en el evento es el index del match
@@ -37,7 +69,7 @@ const MatchesForm = ({ data }: { data: TablePlayers[][] }) => {
             event.preventDefault();
             // Agrega los puntos a los ganadores
             setTournamentToSend(prev => {
-                if (prev !== null) {
+                if (prev) {
                     return (
                         {
                             ...prev,
@@ -66,17 +98,18 @@ const MatchesForm = ({ data }: { data: TablePlayers[][] }) => {
             dispatch(tournamentUpdateFunction({
                 context: fbContext,
                 payload: tournamentToSend,
+                tournament: 
             }))
         },
-      [tournamentToSend],
+        [tournamentToSend],
     )
-    
+
 
     // Actualiza los resultados de los match
     useEffect(() => {
-        if(tournamentToSend) {
+        if (tournamentToSend) {
             setTournamentToSend(prev => {
-                if(prev !== null) {
+                if (prev !== null) {
                     return ({
                         ...prev,
                         table: prev.table.map(player => {
@@ -96,7 +129,7 @@ const MatchesForm = ({ data }: { data: TablePlayers[][] }) => {
                             };
                         })
                     })
-                } 
+                }
                 return null
             });
         }
