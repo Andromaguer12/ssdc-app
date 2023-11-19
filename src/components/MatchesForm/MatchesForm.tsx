@@ -45,13 +45,13 @@ const MatchesForm = ({ data }: { data: TablePlayers[][] }) => {
         updateTournament: {
             loading: false,
             success: false,
-            error: null
+            error: ''
         }
     });
 
 
     useEffect(() => {
-        if (tournament && tournament[0]?.name.length > 0) {
+        if (tournament && tournament.length > 0) {
             setTournamentToSend(tournament[0])
         }
     }, [tournament])
@@ -61,7 +61,7 @@ const MatchesForm = ({ data }: { data: TablePlayers[][] }) => {
         const { name, value } = event.target;
         const matchRef = data[parseInt(name)]; // el name que se obtiene en el evento es el index del match
         const idLoser = matchRef.filter(user => user.team[0].id !== value)[0].team[0].id;
-        setWinnersList([...winnersList.filter(id => id !== idLoser), value]);
+        //  setWinnersList([...winnersList.filter(id => id !== idLoser), value]);
 
     }
     const handleSubmit = useCallback(
@@ -95,11 +95,12 @@ const MatchesForm = ({ data }: { data: TablePlayers[][] }) => {
                 }
                 return null
             });
-            dispatch(tournamentUpdateFunction({
-                context: fbContext,
-                payload: tournamentToSend,
-                tournament: 
-            }))
+            console.log('seeend', tournamentToSend)
+            /*  dispatch(tournamentUpdateFunction({
+                  context: fbContext,
+                  payload: tournamentToSend,
+                  tournament: 
+              })) */
         },
         [tournamentToSend],
     )
@@ -112,8 +113,8 @@ const MatchesForm = ({ data }: { data: TablePlayers[][] }) => {
                 if (prev !== null) {
                     return ({
                         ...prev,
-                        table: prev.table.map(player => {
-                            if (winnersList.includes(player.team[0].id)) {
+                        table: prev?.table?.map(player => {
+                            if (winnersList.includes(player?.team[0]?.id)) {
                                 return {
                                     ...player,
                                     won: player.won + 1,

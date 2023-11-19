@@ -44,7 +44,7 @@ const initialState: TournamentReducerInitialState = {
     updateTournament: {
         loading: false,
         success: false,
-        error: null
+        error: ''
     }
 }
 
