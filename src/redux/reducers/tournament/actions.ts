@@ -17,19 +17,7 @@ const initialState: TournamentReducerInitialState = {
     endDate: "",
     currentRound: 1,
     winner: null,
-    table: [
-        {
-            position: 0,
-            team: [],
-            playedRounds: 0,
-            form: [],
-            sanction: null,
-            won: 1,
-            draw: 0,
-            lost: 0,
-            points: 0
-        }
-    ],
+    table: [],
     successCreated: false,
     loading: false,
     error: '',

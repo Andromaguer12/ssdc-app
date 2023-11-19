@@ -18,6 +18,18 @@ export type TablePlayers = {
     sanction: SanctionType,
 }
 
+export type ResultsFormat = {
+    winner: TablePlayers,
+    loser: TablePlayers,
+    match: number,
+    result: number[]
+}
+
+export type TableInterface = {
+    results: ResultsFormat[]
+    standings: TablePlayers[]
+}
+
 export interface TournamentInterface {
     name: string,
     rules: string,
@@ -26,7 +38,7 @@ export interface TournamentInterface {
     endDate: string,
     currentRound: number,
     winner: UserInterface | null,
-    table: TablePlayers[],
+    table: TableInterface[],
     game: TournamentGame,
 }
 

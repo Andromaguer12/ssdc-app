@@ -16,8 +16,11 @@ const TournamentInformation = ({ tournament }: { tournament: TournamentReducerIn
     const [modal, setModal] = useState<boolean>(false);
 
     if (tournament) {
-        const tableToSort = [...tournament.table];
-        tableToSort.sort((a, b) => b.points - a.points);
+        console.log(tournament, 'xddd')
+        const array = tournament.table[tournament.currentRound - 1].standings.slice()
+        console.log(array, 'eee')
+
+        const tableToSort = array.sort((a, b) => b.points - a.points);
         const matches: TablePlayers[][] = [];
         for (let i = 0; i < tableToSort.length;) {
             const element = [tableToSort[i], tableToSort[i + 1 ? i + 1 : i]];
@@ -34,7 +37,8 @@ const TournamentInformation = ({ tournament }: { tournament: TournamentReducerIn
              }))
          } */
 
-        const isTournamentFinish = (tournament.currentRound > 5) && (tableToSort[0].points !== tableToSort[1].points);
+
+        const isTournamentFinish = (tournament.currentRound > 5) && (tableToSort[0].points !== tableToSort[1].points); // pendiente por acomodar
 
         return (
             <section className={style.TournamentInformation}>

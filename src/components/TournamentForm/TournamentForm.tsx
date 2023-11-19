@@ -24,6 +24,7 @@ import React, { useEffect, useState } from 'react'
 import CustomizedAlert from '../CustomizedAlert/CustomizedAlert';
 
 import style from "./TournamentForm.module.scss";
+import { emptyTournamentinitialState } from '@/typesDefs/constants/tournaments/emptyTournamentInitialState';
 
 const TournamentForm = () => {
 
@@ -50,27 +51,7 @@ const TournamentForm = () => {
   const startDate = `${fecha.getDate()}/${fecha.getMonth() + 1}/${fecha.getFullYear()}`
   // Estado para los datos del formulario
   const [usersName, setUsersName] = useState<string[]>([]);
-  const [formData, setFormData] = useState<TournamentInterface>({
-    name: "",
-    rules: "",
-    format: "individual",
-    startDate: startDate,
-    endDate: "",
-    currentRound: 1,
-    winner: null,
-    table: [{
-      team: [],
-      points: 0,
-      position: 0,
-      playedRounds: 0,
-      draw: 0,
-      won: 0,
-      lost: 0,
-      form: [],
-      sanction: null
-    }],
-    game: "Ajedrez"
-  });
+  const [formData, setFormData] = useState<TournamentInterface>(emptyTournamentinitialState);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -120,7 +101,10 @@ const TournamentForm = () => {
 
     setFormData(prev => ({
       ...prev,
-      table: tableToAdd
+      table: [{
+        results: [],
+        standings: tableToAdd
+      }]
     }))
   }, [usersName]);
 

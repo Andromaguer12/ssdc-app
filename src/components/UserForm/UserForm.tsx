@@ -7,6 +7,7 @@ import { UserInterface } from '@/typesDefs/constants/users/types';
 import { Button, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, TextField } from '@mui/material';
 
 import style from './UserForm.module.scss';
+import { emptyUserInitialState } from '@/typesDefs/constants/users/emptyInitialState';
 
 type Events = "Update" | "Create";
 
@@ -16,13 +17,7 @@ const UserForm = ({ data, eventSubmit }: { data?: UserReducerInitialState | null
     const [error, setError] = useState<string>("");
 
     // Estado para los datos del formulario
-    const [formData, setFormData] = useState<UserInterface | UserReducerInitialState>(data || {
-        name: '',
-        email: '',
-        rank: "C",
-        phone: '',
-        uid: '',
-    });
+    const [formData, setFormData] = useState<UserInterface | UserReducerInitialState>(data || emptyUserInitialState);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
