@@ -11,7 +11,7 @@ const TournamentPage = ({ params }: { params: { id: string } }) => {
     const { id } = params;
     const fbContext = useFirebaseContext();
     const dispatch = useAppDispatch();
-    const tournament = useAppSelector(state => state.tournamentList.data);
+    const tournament = useAppSelector(state => state.tournamentList.data[0]);
     useEffect(() => {
         dispatch(tournamentGetById({
             context: fbContext,
@@ -19,7 +19,7 @@ const TournamentPage = ({ params }: { params: { id: string } }) => {
         }))
     }, [/*tournament*/]);
     return (
-        <TournamentInformation tournament={tournament[0]} />
+        <TournamentInformation tournamentId={id} />
     )
 }
 
