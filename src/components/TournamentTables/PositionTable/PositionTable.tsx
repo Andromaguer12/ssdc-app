@@ -65,20 +65,20 @@ const PositionTable = ({ data }: { data: TablePlayers[] }) => {
         <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableHead>
-                    <TableRow>
-                        <TableCell align="center">Posicion</TableCell>
-                        <TableCell align="center">Nombre</TableCell>
-                        <TableCell align="center">Puntos</TableCell>
-                        <TableCell align="center">Derrotas</TableCell>
-                        <TableCell align="center">Sancion</TableCell>
-                        <TableCell align="center"></TableCell>
+                    <TableRow sx={{ background: '#003994'}}>
+                        <TableCell sx={{ color: '#fff' }} align="center">Posicion</TableCell>
+                        <TableCell sx={{ color: '#fff' }} align="center">Nombre</TableCell>
+                        <TableCell sx={{ color: '#fff' }} align="center">Puntos</TableCell>
+                        <TableCell sx={{ color: '#fff' }} align="center">Derrotas</TableCell>
+                        <TableCell sx={{ color: '#fff' }} align="center">Sancion</TableCell>
+                        <TableCell sx={{ color: '#fff' }} align="center"></TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {data.map((team, index) => (
                         <TableRow
                             key={index}
-                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                            sx={{ '&:last-child td, &:last-child th': { border: 0 }, background: index % 2 == 0 ? '#fff': '#e7e7e7'}}
                         >
                             <TableCell align="center">{index + 1}</TableCell>
                             <TableCell component="th" scope="row" align="center">
@@ -86,7 +86,7 @@ const PositionTable = ({ data }: { data: TablePlayers[] }) => {
                             </TableCell>
                             <TableCell align="center">{team.points}</TableCell>
                             <TableCell align="center">{team.lost}</TableCell>
-                            <TableCell align="center">{team.sanction ? team.sanction : ''}</TableCell>
+                            <TableCell align="center">{team.sanction ? team.sanction : 'Sin sanciones'}</TableCell>
                             <TableCell align="center">
                                 <div onClick={() => setSanctionUser(team.team[0])}>
                                     <ActionsPlayerMenu setModal={setModal} />

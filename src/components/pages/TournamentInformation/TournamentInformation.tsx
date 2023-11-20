@@ -82,30 +82,43 @@ const TournamentInformation = ({ tournamentId }: { tournamentId: string }) => {
                 <Typography variant="h6">Formato del torneo: {tournament.format}</Typography>
                 <Typography variant="h6">Fecha de inicio: {tournament.startDate}</Typography>
                 <Typography variant="h6">Rondas jugadas: {tournament.currentRound - 1}</Typography>
-                <Button fullWidth disableElevation variant="contained" color="primary"
-                    onClick={() => setRound(round >= tournament.currentRound ? 1 : round + 1)}
-                    className={"style.TournamentFormButton"}>
-                    Cambiar ronda
-                </Button>
-                <div className={style.TournamentInformationTable}>
-                    <Typography variant="h4">Tabla de Posiciones</Typography>
-                    <PositionTable data={tableToSort} />
+                <div className={style.roundsButtons}>
+                    <div className={style.buttons}>
+                        {tournamentData.table.map((tab, index) => {
+                            return (
+                                <div className={style.button}
+                                    onClick={() => setRound(index+ 1)} >
+                                    <Typography>Ronda {index+ 1}</Typography>
+                                </div>
+                            )
+                        })}
+                    </div>
+                    <Button disableElevation variant="contained" color="primary"
+                        onClick={() => setRound(round >= tournament.currentRound ? 1 : round + 1)}
+                        className={"style.TournamentFormButton"}>
+                        Cambiar ronda
+                    </Button>
                 </div>
-                {!isTournamentFinish
-                    && <div>
-                        <Typography variant="h4">Enfrentamientos</Typography>
+                <div className={style.tournamentInformationTableContainer}>
+                    <div className={style.TournamentInformationTable}>
+                        <Typography variant="h6">Tabla de Posiciones</Typography>
+                        <PositionTable data={tableToSort} />
+                    </div>
+                    <div className={style.vsContainer}>
+                        <Typography variant="h6">Enfrentamientos</Typography>
                         <MatchesTable data={matches} />
-                        <Button fullWidth disableElevation variant="contained" color="primary"
+                        <Button 
+                            fullWidth 
+                            disableElevation 
+                            variant="contained" 
+                            color="primary"
                             onClick={() => setModal(true)}
-                            className={"style.TournamentFormButton"}>
+                            className={"style.TournamentFormButton"}
+                        >
                             Registrar resultados
                         </Button>
-                        <Button fullWidth disableElevation variant="contained" color="primary"
-                            onClick={() => setModal(true)}
-                            className={"style.TournamentFormButton"}>
-                            Registrar resultados
-                        </Button>
-                    </div>}
+                    </div>
+                </div>
                 {modal && <Modal setModal={() => setModal(false)} format="matches" matchesData={matches} />}
             </section>
         )
