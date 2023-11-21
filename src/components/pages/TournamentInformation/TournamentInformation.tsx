@@ -21,7 +21,7 @@ const TournamentInformation = ({ tournamentId }: { tournamentId: string }) => {
     const [matches, setMatches] = useState<TablePlayers[][]>([])
     const [tableToSort, setTableToSort] = useState(emptyTournamentinitialState.table[0].standings)
     const [loading, setLoading] = useState(true)
-    const [round, setRound] = useState(1)
+    const [round, setRound] = useState(-1)
 
     const tournamentData = useAppSelector(state => state.tournamentList.data[0]);
 
@@ -33,7 +33,7 @@ const TournamentInformation = ({ tournamentId }: { tournamentId: string }) => {
     }, []);
     useEffect(() => {
         if (tournamentData) {
-            const array = tournamentData.table[tournament.currentRound - round].standings.slice()
+            const array = tournamentData.table[round == -1 ? tournament.currentRound - 1 : round].standings.slice()
             setTournament(tournamentData)
             setLoading(false)
             setTableToSort(array.sort((a, b) => b.points - a.points))
@@ -81,14 +81,14 @@ const TournamentInformation = ({ tournamentId }: { tournamentId: string }) => {
                     && <Typography variant="h6">Ganador: {tableToSort[0].team[0].name}</Typography>}
                 <Typography variant="h6">Formato del torneo: {tournament.format}</Typography>
                 <Typography variant="h6">Fecha de inicio: {tournament.startDate}</Typography>
-                <Typography variant="h6">Rondas jugadas: {tournament.currentRound - 1}</Typography>
+                <Typography variant="h6">Rondas jugadas: {round == -1 ? tournament.currentRound : round + 1}</Typography>
                 <div className={style.roundsButtons}>
                     <div className={style.buttons}>
                         {tournamentData.table.map((tab, index) => {
                             return (
                                 <div className={style.button}
-                                    onClick={() => setRound(index+ 1)} >
-                                    <Typography>Ronda {index+ 1}</Typography>
+                                    onClick={() => setRound(index)} >
+                                    <Typography>Ronda {index + 1}</Typography>
                                 </div>
                             )
                         })}
@@ -107,10 +107,10 @@ const TournamentInformation = ({ tournamentId }: { tournamentId: string }) => {
                     <div className={style.vsContainer}>
                         <Typography variant="h6">Enfrentamientos</Typography>
                         <MatchesTable data={matches} />
-                        <Button 
-                            fullWidth 
-                            disableElevation 
-                            variant="contained" 
+                        <Button
+                            fullWidth
+                            disableElevation
+                            variant="contained"
                             color="primary"
                             onClick={() => setModal(true)}
                             className={"style.TournamentFormButton"}
