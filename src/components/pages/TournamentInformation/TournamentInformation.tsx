@@ -34,40 +34,24 @@ const TournamentInformation = ({ tournamentId }: { tournamentId: string }) => {
     useEffect(() => {
         if (tournamentData) {
             const array = tournamentData.table[round == -1 ? tournament.currentRound - 1 : round].standings.slice()
+            const tableToSortArray = array.sort((a, b) => b.points - a.points)
+            const matchesArray = []
+
+            for (let i = 0; i < tableToSortArray.length;) {
+                const element = [tableToSortArray[i], tableToSortArray[i + 1 ? i + 1 : i]];
+                i = i + 2;
+                matchesArray.push(element)
+            }
+
+            setTableToSort(tableToSortArray)
+            setMatches(matchesArray)
             setTournament(tournamentData)
             setLoading(false)
-            setTableToSort(array.sort((a, b) => b.points - a.points))
-            for (let i = 0; i < tableToSort.length;) {
-                const element = [tableToSort[i], tableToSort[i + 1 ? i + 1 : i]];
-                i = i + 2;
-                setMatches([...matches, element])
-            }
         }
     }, [tournamentData, round])
 
 
     if (!loading && tournamentData) {
-
-        /*console.log(tournament, 'xddd')
-        const array = tournament.table[tournament.currentRound - 1].standings.slice()
-        console.log(array, 'eee')
-    
-        const tableToSort = array.sort((a, b) => b.points - a.points);
-        const matches: TablePlayers[][] = [];
-        for (let i = 0; i < tableToSort.length;) {
-            const element = [tableToSort[i], tableToSort[i + 1 ? i + 1 : i]];
-            i = i + 2;
-            matches.push(element);
-        } */
-        //Pendiente por terminar
-        /* if( tournament.currentRound > 5) {
-             dispatch(tournamentUpdateFunction({
-                 context: fbContext,
-                 payload: {},
-                 tournament: tournament
-             }))
-         } */
-
 
         const isTournamentFinish = (tournament.currentRound > 5) && (tableToSort[0].points !== tableToSort[1].points); // pendiente por acomodar
 
@@ -107,7 +91,7 @@ const TournamentInformation = ({ tournamentId }: { tournamentId: string }) => {
                     <div className={style.vsContainer}>
                         <Typography variant="h6">Enfrentamientos</Typography>
                         <MatchesTable data={matches} />
-                        <Button
+                        {(round + 1 === tournament.currentRound || round === -1) && <Button
                             fullWidth
                             disableElevation
                             variant="contained"
@@ -116,7 +100,7 @@ const TournamentInformation = ({ tournamentId }: { tournamentId: string }) => {
                             className={"style.TournamentFormButton"}
                         >
                             Registrar resultados
-                        </Button>
+                        </Button>}
                     </div>
                 </div>
                 {modal && <Modal setModal={() => setModal(false)} format="matches" matchesData={matches} />}
