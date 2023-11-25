@@ -21,7 +21,7 @@ const initialState: TournamentReducerInitialState = {
     successCreated: false,
     loading: false,
     error: '',
-    game: 'Ajedrez',
+    game: 'Domino',
     id: ''
 }
 

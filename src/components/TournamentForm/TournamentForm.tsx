@@ -9,6 +9,7 @@ import {
   Checkbox,
   FormControl,
   FormControlLabel,
+  FormGroup,
   FormLabel,
   InputLabel,
   ListItemText,
@@ -18,9 +19,10 @@ import {
   RadioGroup,
   Select,
   SelectChangeEvent,
-  TextField
+  TextField,
+  Typography
 } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import CustomizedAlert from '../CustomizedAlert/CustomizedAlert';
 
 import style from "./TournamentForm.module.scss";
@@ -60,20 +62,38 @@ const TournamentForm = () => {
       [name]: value,
     }))
   }
-  const handleSelectChange = (event: SelectChangeEvent<typeof usersName>) => {
-    const { value } = event.target;
-    setUsersName((prev => (prev === value ? [''] : typeof value === 'string' ? value.split(',') : value))
-    );
+  const handleSelectChange = (id: string) => {
+    if(usersName.includes(id)){
+      setUsersName(usersName.filter(d => d !== id))
+    } else {
+      setUsersName(usersName.concat([id]))
+    }
   };
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleCheckAll = () => {
+    setUsersName(userList.map(u => u.id))
+  };
+  const handleSubmit = useCallback((event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    console.log('entro aqui')
+    if((!formData.name || usersName.length < 20 || !(usersName.length % 4 === 0))) {
+      if(!(usersName.length % 4 === 0) || usersName.length < 20) {
+        setError(`El torneo debe tener al menos 20 integrantes y de numero de integrantes debe ser multiplo de 4, es decir que el torneo no puede ser de ${usersName.length} integrantes`)
+      }
+      if(!formData.name) {
+        setError('Rellena todos los campos por favor')
+      }
+
+      return;
+    }
+
     setError("");
-    dispatch(tournamentCreateFunction({
-      context: fbContext,
-      tournamentData: formData
-    }));
-    console.log("submit");
-  }
+    console.log(formData)
+    // dispatch(tournamentCreateFunction({
+    //   context: fbContext,
+    //   tournamentData: formData
+    // }));
+  }, [formData, usersName])
+  
 
   useEffect(() => {
     dispatch(getUsersList({
@@ -112,44 +132,69 @@ const TournamentForm = () => {
 
   return (
     <form onSubmit={handleSubmit} className={style.TournamentForm}>
-      <TextField
-        label="Nombre del torneo"
-        name="name"
-        type="text"
-        fullWidth
-        margin="normal"
-        color='secondary'
-        value={formData.name}
-        onChange={handleChange}
-      />
-      <FormControl fullWidth={true} >
-        <FormLabel>Formato</FormLabel>
-        <RadioGroup
-          defaultValue="individual"
-          name="format"
-          row
-          value={formData.format}
+      <Typography variant="h4" className={style.title}>
+        Crear Torneo
+      </Typography>
+      <Typography variant="h6" className={style.subtitle}>
+        Necesitaremos ciertos datos para comenzar el torneo
+      </Typography>
+      <div className={style.header}>
+        <TextField
+          label="Nombre del torneo"
+          name="name"
+          type="text"
+          margin="normal"
+          color='primary'
+          value={formData.name}
           onChange={handleChange}
-        >
-          <FormControlLabel value="individual" control={<Radio />} label="Individual" />
-          <FormControlLabel value="pairs" control={<Radio />} label="Parejas" />
-          <FormControlLabel value="team" control={<Radio />} label="Equipos" />
-        </RadioGroup>
-      </FormControl>
-      <FormControl fullWidth={true} >
+          className={style.name}
+        />
+        <FormControl className={style.formGroup} >
+          <FormLabel>Formato</FormLabel>
+          <RadioGroup
+            defaultValue="individual"
+            name="format"
+            row
+            value={formData.format}
+            onChange={handleChange}
+          >
+            <FormControlLabel value="individual" control={<Radio />} label="Individual" />
+            <FormControlLabel value="pairs" control={<Radio />} label="Parejas" />
+            <FormControlLabel value="team" control={<Radio />} label="Equipos" />
+          </RadioGroup>
+        </FormControl>
+      </div>
+      <FormControl fullWidth sx={{ marginBottom: '10px' }} >
         <FormLabel>Juego</FormLabel>
         <RadioGroup
-          defaultValue="Ajedrez"
+          defaultValue="Domino"
           name="game"
           row
           value={formData.game}
           onChange={handleChange}
         >
-          <FormControlLabel value="ajedrez" control={<Radio />} label="Ajedrez" />
+          {/* <FormControlLabel value="ajedrez" control={<Radio />} label="Ajedrez" /> */}
           <FormControlLabel value="domino" control={<Radio />} label="Domino" />
         </RadioGroup>
       </FormControl>
-      <FormControl sx={{ m: 1, width: 300 }}>
+
+      <FormControl fullWidth>
+        <FormLabel>Jugadores seleccionados {usersName.length}</FormLabel>
+      </FormControl>
+      <FormGroup sx={{ width: '100%' }}>
+        <FormControlLabel control={<Checkbox onClick={handleCheckAll} checked={usersName.length === userList.length} />} label="Seleccionar todos" />
+      </FormGroup>
+      <div className={style.usersListRow}>
+        {userList.map((user, index) => (
+          <div key={index} className={style.userCard} onClick={() => handleSelectChange(user.id)}>
+            <Typography>
+              {user.name}
+            </Typography>
+            <Checkbox checked={usersName.includes(user.id)} />
+          </div>
+        ))}
+      </div>
+      {/* <FormControl sx={{ m: 1, width: 300 }}>
         <InputLabel id="demo-multiple-checkbox-label">Jugadores</InputLabel>
         <Select
           labelId="demo-multiple-checkbox-label"
@@ -173,22 +218,13 @@ const TournamentForm = () => {
           ))}
         </Select>
         <p>Jugadores: {usersName.length}</p>
-      </FormControl>
+      </FormControl> */}
       {/* Validacion de datos del formulario*/}
-      {(!formData.name || usersName.length < 20 || !(usersName.length % 4 === 0))
-        ? <Button fullWidth disableElevation variant="contained" color="primary" type="button"
-          onClick={() => setError(formData.name
-            ? `El torneo debe tener al menos 20 integrantes y de numero de integrantes debe ser multiplo de 4, es decir que el torneo no puede ser de ${usersName.length} integrantes`
-            : "Por favor, rellena todos los campos")}
-          className={style.TournamentFormButton}>
-          Enviar
-        </Button>
-        : <Button fullWidth disableElevation variant="contained" color="primary" type="submit"
-          className={style.TournamentFormButton}>
-          Enviar
-        </Button>
-      }
       {error && <CustomizedAlert noElevation type='error' message={error} />}
+      <Button fullWidth disableElevation variant="contained" color="primary" type="submit" className={style.TournamentFormButton}>
+          Enviar
+      </Button>
+      
     </form>
   )
 }

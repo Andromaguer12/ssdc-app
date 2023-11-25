@@ -41,7 +41,19 @@ export const userLoginFunction = createAsyncThunk(
   async (params: { email: string; password: string; context: any }) => {
     const auth = await params.context.loginUser(params.email, params.password);
 
+    document.cookie = `auth=${auth.user.uid}; path=/`;
+    document.cookie = `accessToken=${auth.user.accessToken}; path=/`;
+
     return params.context.getUserFromId(auth.user.uid, auth.user.accessToken);
+  }
+);
+
+export const getUserByUserUid = createAsyncThunk(
+  'users/getUserByUserUid',
+  async (params: { uid: string; accessToken: string; context: any }) => {
+    const auth = await params.context.getUserFromId(uid, accessToken);
+
+    return auth
   }
 );
 
@@ -95,6 +107,26 @@ const userSlice = createSlice({
       state.accessToken = payload.uid;
     });
     builder.addCase(userLoginFunction.rejected, (state, action: any) => {
+      state.requestState.loadingUser = false;
+      state.requestState.error = action.error;
+    });
+
+    builder.addCase(getUserByUserUid.pending, (state, action: any) => {
+      state.requestState.loadingUser = true;
+    });
+    builder.addCase(getUserByUserUid.fulfilled, (state, action) => {
+      const { payload }: { payload: UserReducerInitialState } = action;
+      state.requestState.loadingUser = false;
+      state.requestState.success = true;
+      state.name = payload.name;
+      state.email = payload.email;
+      state.phone = payload.phone;
+      state.rank = payload.rank;
+      state.isAdmin = payload.isAdmin;
+      state.accessToken = payload.accessToken;
+      state.accessToken = payload.uid;
+    });
+    builder.addCase(getUserByUserUid.rejected, (state, action: any) => {
       state.requestState.loadingUser = false;
       state.requestState.error = action.error;
     });

@@ -8,12 +8,9 @@ import { Menu } from '@/components/Menu/Menu';
 
 export default function Header() {
   return (
-    <header className={styles.headerContainer}>
-      <section className={styles.delimeter}>
-        <div className={styles.logoAndMenu}>
-          <Menu />
-          <div className={styles.image}></div>
-        </div>
+    <div className={styles.headerContainer}>
+      <div className={styles.delimeter}>
+        <Menu />
         <div className={styles.buttons}>
           {HeaderButtons.map(button => {
             return (
@@ -27,10 +24,10 @@ export default function Header() {
             );
           })}
           <IconButton className={styles.iconButtons}>
-            <Language style={{ color: '#003994' }} />
+            <Language sx={{ color: '#ffffff' }} />
           </IconButton>
         </div>
-      </section>
-    </header>
+      </div>
+    </div>
   );
 }

@@ -123,7 +123,7 @@ class Firebase {
     currentRound: number,
     winner: UserInterface | null,
     table: TablePlayers[],
-    game: 'Ajedrez'
+    game: 'Domino'
   ) {
 
     const dataToSend: TournamentInterface = {

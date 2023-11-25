@@ -10,7 +10,7 @@ const Dashboard = () => {
 
   return (
     <section className={styles.Dashboard}>
-      <Typography variant="h3">Panel Administrativo</Typography>
+      <Typography variant="h3">Panel Principal</Typography>
       <div className={styles.DashboardUserList}>
         <div className={styles.DashboardUserListDiv}>
           <Typography variant="h5">Lista de usuarios</Typography>

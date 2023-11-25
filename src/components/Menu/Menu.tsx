@@ -14,8 +14,9 @@ import MenuIcon from '@mui/icons-material/Menu';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ChecklistIcon from '@mui/icons-material/Checklist';
-import { Collapse, Link } from '@mui/material';
-import { ExpandLess, ExpandMore } from '@mui/icons-material';
+import { Collapse, IconButton, Link } from '@mui/material';
+import { ExpandLess, ExpandMore, Language } from '@mui/icons-material';
+import { useAppSelector } from '@/redux/store';
 
 type Anchor = 'top' | 'left' | 'bottom' | 'right';
 
@@ -28,6 +29,8 @@ const Menu = () => {
     });
 
     const [open, setOpen] = React.useState(true);
+
+      const { name } = useAppSelector(({ user }) => user)
 
     const handleClick = () => {
         setOpen(!open);
@@ -59,7 +62,7 @@ const Menu = () => {
                     <ListItemIcon>
                         <AccountCircleIcon sx={{ fontSize: 50 }} />
                     </ListItemIcon>
-                    <ListItemText primary={"Usuario actual BETA"} secondary={"Admin"} />
+                    <ListItemText primary={name} secondary={"Admin"} />
                 </ListItem>
             </List>
             <Divider />
@@ -117,7 +120,9 @@ const Menu = () => {
     return (
         <div>
             <React.Fragment>
-                <MenuIcon onClick={toggleDrawer("left", true)} fontSize="large" />
+                <IconButton onClick={toggleDrawer("left", true)}>
+                    <MenuIcon style={{ color: '#ffffff' }} />
+                </IconButton>
                 <Drawer
                     anchor={"left"}
                     open={state["left"]}

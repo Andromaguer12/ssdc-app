@@ -39,5 +39,5 @@ export const emptyTournamentinitialState: TournamentInterface = {
         }],
         standings: [emptyTablePlayerInitialState]
     }],
-    game: "Ajedrez"
+    game: "Domino"
 }
