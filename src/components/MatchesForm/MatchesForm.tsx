@@ -43,7 +43,8 @@ const MatchesForm = ({ data }: { data: TablePlayers[][] }) => {
                     ...player,
                     playedRounds: tournament.currentRound,
                     points: player.points + matchLoseRef[0].points[0],
-                    lost: player.lost + 1
+                    lost: player.lost + 1,
+                    difference: matchLoseRef[0].points[0] - matchLoseRef[0].points[1]
                 }
             }
             return {
@@ -51,6 +52,7 @@ const MatchesForm = ({ data }: { data: TablePlayers[][] }) => {
                 won: player.won + 1,
                 points: player.points + matchref[0].points[1],
                 playedRounds: tournament.currentRound,
+                difference: matchref[0].points[1] - matchref[0].points[0]
             }
 
 

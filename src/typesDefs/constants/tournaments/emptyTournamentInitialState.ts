@@ -1,8 +1,8 @@
 import { emptyUserInitialState } from "../users/emptyInitialState";
-import { TournamentInterface } from "./types";
+import { TablePlayers, TournamentInterface } from "./types";
 
 
-export const emptyTablePlayerInitialState = {
+export const emptyTablePlayerInitialState: TablePlayers = {
     team: [{
         ...emptyUserInitialState,
         loadingUser: false,
@@ -14,6 +14,7 @@ export const emptyTablePlayerInitialState = {
     points: 0,
     position: 0,
     playedRounds: 0,
+    difference: 0,
     draw: 0,
     won: 0,
     lost: 0,

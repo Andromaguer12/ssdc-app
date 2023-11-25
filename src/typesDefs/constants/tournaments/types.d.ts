@@ -15,6 +15,7 @@ export type TablePlayers = {
     draw: number,
     lost: number,
     points: number,
+    difference: number,
     sanction: SanctionType,
 }
 

@@ -88,7 +88,7 @@ const PositionTable = ({ data }: { data: TablePlayers[] }) => {
                             </TableCell>
                             <TableCell align="center">{team.won}</TableCell>
                             <TableCell align="center">{team.lost}</TableCell>
-                            <TableCell align="center">{team.points / team.playedRounds}</TableCell>
+                            <TableCell align="center">{team.difference}</TableCell>
                             <TableCell align="center">{team.points}</TableCell>
                             <TableCell align="center">{team.sanction ? team.sanction : 'Sin sanciones'}</TableCell>
                             <TableCell align="center">
