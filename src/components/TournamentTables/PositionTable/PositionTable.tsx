@@ -73,7 +73,7 @@ const PositionTable = ({ data }: { data: TablePlayers[] }) => {
                         <TableCell sx={{ color: '#fff' }} align="center">Efectividad</TableCell>
                         <TableCell sx={{ color: '#fff' }} align="center">Puntos</TableCell>
                         <TableCell sx={{ color: '#fff' }} align="center">Sancion</TableCell>
-                               <TableCell sx={{ color: '#fff' }} align="center"></TableCell>
+                        <TableCell sx={{ color: '#fff' }} align="center"></TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -89,7 +89,7 @@ const PositionTable = ({ data }: { data: TablePlayers[] }) => {
                             <TableCell align="center">{team.won}</TableCell>
                             <TableCell align="center">{team.lost}</TableCell>
                             <TableCell align="center">{team.playedRounds}</TableCell>
-                            <TableCell align="center">{team.playedRounds}</TableCell>
+                            <TableCell align="center">{team.points}</TableCell>
                             <TableCell align="center">{team.sanction ? team.sanction : 'Sin sanciones'}</TableCell>
                             <TableCell align="center">
                                 <div onClick={() => setSanctionUser(team.team[0])}>
