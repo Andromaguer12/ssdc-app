@@ -94,6 +94,7 @@ const TournamentForm = () => {
       draw: 0,
       lost: 0,
       points: 0,
+      difference: 0,
       position: index + 1,
       playedRounds: 0,
       sanction: null

@@ -34,7 +34,18 @@ const TournamentInformation = ({ tournamentId }: { tournamentId: string }) => {
     useEffect(() => {
         if (tournamentData) {
             const array = tournamentData.table[round == -1 ? tournament.currentRound - 1 : round].standings.slice()
-            const tableToSortArray = array.sort((a, b) => b.points - a.points)
+            const tableToSortArray = array.sort((a, b) => {
+                // Ordenar por victorias
+                if (a.won !== b.won) {
+                    return b.won - a.won;
+                } else if (a.difference !== b.difference) {
+                    return b.difference - a.difference;
+                } else {
+                    // Si la diferencia es igual, ordenar por puntos
+                    return b.points - a.points;
+                }
+
+            })
             const matchesArray = []
 
             for (let i = 0; i < tableToSortArray.length;) {
