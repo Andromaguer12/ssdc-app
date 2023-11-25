@@ -22,7 +22,7 @@ export const getTournamentsList = createAsyncThunk(
 
 export const tournamentGetById = createAsyncThunk(
     'tournaments/tournamentGetById',
-    async({context , id} : {context: any , id: string}) => {
+    async ({ context, id }: { context: any, id: string }) => {
         return context.getTournamentById(id);
     }
 );

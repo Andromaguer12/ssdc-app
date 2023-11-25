@@ -30,7 +30,7 @@ const TournamentInformation = ({ tournamentId }: { tournamentId: string }) => {
             context: fbContext,
             id: tournamentId
         }))
-    }, []);
+    }, [tournamentData]);
     useEffect(() => {
         if (tournamentData) {
             const array = tournamentData.table[round == -1 ? tournament.currentRound - 1 : round].standings.slice()
