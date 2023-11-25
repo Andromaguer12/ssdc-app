@@ -3,10 +3,18 @@ import { UserInterface } from '@/typesDefs/constants/users/types';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 export interface UserReducerInitialState extends UserInterface {
-  loadingUser: boolean,
   accessToken: string;
-  error: string;
   id: string;
+  isAdmin?: boolean;
+  requestState: {
+    loadingUser: boolean;
+    success: boolean;
+    error: null;
+  },
+  registerRequestState: {
+    loadingUser: boolean;
+    error: null;
+  }
 }
 
 const initialState: UserReducerInitialState = {
@@ -14,11 +22,18 @@ const initialState: UserReducerInitialState = {
   email: '',
   phone: '',
   rank: "C",
-  loadingUser: false,
   accessToken: '',
   uid: '',
-  error: '',
-  id: ''
+  id: '',
+  requestState: {
+    loadingUser: false,
+    success: false,
+    error: null
+  },
+  registerRequestState: {
+    loadingUser: false,
+    error: null
+  }
 };
 
 export const userLoginFunction = createAsyncThunk(
@@ -55,29 +70,38 @@ export const userDeleteFunction = createAsyncThunk(
 const userSlice = createSlice({
   name: 'user',
   initialState,
-  reducers: {},
+  reducers: {
+    clearRequestUserState: (state) => {
+      state.requestState = initialState.requestState
+    },
+    clearStateUser: (state) => {
+      state = initialState
+    }
+  },
   extraReducers: builder => {
     builder.addCase(userLoginFunction.pending, (state, action: any) => {
-      state.loadingUser = true;
+      state.requestState.loadingUser = true;
     });
     builder.addCase(userLoginFunction.fulfilled, (state, action) => {
       const { payload }: { payload: UserReducerInitialState } = action;
-      state.loadingUser = false;
+      state.requestState.loadingUser = false;
+      state.requestState.success = true;
       state.name = payload.name;
       state.email = payload.email;
       state.phone = payload.phone;
       state.rank = payload.rank;
+      state.isAdmin = payload.isAdmin;
       state.accessToken = payload.accessToken;
       state.accessToken = payload.uid;
     });
     builder.addCase(userLoginFunction.rejected, (state, action: any) => {
-      state.loadingUser = false;
-      state.error = action.error;
+      state.requestState.loadingUser = false;
+      state.requestState.error = action.error;
     });
 
     //Register
     builder.addCase(userRegisterFunction.pending, (state, action: any) => {
-      state.loadingUser = true;
+      state.registerRequestState.loadingUser = true;
       console.log("PENDIENTE")
     });
     builder.addCase(userRegisterFunction.fulfilled, (state, action) => {
@@ -92,7 +116,7 @@ const userSlice = createSlice({
 
     //Delete
     builder.addCase(userDeleteFunction.pending, (state, action: any) => {
-      state.loadingUser = true;
+      state.registerRequestState.loadingUser = true;
       console.log("PENDIENTE")
     });
     builder.addCase(userDeleteFunction.fulfilled, (state, action) => {
@@ -109,5 +133,7 @@ const userSlice = createSlice({
 
 });
 
+
+export const { clearRequestUserState, clearStateUser } = userSlice.actions;
 
 export default userSlice.reducer;

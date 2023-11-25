@@ -6,6 +6,7 @@ import store from "@/redux/store"
 import Firebase from "@/services/firebaseConnection/class"
 import { ThemeProvider } from "@emotion/react"
 import { Provider } from "react-redux"
+import '../constants/styling/global.css'
 
 
 export default function RootLayout({

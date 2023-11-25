@@ -1,12 +1,12 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAppDispatch } from '@/redux/store';
-import { Button, Grid, TextField, Typography } from '@mui/material';
+import { useAppDispatch, useAppSelector } from '@/redux/store';
+import { Button, CircularProgress, Grid, TextField, Typography } from '@mui/material';
 import CustomizedAlert from '@/components/CustomizedAlert/CustomizedAlert';
 import styles from './styles/Login.module.scss';
 import useFirebaseContext from '@/contexts/firebaseConnection/hook';
-import { userLoginFunction } from '@/redux/reducers/user/actions';
+import { clearStateUser, userLoginFunction } from '@/redux/reducers/user/actions';
 
 type FormData = {
   email: string;
@@ -17,6 +17,8 @@ export default function Login() {
   const dispatch = useAppDispatch();
   const fbContext = useFirebaseContext();
   const router = useRouter();
+
+  const { requestState: { loadingUser, success, error: errorLogin }, isAdmin } = useAppSelector(({ user }) => user)
 
   // Estado para los datos del formulario
   const [formData, setFormData] = useState<FormData>({
@@ -35,11 +37,9 @@ export default function Login() {
     }));
   };
 
-  // Función para manejar el envío del formulario
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    // Validar los datos del formulario
     if (!formData.email || !formData.password) {
       setError('Por favor, rellena todos los campos');
     } else {
@@ -52,12 +52,28 @@ export default function Login() {
           email: formData.email,
           password: formData.password //12345ja
         })
-      ).then(() => router.push('/admin/dashboard'));
+      )
     }
   };
 
+  useEffect(() => {
+    if(errorLogin) {
+      setError(errorLogin?.message)
+    }
+  }, [errorLogin])
+  
 
-
+  useEffect(() => {
+    console.log(success && isAdmin)
+    if(success && isAdmin){
+      router.push("/admin/dashboard")
+    }
+    if(success && !isAdmin) {
+      setError('El usuario no tiene permisos')
+      dispatch(clearStateUser())
+    }
+  }, [success, isAdmin])
+  
 
   return (
     <section className={styles.Login}>
@@ -87,7 +103,7 @@ export default function Login() {
             name="email"
             type="email"
             fullWidth
-            color="secondary"
+            color="primary"
             value={formData.email}
             onChange={handleChange}
           />
@@ -97,10 +113,14 @@ export default function Login() {
             name="password"
             type="password"
             fullWidth
-            color="secondary"
+            color="primary"
             value={formData.password}
             onChange={handleChange}
+            style={{ marginBottom: "10px" }}
           />
+          {error && (
+            <CustomizedAlert noElevation type="error" message={error} />
+          )}
           <Button
             fullWidth
             disableElevation
@@ -109,11 +129,12 @@ export default function Login() {
             color="primary"
             type="submit"
           >
-            Enviar
+            {loadingUser ? (
+              <CircularProgress size={'15px'} sx={{ color: "#fff", margin: '8px 0'}} />
+            ) : (
+              "Iniciar sesion"
+            )}
           </Button>
-          {error && (
-            <CustomizedAlert noElevation type="error" message={error} />
-          )}
         </form>
       </Grid>
     </Grid>
