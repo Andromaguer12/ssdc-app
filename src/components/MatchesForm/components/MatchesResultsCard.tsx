@@ -1,30 +1,35 @@
 import { TextField, Typography } from '@mui/material'
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useRef } from 'react'
 import style from '../MatchesForm.module.scss';
 import { TournamentReducerInitialState } from '@/redux/reducers/tournament/actions';
 import { TablePlayers } from '@/typesDefs/constants/tournaments/types';
 
 interface MatchesResultsCardProps { 
   match: TablePlayers[],
-  updateFunction: (index: number, currentPoints: number[]) => any,
+  results: any,
+  setResults: (value: any) => any,
   tournament: TournamentReducerInitialState,
   index: number
 }
 
-const MatchesResultsCard = ({ match, tournament, updateFunction, index }: MatchesResultsCardProps) => {
-  const [points, setPoints] = useState([0, 0])
+const MatchesResultsCard = ({ match, tournament, results, setResults, index }: MatchesResultsCardProps) => {
+    const firstInput = useRef()
+    const secondaryInput = useRef()
 
-  const handlePoints = (e: any, team: number) => {
-      const currentPoints = [...points]
+  const handlePoints = useCallback(
+    (e: any, team: number) => {
+        const result1 = firstInput.current?.value
+        const result2 = secondaryInput.current?.value
 
-      currentPoints[team] = Number(e.target.value)
-      
-      setPoints(currentPoints)
-      
-      if(team == 1) {
-        updateFunction(index, currentPoints)
-      }
-  }
+        const currentPoints = {
+            ...results,
+            [index]: [Number(result1), Number(result2)]
+        }
+                  
+        setResults(currentPoints)
+    },
+    [results],
+  )
 
   return (
     <div className={style.matchesFields}>
@@ -35,19 +40,21 @@ const MatchesResultsCard = ({ match, tournament, updateFunction, index }: Matche
                     {match[0].team[0].name}
                     {tournament.format !== 'individual' && 
                         <>
-                            {' - '}{match[1]?.team[1]?.name
-                                ? match[1].team[1].name
+                            {' - '}{match[0]?.team[1]?.name
+                                ? match[0].team[1].name
                                 : "Sin rival"}
                         </>
                     }
                 </Typography>
-                <TextField 
+                <TextField
                     name="score"
                     size='small'
                     placeholder={`Puntaje`}
                     type="number"
-                    defaultValue={points[0]}
-                    onChange={(e) => handlePoints(e, 0)}
+                    inputProps={{
+                        ref: firstInput
+                    }}
+                    onChange={handlePoints}
                 />
             </div>
             <div className={style.scores}>
@@ -60,13 +67,15 @@ const MatchesResultsCard = ({ match, tournament, updateFunction, index }: Matche
                             ? match[1].team[1].name
                             : "Sin rival"}
                     </>}
-                <TextField 
+                <TextField
                     name="score"
                     size='small'
                     placeholder={`Puntaje`}
                     type="number"
-                    defaultValue={points[1]}
-                    onChange={(e) => handlePoints(e, 1)}
+                    inputProps={{
+                        ref: secondaryInput
+                    }}
+                    onChange={handlePoints}
                 />
                 </Typography>
             </div>
