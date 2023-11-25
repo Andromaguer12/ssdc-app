@@ -16,79 +16,65 @@ const MatchesForm = ({ data }: { data: TablePlayers[][] }) => {
     const fbContext = useFirebaseContext();
     const tournament = useAppSelector(state => state.tournamentList.data[0]);
     const [winnersList, setWinnersList] = useState<string[]>([]);
-    const [tableToSend, setTableToSend] = useState<TableInterface>(tournament.table[tournament.currentRound - 1]);
     const [results, setResults] = useState<any>({})
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = event.target;
-        const matchRef = data[parseInt(name)]; // el name que se obtiene en el evento es el index del match
-        const idLoser = matchRef.filter(user => user.team[0].id !== value)[0].team[0].id;
-        setWinnersList([...winnersList.filter(id => id !== idLoser), value]);
-
-    }
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        // Agrega los puntos a los ganadores
-        console.log('results', results)
-        // setTableToSend(prev => ({
-        //     ...prev,
-        //     standings: prev.standings.map(player => {
-        //         if (winnersList.includes(player.team[0].id)) {
-        //             console.log(`El jugado: ${player.team[0].name} es ganador y tiene ${player.points}pts`);
-        //             return {
-        //                 ...player,
-        //                 won: player.won + 1,
-        //                 points: player.points == 0 ? 1 : (player.points + 1),
-        //                 playedRounds: tournament.currentRound,
-        //                 lost: (tournament.currentRound) - (player.points + 1)
-        //             };
-        //         } else {
-        //             return {
-        //                 ...player,
-        //                 playedRounds: tournament.currentRound,
-        //                 lost: (tournament.currentRound) - (player.points)
-        //             }
-        //         }
-        //     })
 
-        // }));
-        // dispatch(tournamentUpdateFunction({
-        //     context: fbContext,
-        //     payload: {
-        //         ...tournament,
-        //         table: [...tournament.table, tableToSend]
-        //     },
-        //     tournament: tournament
-        // }))
+        const matchInfoToSend = data.map((match, i) => {
+            const result: number[] = results[i]
+            const matchInfo = {
+                winner: result[0] > result[1] ? match[0] : match[1],
+                loser: result[0] > result[1] ? match[1] : match[0],
+                points: result.sort((a, b) => a - b),
+            }
+
+            return matchInfo
+        })
+
+        const tableToSend = tournament.table[tournament.currentRound - 1]
+
+        const standingsToSend: TablePlayers[] = tableToSend.standings.map((player) => {
+
+            const matchref = matchInfoToSend.filter(match => match.winner.team[0].id === player.team[0].id)
+            const matchLoseRef = matchInfoToSend.filter(match => match.loser.team[0].id === player.team[0].id)
+            if (matchref.length < 1) {
+                return {
+                    ...player,
+                    playedRounds: tournament.currentRound,
+                    points: player.points + matchLoseRef[0].points[0],
+                    lost: player.lost + 1
+                }
+            }
+            return {
+                ...player,
+                won: player.won + 1,
+                points: player.points + matchref[0].points[1],
+                playedRounds: tournament.currentRound,
+            }
+
+
+        })
+
+        dispatch(tournamentUpdateFunction({
+            context: fbContext,
+            payload: {
+                ...tournament,
+                table: [...tournament.table, {
+                    ...tournament.table[tournament.currentRound - 1],
+                    standings: standingsToSend
+                }]
+            },
+            tournament: tournament
+        }))
     };
 
     // Actualiza los resultados de los match
     useEffect(() => {
-        setTableToSend(prev => ({
-            ...prev,
-            standings: prev.standings.map(player => {
-                if (winnersList.includes(player.team[0].id)) {
-                    console.log(`El jugado: ${player.team[0].name} es ganador y tiene ${player.points}pts`);
-                    return {
-                        ...player,
-                        won: player.won + 1,
-                        points: player.points == 0 ? 1 : (player.points + 1),
-                        playedRounds: tournament.currentRound,
-                        lost: (tournament.currentRound) - (player.points + 1)
-                    };
-                } else {
-                    return {
-                        ...player,
-                        playedRounds: tournament.currentRound,
-                        lost: (tournament.currentRound) - (player.points)
-                    }
-                }
-            })
 
-        }));
     }, [winnersList.length >= data.length]);
 
-    
+
 
     return (
         <form className={style.MatchesForm} onSubmit={handleSubmit}>
