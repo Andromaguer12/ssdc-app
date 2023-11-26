@@ -18,7 +18,7 @@ import { UserReducerInitialState, userDeleteFunction } from '@/redux/reducers/us
 import { getUsersList } from '@/redux/reducers/usersList/actions';
 import useFirebaseContext from '@/contexts/firebaseConnection/hook';
 import Modal from '../Modal/Modal';
-import { Chip, Skeleton, Stack } from '@mui/material';
+import { Chip, CircularProgress, Skeleton, Stack, Typography } from '@mui/material';
 
 
 
@@ -42,12 +42,15 @@ export default function UserList() {
 
     return (
         <div className={style.UserList}>
-            {!loading && (
+            {loading && (
                 <div className={style.loader}>
-
+                    <CircularProgress size={50} color="primary" />
+                    <Typography className={style.loaderText}>
+                        Cargando
+                    </Typography>
                 </div>
             )}
-            {/* {!loading && (
+            {!loading && (
                 <TableContainer component={Paper}>
                     <Table sx={{ minWidth: 150 }} aria-label="simple table">
                         <TableHead>
@@ -92,7 +95,7 @@ export default function UserList() {
                         </TableBody>
                     </Table>
                 </TableContainer>
-            )} */}
+            )}
             {modal && <Modal setModal={() => setModal(false)} userData={dataForm} format="user" />}
         </div>
     );

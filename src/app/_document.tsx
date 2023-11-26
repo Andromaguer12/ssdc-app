@@ -20,6 +20,7 @@ export default function Document() {
           href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap"
           rel="stylesheet"
         />
+        <title>SSDC</title>
       </Head>
       <body>
         <Main />

@@ -29,7 +29,16 @@
 
 .loader {
     width: 100%;
-    background-color: red;
+    height: calc(100vh - 300px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .loaderText {
+        margin-top: 10px;
+        font-size: 18px;
+    }
 }
 
 
