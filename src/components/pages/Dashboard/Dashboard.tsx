@@ -2,16 +2,27 @@
 import UserList from "@/components/UserList/UserList"
 import styles from './Dashboard.module.scss';
 import { Typography } from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Modal from "@/components/Modal/Modal";
-import { useAppSelector } from "@/redux/store";
+import { useAppDispatch, useAppSelector } from "@/redux/store";
+import { getUsersList } from "@/redux/reducers/usersList/actions";
+import useFirebaseContext from "@/contexts/firebaseConnection/hook";
 
 const Dashboard = () => {
+  const dispatch = useAppDispatch()
+  const fbContext = useFirebaseContext();
+
   const [form, setForm] = useState(false);
+
+  useEffect(() => {
+    dispatch(getUsersList({
+        context: fbContext,
+    }))
+  }, [])
 
   return (
     <section className={styles.Dashboard}>
-      <Typography variant="h3">Panel Principal</Typography>
+      <Typography sx={{ marginBottom: '20px', color: '#fff'}} variant="h3">Panel Principal</Typography>
       <div className={styles.DashboardUserList}>
         <div className={styles.DashboardUserListDiv}>
           <Typography variant="h5">Lista de usuarios</Typography>

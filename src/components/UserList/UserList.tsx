@@ -15,10 +15,9 @@ import style from './UserList.module.scss';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import { DeleteForever } from '@mui/icons-material';
 import { UserReducerInitialState, userDeleteFunction } from '@/redux/reducers/user/actions';
-import { getUsersList } from '@/redux/reducers/usersList/actions';
 import useFirebaseContext from '@/contexts/firebaseConnection/hook';
 import Modal from '../Modal/Modal';
-import { Chip, CircularProgress, Skeleton, Stack, Typography } from '@mui/material';
+import { Chip, CircularProgress, Typography } from '@mui/material';
 
 
 
@@ -33,12 +32,6 @@ export default function UserList() {
 
 
     const { loading } = useAppSelector(({ usersList }) => usersList)
-
-    useEffect(() => {
-        dispatch(getUsersList({
-            context: fbContext,
-        }))
-    }, [])
 
     return (
         <div className={style.UserList}>

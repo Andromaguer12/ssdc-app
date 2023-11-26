@@ -1,9 +1,11 @@
 @import '../../../constants/styling/theme/variables.scss';
 
 .Dashboard{
-    background-color: white;
+    background-image: linear-gradient(to bottom right, #3794e0, #0035a7);
     min-height: 100vh;
     max-width: 100vw;
+    padding-top: 60px;
+    padding-bottom: 20px;
 }
 .Dashboard h3 {
     padding-top: 1.5rem;
@@ -15,10 +17,13 @@
     align-items: flex-start;
     flex-direction: column;
     margin: 1.5rem;
+    margin-bottom: 0;
     margin-top: 0.5rem;
     box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
     overflow: scroll;
     scrollbar-width: none;
+    background-color: #fff;
+    border-radius: 6px;
 
     &::-webkit-scrollbar {
         display: none;
@@ -33,7 +38,7 @@
 }
 .DashboardUserList h5{
     margin-top: 1.5rem;
-    margin-left: 1.5rem 
+    margin-left: 1.5rem;
 }
 .DashboardRegisterUser{
  text-decoration: none;
