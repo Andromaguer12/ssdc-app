@@ -62,6 +62,7 @@ const MatchesForm = ({ data }: { data: TablePlayers[][] }) => {
             context: fbContext,
             payload: {
                 ...tournament,
+                currentRound: tournament.currentRound + 1,
                 table: [...tournament.table, {
                     ...tournament.table[tournament.currentRound - 1],
                     standings: standingsToSend
