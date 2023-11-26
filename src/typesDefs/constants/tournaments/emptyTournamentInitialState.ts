@@ -1,3 +1,4 @@
+import { TournamentReducerInitialState } from "@/redux/reducers/tournament/actions";
 import { emptyUserInitialState } from "../users/emptyInitialState";
 import { TablePlayers, TournamentInterface } from "./types";
 
@@ -22,7 +23,7 @@ export const emptyTablePlayerInitialState: TablePlayers = {
     sanction: null
 }
 
-export const emptyTournamentinitialState: TournamentInterface = {
+export const emptyTournamentinitialState: TournamentReducerInitialState = {
     name: "",
     rules: "",
     format: "individual",

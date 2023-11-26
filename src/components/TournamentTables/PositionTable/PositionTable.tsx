@@ -58,7 +58,8 @@ export default function ActionsPlayerMenu({ setModal }: { setModal: (boolean: bo
     );
 }
 
-const PositionTable = ({ data }: { data: TablePlayers[] }) => {
+const PositionTable = ({ data, tournamentId, standingIndex }
+    : { data: TablePlayers[], tournamentId: string, standingIndex: number }) => {
     const [modal, setModal] = useState<boolean>(false);
     const [sanctionUser, setSanctionUser] = useState<UserReducerInitialState>(data[0].team[0]);
     return (
@@ -90,7 +91,7 @@ const PositionTable = ({ data }: { data: TablePlayers[] }) => {
                             <TableCell align="center">{team.lost}</TableCell>
                             <TableCell align="center">{team.difference}</TableCell>
                             <TableCell align="center">{team.points}</TableCell>
-                            <TableCell align="center">{team.sanction ? team.sanction : 'Sin sanciones'}</TableCell>
+                            <TableCell align="center">{team.sanction ? team.sanction : ''}</TableCell>
                             <TableCell align="center">
                                 <div onClick={() => setSanctionUser(team.team[0])}>
                                     <ActionsPlayerMenu setModal={setModal} />
@@ -100,7 +101,8 @@ const PositionTable = ({ data }: { data: TablePlayers[] }) => {
                     ))}
                 </TableBody>
             </Table>
-            {modal && <Modal setModal={() => setModal(false)} format="sanction" userData={sanctionUser} />}
+            {modal && <Modal setModal={() => setModal(false)} format="sanction"
+                tournamentId={tournamentId} standingIndex={standingIndex} userData={sanctionUser} />}
         </TableContainer>
     )
 }
