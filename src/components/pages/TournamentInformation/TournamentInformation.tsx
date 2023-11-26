@@ -1,7 +1,7 @@
 'use client'
 import React, { useEffect, useState } from 'react'
-import { TournamentReducerInitialState, tournamentUpdateFunction } from '@/redux/reducers/tournament/actions'
-import { Button, Typography } from '@mui/material';
+import { TournamentReducerInitialState, tournamentFinishFunction, tournamentUpdateFunction } from '@/redux/reducers/tournament/actions'
+import { Button, CircularProgress, Typography } from '@mui/material';
 import { TablePlayers } from '@/typesDefs/constants/tournaments/types';
 import Modal from '@/components/Modal/Modal';
 import { useAppDispatch, useAppSelector } from '@/redux/store';
@@ -20,8 +20,8 @@ const TournamentInformation = ({ tournamentId }: { tournamentId: string }) => {
     const [tournament, setTournament] = useState(emptyTournamentinitialState)
     const [matches, setMatches] = useState<TablePlayers[][]>([])
     const [tableToSort, setTableToSort] = useState(emptyTournamentinitialState.table[0].standings)
-    const [loading, setLoading] = useState(true)
     const [round, setRound] = useState(-1)
+    const { loading } = useAppSelector(({ tournamentList }) => tournamentList)
 
     const tournamentData = useAppSelector(state => state.tournamentList.data[0]);
 
@@ -59,69 +59,92 @@ const TournamentInformation = ({ tournamentId }: { tournamentId: string }) => {
             setTableToSort(tableToSortArray)
             setMatches(matchesArray)
             setTournament(tournamentData)
-            setLoading(false)
         }
     }, [tournamentData, round])
 
-
-    if (!loading && tournamentData) {
+    const handleFinishTournament = () => {
+        console.log(tournament.table)
+        // dispatch(tournamentFinishFunction({
+        //     context: fbContext,
+        //     winnerId: tournament.table
+        // }))
+    }
 
         const isTournamentFinish = (tournament.currentRound > 5) && (tableToSort[0].points !== tableToSort[1].points); // pendiente por acomodar
 
         return (
             <section className={style.TournamentInformation}>
-                <div className={style.TournamentInformationHeader}>
-                    <Typography variant="h2">{tournament.name}</Typography>
-                    <Typography variant="h6">({tournament.game})</Typography>
-                </div>
-                {isTournamentFinish
-                    && <Typography variant="h6">Ganador: {tableToSort[0].team[0].name}</Typography>}
-                <Typography variant="h6">Formato del torneo: {tournament.format}</Typography>
-                <Typography variant="h6">Fecha de inicio: {tournament.startDate}</Typography>
-                <Typography variant="h6">Rondas jugadas: {round == -1 ? tournament.currentRound : round + 1}</Typography>
-                <div className={style.roundsButtons}>
-                    <div className={style.buttons}>
-                        {tournamentData.table.map((tab, index) => {
-                            return (
-                                <div className={style.button}
-                                    onClick={() => setRound(index)} >
-                                    <Typography>Ronda {index + 1}</Typography>
-                                </div>
-                            )
-                        })}
+                {loading && (
+                    <div className={style.loader}>
+                        <CircularProgress size={50} color="secondary" />
+                        <Typography color="secondary" className={style.loaderText}>
+                            Cargando Torneo
+                        </Typography>
                     </div>
-                    <Button disableElevation variant="contained" color="primary"
-                        onClick={() => setRound(round >= tournament.currentRound ? 1 : round + 1)}
-                        className={"style.TournamentFormButton"}>
-                        Cambiar ronda
-                    </Button>
-                </div>
-                <div className={style.tournamentInformationTableContainer}>
-                    <div className={style.TournamentInformationTable}>
-                        <Typography variant="h6">Tabla de Posiciones</Typography>
-                        <PositionTable data={tableToSort} tournamentId={tournament.id} standingIndex={tournament.currentRound - 1} />
-                    </div>
-                    <div className={style.vsContainer}>
-                        <Typography variant="h6">Enfrentamientos</Typography>
-                        <MatchesTable data={matches} />
-                        {(round + 1 === tournament.currentRound || round === -1) && <Button
-                            fullWidth
-                            disableElevation
-                            variant="contained"
-                            color="primary"
-                            onClick={() => setModal(true)}
-                            className={"style.TournamentFormButton"}
-                        >
-                            Registrar resultados
-                        </Button>}
-                    </div>
-                </div>
-                {modal && <Modal setModal={() => setModal(false)} format="matches" matchesData={matches} />}
+                )}
+                    
+                {!loading && tournamentData && 
+                    <>
+                        <div className={style.TournamentInformationHeader}>
+                            <Typography variant="h2" color="secondary">{tournament.name}</Typography>
+                            <Typography variant="h6" color="secondary">({tournament.game})</Typography>
+                        </div>
+                        {isTournamentFinish
+                            && <Typography variant="h6">Ganador: {tableToSort[0].team[0].name}</Typography>}
+                        <Typography color="secondary" variant="h6">Formato del torneo: {tournament.format}</Typography>
+                        <Typography color="secondary" variant="h6">Fecha de inicio: {tournament.startDate}</Typography>
+                        <Typography color="secondary" variant="h6">Rondas jugadas: {round == -1 ? tournament.currentRound : round + 1}</Typography>
+                        <div className={style.roundsButtons}>
+                            <div className={style.buttons}>
+                                {tournamentData.table.map((tab, index) => {
+                                    return (
+                                        <div className={style.button}
+                                            onClick={() => setRound(index)} >
+                                            <Typography>Ronda {index + 1}</Typography>
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                            <div className={style.buttonsActions}>
+                                <Button disableElevation variant="contained"
+                                    onClick={handleFinishTournament}
+                                    className={"style.TournamentFormButton"}
+                                    sx={{ background: 'red', marginRight: '10px' }}
+                                >
+                                    Terminar torneo
+                                </Button>
+                                <Button disableElevation variant="contained" color="primary"
+                                    onClick={() => setRound(round >= tournament.currentRound ? 1 : round + 1)}
+                                    className={"style.TournamentFormButton"}>
+                                    Cambiar ronda
+                                </Button>
+                            </div>
+                        </div>
+                        <div className={style.tournamentInformationTableContainer}>
+                            <div className={style.TournamentInformationTable}>
+                                <Typography color="secondary" variant="h6">Tabla de Posiciones</Typography>
+                                <PositionTable data={tableToSort} />
+                            </div>
+                            <div className={style.vsContainer}>
+                                <Typography color="secondary" variant="h6">Enfrentamientos</Typography>
+                                <MatchesTable data={matches} />
+                                {(round + 1 === tournament.currentRound || round === -1) && <Button
+                                    fullWidth
+                                    disableElevation
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={() => setModal(true)}
+                                    className={"style.TournamentFormButton"}
+                                >
+                                    Registrar resultados
+                                </Button>}
+                            </div>
+                        </div>
+                        {modal && <Modal setModal={() => setModal(false)} format="matches" matchesData={matches} />}
+                    </>
+                }
             </section>
         )
-    } else {
-        return <h2> Loading</h2>
-    }
 }
 
 export { TournamentInformation }

@@ -51,8 +51,8 @@ const tournamentsListSlice: Slice<TournamentListReducerInitialState, {}, 'tourna
             state.data = [action.payload];
         });
         builder.addCase(tournamentGetById.rejected, (state, action: any) => {
+            state.loading = false;
             state.error = action.error;
-            console.log(action.error)
         });
     }
 })

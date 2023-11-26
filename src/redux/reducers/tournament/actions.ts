@@ -53,6 +53,13 @@ export const tournamentUpdateFunction = createAsyncThunk(
 )
 
 
+export const tournamentFinishFunction = createAsyncThunk(
+    'tournaments/tournamentFinishFunction',
+    async ({ context, tournament }: { context: any, winnerId: string }) => {
+        return context.finishTournament(tournament, winnerId);
+    }
+)
+
 const tournamentSlice = createSlice({
     name: 'tournament',
     initialState,

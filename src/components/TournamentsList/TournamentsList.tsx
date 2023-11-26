@@ -10,22 +10,26 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { IconButton, Link, Menu, MenuItem, Skeleton, Stack } from '@mui/material';
+import { CircularProgress, IconButton, Link, Menu, MenuItem, Skeleton, Stack, Typography } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { TournamentReducerInitialState } from '@/redux/reducers/tournament/actions';
+import { TournamentReducerInitialState, tournamentFinishFunction } from '@/redux/reducers/tournament/actions';
 import style from './TournamentsList.module.scss';
+import useFetchingContext from '@/contexts/backendConection/hook';
 
 
 //Componente de menu para la list
 export default function ActionsMenu({ tournament }: { tournament: TournamentReducerInitialState }) {
+    const dispatch = useAppDispatch()
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
+    const fContext = useFetchingContext();
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
     };
     const handleClose = () => {
         setAnchorEl(null);
     };
+
     return (
         <div>
             <IconButton
@@ -54,10 +58,10 @@ export default function ActionsMenu({ tournament }: { tournament: TournamentRedu
                 }}
             >
                 <MenuItem onClick={handleClose}>
-                    <Link href={`/tournaments/${tournament.id}`} underline="none" color={"inherit"}>Informacion</Link>
+                    <Link href={`/admin/tournaments/${tournament.id}`} underline="none" color={"inherit"}>Informacion</Link>
                 </MenuItem>
                 {/* <MenuItem onClick={handleClose}>Editar</MenuItem> */}
-                {/* <MenuItem onClick={handleClose}>Terminar Torneo</MenuItem> */}
+                {/* <MenuItem onClick={handleFinishTournament}>Terminar Torneo</MenuItem> */}
             </Menu>
         </div>
     );
@@ -79,42 +83,52 @@ const TournamentsList = () => {
 
     return (
         <div>
-            <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>Torneo</TableCell>
-                            <TableCell align="right">Estado</TableCell>
-                            <TableCell align="right">Participantes</TableCell>
-                            <TableCell align="right">Rondas</TableCell>
-                            <TableCell align="right">Fecha</TableCell>
-                            <TableCell align="right">Acciones</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {TournamentList.map((tournament) => (
-                            <TableRow
-                                key={tournament.name}
-                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                className={style.TournamentListRow}
-                            >
-                                <TableCell component="th" scope="row">
-                                    {tournament.name}
-                                </TableCell>
-                                <TableCell align="right">
-                                    {tournament.currentRound > 5 ? "Terminado" : "En curso..."}
-                                </TableCell>
-                                <TableCell align="right">{tournament.table.length}</TableCell>
-                                <TableCell align="right">{tournament.currentRound}</TableCell>
-                                <TableCell align="right">{tournament.startDate}</TableCell>
-                                <TableCell align="right">
-                                    <ActionsMenu tournament={tournament} />
-                                </TableCell>
+            {loading && (
+                <div className={style.loader}>
+                    <CircularProgress size={50} color="primary" />
+                    <Typography className={style.loaderText}>
+                        Cargando
+                    </Typography>
+                </div>
+            )}
+            {!loading && (
+                <TableContainer component={Paper}>
+                    <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>Torneo</TableCell>
+                                <TableCell align="right">Estado</TableCell>
+                                <TableCell align="right">Participantes</TableCell>
+                                <TableCell align="right">Rondas</TableCell>
+                                <TableCell align="right">Fecha</TableCell>
+                                <TableCell align="right">Acciones</TableCell>
                             </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+                        </TableHead>
+                        <TableBody>
+                            {TournamentList.map((tournament) => (
+                                <TableRow
+                                    key={tournament.name}
+                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                    className={style.TournamentListRow}
+                                >
+                                    <TableCell component="th" scope="row">
+                                        {tournament.name}
+                                    </TableCell>
+                                    <TableCell align="right">
+                                        {tournament.currentRound > 5 ? "Terminado" : "En curso..."}
+                                    </TableCell>
+                                    <TableCell align="right">{tournament.table.length}</TableCell>
+                                    <TableCell align="right">{tournament.currentRound}</TableCell>
+                                    <TableCell align="right">{tournament.startDate}</TableCell>
+                                    <TableCell align="right">
+                                        <ActionsMenu tournament={tournament} />
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            )}
         </div>
     )
 }

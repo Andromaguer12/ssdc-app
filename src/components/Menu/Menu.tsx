@@ -90,14 +90,16 @@ const Menu = () => {
             <Divider />
             <List>
                 {['Usuarios'].map((text, index) => (
-                    <ListItem key={text} disablePadding>
-                        <ListItemButton>
-                            <ListItemIcon>
-                                <PeopleAltIcon color="secondary" />
-                            </ListItemIcon>
-                            <ListItemText sx={{ color: "#fff "}} primary={text} />
-                        </ListItemButton>
-                    </ListItem>
+                    <Link href={'/admin/dashboard'} underline="none" color={"inherit"}>
+                        <ListItem key={text} disablePadding>
+                            <ListItemButton>
+                                <ListItemIcon>
+                                    <PeopleAltIcon color="secondary" />
+                                </ListItemIcon>
+                                <ListItemText sx={{ color: "#fff "}} primary={text} />
+                            </ListItemButton>
+                        </ListItem>
+                    </Link>
                 ))}
             </List>
             <List
@@ -120,7 +122,7 @@ const Menu = () => {
                             <ListItemIcon>
                                 <DriveFileRenameOutlineIcon color="secondary" />
                             </ListItemIcon>
-                            <Link href={'/tournaments'} underline="none" color={"inherit"}>
+                            <Link href={'/admin/tournaments'} underline="none" color={"inherit"}>
                                 <ListItemText sx={{ color: "#fff "}} primary="Administrar Torneos" />
                             </Link>
                         </ListItemButton>

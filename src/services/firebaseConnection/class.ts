@@ -152,7 +152,13 @@ class Firebase {
       //currentRound: payload.currentRound + 1,
     });
   }
-  /**
+
+  async finishTournament(tournamentId: string, winner: string) {
+    return await setDoc(doc(this.db, 'tournaments', tournamentId), {
+      winner
+    })
+  }
+  /** 
    * End Tournament Api
    */
 }
