@@ -4,6 +4,7 @@ import styles from './Dashboard.module.scss';
 import { Typography } from "@mui/material";
 import { useState } from "react";
 import Modal from "@/components/Modal/Modal";
+import { useAppSelector } from "@/redux/store";
 
 const Dashboard = () => {
   const [form, setForm] = useState(false);

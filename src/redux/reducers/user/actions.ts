@@ -1,11 +1,13 @@
 import { userPassword } from '@/constants/users/user-constanst';
 import { UserInterface } from '@/typesDefs/constants/users/types';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import Cookies from 'js-cookie'
 
 export interface UserReducerInitialState extends UserInterface {
   accessToken: string;
   id: string;
   isAdmin?: boolean;
+  signedOut?: boolean;
   requestState: {
     loadingUser: boolean;
     success: boolean;
@@ -41,19 +43,29 @@ export const userLoginFunction = createAsyncThunk(
   async (params: { email: string; password: string; context: any }) => {
     const auth = await params.context.loginUser(params.email, params.password);
 
-    document.cookie = `auth=${auth.user.uid}; path=/`;
-    document.cookie = `accessToken=${auth.user.accessToken}; path=/`;
+    Cookies.set("auth", auth.user.uid);
+    Cookies.set("accessToken", auth.user.accessToken);
 
     return params.context.getUserFromId(auth.user.uid, auth.user.accessToken);
+  }
+);
+
+export const userLogoutFunction = createAsyncThunk(
+  'users/userLogoutFunction',
+  async (params: { context: any }, { dispatch }) => {
+    await params.context.logoutUser();
++
+    Cookies.remove("auth");
+    Cookies.remove("accessToken");
+
+    return true
   }
 );
 
 export const getUserByUserUid = createAsyncThunk(
   'users/getUserByUserUid',
   async (params: { uid: string; accessToken: string; context: any }) => {
-    const auth = await params.context.getUserFromId(uid, accessToken);
-
-    return auth
+    return params.context.getUserFromId(params.uid, params.accessToken);
   }
 );
 
@@ -129,6 +141,10 @@ const userSlice = createSlice({
     builder.addCase(getUserByUserUid.rejected, (state, action: any) => {
       state.requestState.loadingUser = false;
       state.requestState.error = action.error;
+    });
+
+    builder.addCase(userLogoutFunction.fulfilled, (state, action) => {
+      state.signedOut = true
     });
 
     //Register

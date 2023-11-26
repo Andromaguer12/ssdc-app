@@ -1,5 +1,5 @@
 import { FirebaseApp } from 'firebase/app';
-import { createUserWithEmailAndPassword, deleteUser, getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, signOut, deleteUser, getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { collection, doc, getDoc, getDocs, getFirestore, query, where, setDoc, addDoc, deleteDoc } from 'firebase/firestore'
 import initFirebaseFunction from './firebaseInitConfig';
 import { UserReducerInitialState } from '@/redux/reducers/user/actions';
@@ -27,6 +27,10 @@ class Firebase {
    */
   async loginUser(email: string, password: string) {
     return signInWithEmailAndPassword(this.auth, email, password);
+  }
+
+  async logoutUser() {
+    return signOut(this.auth);
   }
 
   async getUserFromId(uid: string, accessToken: string) {
@@ -81,10 +85,6 @@ class Firebase {
   async removeUser(user: UserReducerInitialState) {
     await deleteUser(this.auth.currentUser);
     return deleteDoc(doc(this.db, "users", user.id));
-  }
-
-  async logoutUser() {
-    console.log('logoutUser');
   }
 
   /**

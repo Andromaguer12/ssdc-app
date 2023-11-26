@@ -30,16 +30,24 @@ export default function UserList() {
 
     const [modal, setModal] = useState(false);
     const [dataForm, setDataForm] = useState<UserReducerInitialState>(userList[userList.length - 1]);
-    const [loading, setLoading] = useState(true);
+
+
+    const { loading } = useAppSelector(({ usersList }) => usersList)
 
     useEffect(() => {
         dispatch(getUsersList({
             context: fbContext,
-        })).then(() => setLoading(false));
-    }, [userList])
-    if (!loading) {
-        return (
-            <div className={style.UserList}>
+        }))
+    }, [])
+
+    return (
+        <div className={style.UserList}>
+            {!loading && (
+                <div className={style.loader}>
+
+                </div>
+            )}
+            {/* {!loading && (
                 <TableContainer component={Paper}>
                     <Table sx={{ minWidth: 150 }} aria-label="simple table">
                         <TableHead>
@@ -84,19 +92,10 @@ export default function UserList() {
                         </TableBody>
                     </Table>
                 </TableContainer>
-                {modal && <Modal setModal={() => setModal(false)} userData={dataForm} format="user" />}
-            </div>
-        );
-    } else {
-        return (
-            <div className={style.UserList}>
-                <Stack spacing={1}>
-                    <Skeleton variant="rectangular" width={650} height={68} animation="wave" />
-                    <Skeleton variant="rounded" width={650} height={130} animation="wave" />
-                </Stack>
-            </div>
-        )
-    }
+            )} */}
+            {modal && <Modal setModal={() => setModal(false)} userData={dataForm} format="user" />}
+        </div>
+    );
 };
 
 

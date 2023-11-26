@@ -15,12 +15,19 @@ import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ChecklistIcon from '@mui/icons-material/Checklist';
 import { Collapse, IconButton, Link } from '@mui/material';
-import { ExpandLess, ExpandMore, Language } from '@mui/icons-material';
-import { useAppSelector } from '@/redux/store';
+import { ExpandLess, ExpandMore, Language, Logout } from '@mui/icons-material';
+import { useAppDispatch, useAppSelector } from '@/redux/store';
+import { clearStateUser, userLogoutFunction } from '@/redux/reducers/user/actions';
+import useFetchingContext from '@/contexts/backendConection/hook';
+import { useRouter } from 'next/navigation';
 
 type Anchor = 'top' | 'left' | 'bottom' | 'right';
 
 const Menu = () => {
+    const dispatch = useAppDispatch()
+    const fContext = useFetchingContext()
+    
+
     const [state, setState] = React.useState({
         top: false,
         left: false,
@@ -35,6 +42,10 @@ const Menu = () => {
     const handleClick = () => {
         setOpen(!open);
     };
+
+    const handleLogout = () => {
+        dispatch(userLogoutFunction({ context: fContext }))
+    }
 
     const toggleDrawer =
         (anchor: Anchor, open: boolean) =>
@@ -99,7 +110,7 @@ const Menu = () => {
                                 <DriveFileRenameOutlineIcon />
                             </ListItemIcon>
                             <Link href={'/tournaments'} underline="none" color={"inherit"}>
-                                <ListItemText primary="Administrar Toreneos" />
+                                <ListItemText primary="Administrar Torneos" />
                             </Link>
                         </ListItemButton>
                     </List>
@@ -113,7 +124,18 @@ const Menu = () => {
                     </List>
                 </Collapse>
             </List>
-
+            <List
+                sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper', position: 'absolute', bottom: 0 }}
+                component="nav"
+                aria-labelledby="nested-list-subheader"
+            >
+                <ListItemButton onClick={handleLogout} sx={{ pl: 4 }}>
+                    <ListItemIcon>
+                        <Logout />
+                    </ListItemIcon>
+                    <ListItemText primary="Cerrar Sesion" />
+                </ListItemButton>
+            </List>
         </Box >
     );
 

@@ -27,6 +27,11 @@
  background-color: $secondary-color;
 }
 
+.loader {
+    width: 100%;
+    background-color: red;
+}
+
 
 @media (max-width: 640px) {
     .UserList{

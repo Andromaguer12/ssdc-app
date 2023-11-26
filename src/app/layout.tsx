@@ -2,12 +2,52 @@
 import Header from "@/components/commonLayout/Header/Header"
 import theme from "@/constants/styling/theme/muiTheme"
 import FirebaseContext from "@/contexts/firebaseConnection/context"
-import store from "@/redux/store"
+import store, { useAppDispatch, useAppSelector } from "@/redux/store"
 import Firebase from "@/services/firebaseConnection/class"
 import { ThemeProvider } from "@emotion/react"
 import { Provider } from "react-redux"
 import '../constants/styling/global.css'
+import Cookies from 'js-cookie'
+import { useEffect } from "react"
+import { clearStateUser, getUserByUserUid } from "@/redux/reducers/user/actions"
+import FetchingContext from "@/contexts/backendConection/context"
+import { useRouter } from "next/navigation"
 
+function Main({ children }) {
+  const dispatch = useAppDispatch()
+  const firebaseClass = new Firebase();
+  const router = useRouter()
+
+  const { signedOut } = useAppSelector(({ user }) => user)
+  
+  useEffect(() => {
+      if(signedOut) {
+          dispatch(clearStateUser())
+          router.push('/login');
+      }
+  }, [signedOut])
+  
+
+  useEffect(() => {
+    const uid = Cookies.get("auth");
+    const accessToken = Cookies.get("accessToken");
+
+    if (accessToken && uid) {
+      dispatch(getUserByUserUid({
+        uid, 
+        accessToken,
+        context: firebaseClass
+      }))
+    }
+  }, []);
+  
+
+  return (
+    <>
+      {children}
+    </>
+  )
+}
 
 export default function RootLayout({
   children,
@@ -16,19 +56,15 @@ export default function RootLayout({
 }) {
 
   const firebaseClass = new Firebase();
-
   return (
-    <html lang="en">
-
-      <body>
-        <Provider store={store}>
-          <FirebaseContext.Provider value={firebaseClass}>
-            <ThemeProvider theme={theme}>
-              {children}
-            </ThemeProvider>
-          </FirebaseContext.Provider>
-        </Provider>
-      </body>
-    </html>
+    <Provider store={store}>
+      <FirebaseContext.Provider value={firebaseClass}>
+        <FetchingContext.Provider value={firebaseClass}>
+          <ThemeProvider theme={theme}>
+            <Main>{children}</Main>
+          </ThemeProvider>
+        </FetchingContext.Provider>
+      </FirebaseContext.Provider>
+    </Provider>
   )
 }

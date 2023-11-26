@@ -7,6 +7,7 @@ import CustomizedAlert from '@/components/CustomizedAlert/CustomizedAlert';
 import styles from './styles/Login.module.scss';
 import useFirebaseContext from '@/contexts/firebaseConnection/hook';
 import { clearStateUser, userLoginFunction } from '@/redux/reducers/user/actions';
+import useFetchingContext from '@/contexts/backendConection/hook';
 
 type FormData = {
   email: string;
@@ -15,7 +16,7 @@ type FormData = {
 
 export default function Login() {
   const dispatch = useAppDispatch();
-  const fbContext = useFirebaseContext();
+  const fbContext = useFetchingContext();
   const router = useRouter();
 
   const { requestState: { loadingUser, success, error: errorLogin }, isAdmin } = useAppSelector(({ user }) => user)
@@ -64,7 +65,6 @@ export default function Login() {
   
 
   useEffect(() => {
-    console.log(success && isAdmin)
     if(success && isAdmin){
       router.push("/admin/dashboard")
     }
