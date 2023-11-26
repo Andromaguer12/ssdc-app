@@ -15,17 +15,25 @@ import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ChecklistIcon from '@mui/icons-material/Checklist';
 import { Collapse, IconButton, Link } from '@mui/material';
-import { ExpandLess, ExpandMore, Language, Logout } from '@mui/icons-material';
+import { ExpandLess, ExpandMore, Logout } from '@mui/icons-material';
 import { useAppDispatch, useAppSelector } from '@/redux/store';
-import { clearStateUser, userLogoutFunction } from '@/redux/reducers/user/actions';
+import { userLogoutFunction } from '@/redux/reducers/user/actions';
 import useFetchingContext from '@/contexts/backendConection/hook';
-import { useRouter } from 'next/navigation';
+import { makeStyles } from '@mui/styles'
 
 type Anchor = 'top' | 'left' | 'bottom' | 'right';
+
+const useStyles = makeStyles({
+    paper: {
+        background: '#0000007a',
+        backdropFilter: 'blur(5px)',
+    },
+});
 
 const Menu = () => {
     const dispatch = useAppDispatch()
     const fContext = useFetchingContext()
+    const classes = useStyles()
     
 
     const [state, setState] = React.useState({
@@ -71,9 +79,12 @@ const Menu = () => {
             <List>
                 <ListItem>
                     <ListItemIcon>
-                        <AccountCircleIcon sx={{ fontSize: 50 }} />
+                        <AccountCircleIcon color="secondary" sx={{ fontSize: 50 }} />
                     </ListItemIcon>
-                    <ListItemText primary={name} secondary={"Admin"} />
+                    <div>
+                        <ListItemText sx={{ color: "#fff "}} primary={name} />
+                        <ListItemText sx={{ color: "#7a7a7a", fontSize: "13px !important" }} primary={"Admin"} />
+                    </div>
                 </ListItem>
             </List>
             <Divider />
@@ -82,15 +93,15 @@ const Menu = () => {
                     <ListItem key={text} disablePadding>
                         <ListItemButton>
                             <ListItemIcon>
-                                <PeopleAltIcon />
+                                <PeopleAltIcon color="secondary" />
                             </ListItemIcon>
-                            <ListItemText primary={text} />
+                            <ListItemText sx={{ color: "#fff "}} primary={text} />
                         </ListItemButton>
                     </ListItem>
                 ))}
             </List>
             <List
-                sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
+                sx={{ width: '100%', maxWidth: 360 }}
                 component="nav"
                 aria-labelledby="nested-list-subheader"
             >
@@ -98,42 +109,42 @@ const Menu = () => {
                     handleClick();
                 }}>
                     <ListItemIcon>
-                        <EmojiEventsIcon />
+                        <EmojiEventsIcon color="secondary" />
                     </ListItemIcon>
-                    <ListItemText primary="Torneos" />
-                    {open ? <ExpandLess /> : <ExpandMore />}
+                    <ListItemText sx={{ color: "#fff "}} primary="Torneos" />
+                    {open ? <ExpandLess color="secondary" /> : <ExpandMore color="secondary" />}
                 </ListItemButton>
                 <Collapse in={open} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding>
                         <ListItemButton sx={{ pl: 4 }}>
                             <ListItemIcon>
-                                <DriveFileRenameOutlineIcon />
+                                <DriveFileRenameOutlineIcon color="secondary" />
                             </ListItemIcon>
                             <Link href={'/tournaments'} underline="none" color={"inherit"}>
-                                <ListItemText primary="Administrar Torneos" />
+                                <ListItemText sx={{ color: "#fff "}} primary="Administrar Torneos" />
                             </Link>
                         </ListItemButton>
                     </List>
                     <List component="div" disablePadding>
                         <ListItemButton sx={{ pl: 4 }}>
                             <ListItemIcon>
-                                <ChecklistIcon />
+                                <ChecklistIcon color="secondary" />
                             </ListItemIcon>
-                            <ListItemText primary="Torneos Activos" />
+                            <ListItemText sx={{ color: "#fff "}} primary="Torneos Activos" />
                         </ListItemButton>
                     </List>
                 </Collapse>
             </List>
             <List
-                sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper', position: 'absolute', bottom: 0 }}
+                sx={{ width: '100%', maxWidth: 360, position: 'absolute', bottom: 0 }}
                 component="nav"
                 aria-labelledby="nested-list-subheader"
             >
                 <ListItemButton onClick={handleLogout} sx={{ pl: 4 }}>
                     <ListItemIcon>
-                        <Logout />
+                        <Logout color='secondary' />
                     </ListItemIcon>
-                    <ListItemText primary="Cerrar Sesion" />
+                    <ListItemText sx={{ color: "#fff "}} primary="Cerrar Sesion" />
                 </ListItemButton>
             </List>
         </Box >
@@ -148,6 +159,9 @@ const Menu = () => {
                 <Drawer
                     anchor={"left"}
                     open={state["left"]}
+                    classes={{
+                        paper: classes.paper
+                    }}
                     onClose={toggleDrawer("left", false)}
                 >
                     {list("left")}
