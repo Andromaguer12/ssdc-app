@@ -30,9 +30,11 @@ const TournamentInformation = ({ tournamentId }: { tournamentId: string }) => {
             context: fbContext,
             id: tournamentId
         }))
-    }, [tournamentData]);
+    }, []);
     useEffect(() => {
         if (tournamentData) {
+            console.log(tournamentData, 'daa')
+            //console.log(round == -1 ? tournament.currentRound - 2 : round, '222')
             const array = tournamentData.table[round == -1 ? tournament.currentRound - 1 : round].standings.slice()
             const tableToSortArray = array.sort((a, b) => {
                 // Ordenar por victorias
@@ -97,7 +99,7 @@ const TournamentInformation = ({ tournamentId }: { tournamentId: string }) => {
                 <div className={style.tournamentInformationTableContainer}>
                     <div className={style.TournamentInformationTable}>
                         <Typography variant="h6">Tabla de Posiciones</Typography>
-                        <PositionTable data={tableToSort} />
+                        <PositionTable data={tableToSort} tournamentId={tournament.id} standingIndex={tournament.currentRound - 1} />
                     </div>
                     <div className={style.vsContainer}>
                         <Typography variant="h6">Enfrentamientos</Typography>

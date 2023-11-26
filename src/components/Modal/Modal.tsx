@@ -8,12 +8,14 @@ import { TablePlayers } from '@/typesDefs/constants/tournaments/types';
 import { MatchesForm } from '../MatchesForm/MatchesForm';
 import { SanctionForm } from '../SanctionForm/SanctionForm';
 
-const Modal = ({ setModal, userData, format, matchesData }:
+const Modal = ({ setModal, userData, format, matchesData, tournamentId, standingIndex }:
   {
     setModal: (boolean: boolean) => void,
     userData?: UserReducerInitialState,
     matchesData?: TablePlayers[][],
-    format: "tournament" | "user" | "matches" | "sanction"
+    format: "tournament" | "user" | "matches" | "sanction",
+    tournamentId?: string,
+    standingIndex?: number
   }
 ) => {
 
@@ -50,7 +52,7 @@ const Modal = ({ setModal, userData, format, matchesData }:
         <div className={style.Modal}>
           <section onSubmit={() => setModal(false)}>
             <ClearIcon onClick={() => setModal(false)} className={style.ModalCloseICon} />
-            {userData && <SanctionForm user={userData} format='cabra' />}
+            {userData && <SanctionForm user={userData} tournamentId={tournamentId} standingIndex={standingIndex ? standingIndex : 0} format='cabra' />}
           </section>
         </div>
       )

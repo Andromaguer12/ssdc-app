@@ -6,18 +6,23 @@ import { tournamentUpdateFunction } from '@/redux/reducers/tournament/actions';
 import useFirebaseContext from '@/contexts/firebaseConnection/hook';
 import { useAppDispatch, useAppSelector } from '@/redux/store';
 import { UserReducerInitialState } from '@/redux/reducers/user/actions';
+import { TableInterface } from '@/typesDefs/constants/tournaments/types';
 
 
 
-const SanctionForm = ({ user, format }: {
-    user: UserReducerInitialState, format: string
+const SanctionForm = ({ user, format, tournamentId, standingIndex }: {
+    user: UserReducerInitialState, format: string, tournamentId?: string, standingIndex: number
 }) => {
     const dispatch = useAppDispatch();
     const fbContext = useFirebaseContext();
     const tournaments = useAppSelector(state => state.tournamentList.data);
-    const tournamentToUpdate = tournaments.filter(tournament => tournament.table.filter(team => team.team[0].id == user.id))[0]
+    const tournamentToUpdate = tournaments.filter(tournament => tournament.id === tournamentId)[0]
 
     const [tournamentToSend, setTournamentToSend] = useState(tournamentToUpdate);
+
+    useEffect(() => {
+        console.log(tournamentToUpdate, 'torneo')
+    }, [tournamentToUpdate])
 
     /* useEffect(() => {
         dispatch(tournamentUpdateFunction({
@@ -27,7 +32,43 @@ const SanctionForm = ({ user, format }: {
         }))
     }, [tournamentToSend]) */
 
-    const handleClick = () => {
+    const handleAddSanction = (sanctionToAdd: 'Pase agachado' | 'Cabra') => {
+        console.log(standingIndex, 'index')
+        const standingToSend = tournamentToSend.table[standingIndex].standings.map(player => {
+            if (player.team[0].id === user.id) {
+                return {
+                    ...player,
+                    sanction: sanctionToAdd,
+                    points: 0,
+                    lost: player.lost + 1
+                }
+            } else {
+                return {
+                    ...player,
+                }
+            }
+        })
+        const tableToSend = tournamentToSend.table.map((table, index) => {
+            if (index === standingIndex) {
+                return {
+                    ...table,
+                    standings: standingToSend
+                }
+            } else {
+                return {
+                    ...table
+                }
+            }
+        })
+
+        console.log(standingToSend, 'aaa')
+
+        setTournamentToSend({
+            ...tournamentToSend,
+            table: tableToSend,
+        })
+    }
+    const handleSubmit = () => {
         dispatch(tournamentUpdateFunction({
             context: fbContext,
             payload: tournamentToSend,
@@ -48,36 +89,10 @@ const SanctionForm = ({ user, format }: {
                 fullWidth={true}
                 size='large'
             >
-                <Button fullWidth={true} size='large' onClick={() => {
-                    setTournamentToSend(prev => ({
-                        ...prev,
-                        table: prev.table.map((player) => {
-                            if (player.team[0].id == user.id) {
-                                return {
-                                    ...player,
-                                    sanction: 'Pase agachado'
-                                }
-                            }
-                            return player
-                        })
-                    }))
-                }} >Pase agachado</Button>
-                <Button fullWidth={true} size='large' onClick={() => {
-                    setTournamentToSend(prev => ({
-                        ...prev,
-                        table: prev.table.map((player) => {
-                            if (player.team[0].id == user.id) {
-                                return {
-                                    ...player,
-                                    sanction: 'Cabra'
-                                }
-                            }
-                            return player
-                        })
-                    }))
-                }}>Cabra</Button>
+                <Button fullWidth={true} size='large' onClick={() => handleAddSanction('Pase agachado')} >Pase agachado</Button>
+                <Button fullWidth={true} size='large' onClick={() => handleAddSanction('Cabra')}>Cabra</Button>
             </ButtonGroup>
-            <Button fullWidth={true} size='large' onClick={handleClick}>Confirmar</Button>
+            <Button fullWidth={true} size='large' onClick={handleSubmit}>Confirmar</Button>
         </form>
     )
 }

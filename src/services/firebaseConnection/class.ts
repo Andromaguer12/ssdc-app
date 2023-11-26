@@ -149,7 +149,7 @@ class Firebase {
     return await setDoc(doc(this.db, "tournaments", tournament.id), {
       ...tournament,
       table: table,
-      currentRound: payload.currentRound + 1,
+      //currentRound: payload.currentRound + 1,
     });
   }
   /**
