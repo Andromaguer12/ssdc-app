@@ -22,9 +22,9 @@ const Tournaments = () => {
     }, [])
     return (
         <section className={style.Tournaments}>
-            <Typography variant='h3'>Torneos</Typography>
+            <Typography sx={{ marginLeft: '0px' }} color="secondary" variant='h3'>Torneos</Typography>
             <div className={style.TournamentsListContainer}>
-                <section>
+                <div className={style.header}>
                     <Typography variant='h5'>Lista de torneos</Typography>
                     <Button variant="contained"
                         color="primary"
@@ -34,7 +34,7 @@ const Tournaments = () => {
                         onClick={() => setModal(true)}>
                         Crear torneo
                     </Button>
-                </section>
+                </div>
                 <TournamentsList />
             </div>
             {modal && <Modal setModal={() => setModal(false)} format="tournament" />}

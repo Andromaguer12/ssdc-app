@@ -125,14 +125,14 @@ const Menu = () => {
                             </Link>
                         </ListItemButton>
                     </List>
-                    <List component="div" disablePadding>
+                    {/* <List component="div" disablePadding>
                         <ListItemButton sx={{ pl: 4 }}>
                             <ListItemIcon>
                                 <ChecklistIcon color="secondary" />
                             </ListItemIcon>
                             <ListItemText sx={{ color: "#fff "}} primary="Torneos Activos" />
                         </ListItemButton>
-                    </List>
+                    </List> */}
                 </Collapse>
             </List>
             <List

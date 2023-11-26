@@ -56,8 +56,8 @@ export default function ActionsMenu({ tournament }: { tournament: TournamentRedu
                 <MenuItem onClick={handleClose}>
                     <Link href={`/tournaments/${tournament.id}`} underline="none" color={"inherit"}>Informacion</Link>
                 </MenuItem>
-                <MenuItem onClick={handleClose}>Editar</MenuItem>
-                <MenuItem onClick={handleClose}>Terminar Torneo</MenuItem>
+                {/* <MenuItem onClick={handleClose}>Editar</MenuItem> */}
+                {/* <MenuItem onClick={handleClose}>Terminar Torneo</MenuItem> */}
             </Menu>
         </div>
     );
@@ -75,54 +75,47 @@ const TournamentsList = () => {
         dispatch(getTournamentsList({
             context: fbContext,
         })).then(() => setLoading(false));
-    }, [TournamentList]);
+    }, []);
 
-    if (!loading) {
-        return (
-            <section>
-                <TableContainer component={Paper}>
-                    <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>Torneo</TableCell>
-                                <TableCell align="right">Estado</TableCell>
-                                <TableCell align="right">Participantes</TableCell>
-                                <TableCell align="right">Rondas</TableCell>
-                                <TableCell align="right">Fecha</TableCell>
-                                <TableCell align="right">Acciones</TableCell>
+    return (
+        <div>
+            <TableContainer component={Paper}>
+                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>Torneo</TableCell>
+                            <TableCell align="right">Estado</TableCell>
+                            <TableCell align="right">Participantes</TableCell>
+                            <TableCell align="right">Rondas</TableCell>
+                            <TableCell align="right">Fecha</TableCell>
+                            <TableCell align="right">Acciones</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {TournamentList.map((tournament) => (
+                            <TableRow
+                                key={tournament.name}
+                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                className={style.TournamentListRow}
+                            >
+                                <TableCell component="th" scope="row">
+                                    {tournament.name}
+                                </TableCell>
+                                <TableCell align="right">
+                                    {tournament.currentRound > 5 ? "Terminado" : "En curso..."}
+                                </TableCell>
+                                <TableCell align="right">{tournament.table.length}</TableCell>
+                                <TableCell align="right">{tournament.currentRound}</TableCell>
+                                <TableCell align="right">{tournament.startDate}</TableCell>
+                                <TableCell align="right">
+                                    <ActionsMenu tournament={tournament} />
+                                </TableCell>
                             </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {TournamentList.map((tournament) => (
-                                <TableRow
-                                    key={tournament.name}
-                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                    className={style.TournamentListRow}
-                                >
-                                    <TableCell component="th" scope="row">
-                                        {tournament.name}
-                                    </TableCell>
-                                    <TableCell align="right">
-                                        {tournament.currentRound > 5 ? "Terminado" : "En curso..."}
-                                    </TableCell>
-                                    <TableCell align="right">{tournament.table.length}</TableCell>
-                                    <TableCell align="right">{tournament.currentRound}</TableCell>
-                                    <TableCell align="right">{tournament.startDate}</TableCell>
-                                    <TableCell align="right">
-                                        <ActionsMenu tournament={tournament} />
-                                    </TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            </section>
-        )
-    } else return (
-        <Stack spacing={1}>
-            <Skeleton variant="rectangular" width={850} height={68} animation="wave" />
-            <Skeleton variant="rounded" width={850} height={130} animation="wave" />
-        </Stack>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+        </div>
     )
 }
 
