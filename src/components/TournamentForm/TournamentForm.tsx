@@ -63,7 +63,7 @@ const TournamentForm = () => {
     }))
   }
   const handleSelectChange = (id: string) => {
-    if(usersName.includes(id)){
+    if (usersName.includes(id)) {
       setUsersName(usersName.filter(d => d !== id))
     } else {
       setUsersName(usersName.concat([id]))
@@ -75,11 +75,11 @@ const TournamentForm = () => {
   const handleSubmit = useCallback((event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log('entro aqui')
-    if((!formData.name || usersName.length < 20 || !(usersName.length % 4 === 0))) {
-      if(!(usersName.length % 4 === 0) || usersName.length < 20) {
+    if ((!formData.name || usersName.length < 20 || !(usersName.length % 4 === 0))) {
+      if (!(usersName.length % 4 === 0) || usersName.length < 20) {
         setError(`El torneo debe tener al menos 20 integrantes y de numero de integrantes debe ser multiplo de 4, es decir que el torneo no puede ser de ${usersName.length} integrantes`)
       }
-      if(!formData.name) {
+      if (!formData.name) {
         setError('Rellena todos los campos por favor')
       }
 
@@ -87,13 +87,13 @@ const TournamentForm = () => {
     }
 
     setError("");
-    console.log(formData)
-    // dispatch(tournamentCreateFunction({
-    //   context: fbContext,
-    //   tournamentData: formData
-    // }));
+    console.log(formData, 'pa')
+    dispatch(tournamentCreateFunction({
+      context: fbContext,
+      tournamentData: formData
+    }));
   }, [formData, usersName])
-  
+
 
   useEffect(() => {
     dispatch(getUsersList({
@@ -103,10 +103,12 @@ const TournamentForm = () => {
 
   useEffect(() => {
     const usersToAdd = usersName.map(name => {
-      const list = userList.filter(user => user.name === name)
+      const list = userList.filter(user => user.id === name)
       const user = list[0];
       return user;
     });
+    console.log(userList, 'lisrt')
+    console.log(usersToAdd)
     const tableToAdd: TablePlayers[] = usersToAdd.map((user, index) => ({
       team: [user],
       won: 0,
@@ -222,9 +224,9 @@ const TournamentForm = () => {
       {/* Validacion de datos del formulario*/}
       {error && <CustomizedAlert noElevation type='error' message={error} />}
       <Button fullWidth disableElevation variant="contained" color="primary" type="submit" className={style.TournamentFormButton}>
-          Enviar
+        Enviar
       </Button>
-      
+
     </form>
   )
 }

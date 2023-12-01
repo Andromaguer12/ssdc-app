@@ -47,10 +47,10 @@ export default function ActionsPlayerMenu({ setModal }: { setModal: (boolean: bo
                     horizontal: 'left',
                 }}
             >
-                <MenuItem onClick={() => {
+                {/*<MenuItem onClick={() => {
                     handleClose();
                     setModal(true);
-                }}>Sancionar jugador</MenuItem>
+                }}>Sancionar jugador</MenuItem>*/}
 
                 <MenuItem onClick={handleClose}>Eliminar jugador</MenuItem>
             </Menu>
@@ -73,7 +73,7 @@ const PositionTable = ({ data, tournamentId, standingIndex }
                         <TableCell sx={{ color: '#fff' }} align="center">Derrotas</TableCell>
                         <TableCell sx={{ color: '#fff' }} align="center">Efectividad</TableCell>
                         <TableCell sx={{ color: '#fff' }} align="center">Puntos</TableCell>
-                        <TableCell sx={{ color: '#fff' }} align="center">Sancion</TableCell>
+                        {/* <TableCell sx={{ color: '#fff' }} align="center">Sancion</TableCell> */}
                         <TableCell sx={{ color: '#fff' }} align="center"></TableCell>
                     </TableRow>
                 </TableHead>
@@ -91,7 +91,7 @@ const PositionTable = ({ data, tournamentId, standingIndex }
                             <TableCell align="center">{team.lost}</TableCell>
                             <TableCell align="center">{team.difference}</TableCell>
                             <TableCell align="center">{team.points}</TableCell>
-                            <TableCell align="center">{team.sanction ? team.sanction : ''}</TableCell>
+                            { /*<TableCell align="center">{team.sanction ? team.sanction : ''}</TableCell>*/}
                             <TableCell align="center">
                                 <div onClick={() => setSanctionUser(team.team[0])}>
                                     <ActionsPlayerMenu setModal={setModal} />
