@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from '@/redux/store';
 import useFirebaseContext from '@/contexts/firebaseConnection/hook';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import Modal from '@/components/Modal/Modal';
+import { getTournamentsList } from '@/redux/reducers/tournamentsList/actions';
 
 const Tournaments = () => {
     const dispatch = useAppDispatch();
@@ -20,6 +21,13 @@ const Tournaments = () => {
             context: fbContext,
         }))
     }, [])
+
+    const handleReloadData = () => {
+        dispatch(getTournamentsList({
+            context: fbContext,
+        }));
+    }
+
     return (
         <section className={style.Tournaments}>
             <Typography sx={{ marginLeft: '0px' }} color="secondary" variant='h3'>Torneos</Typography>
@@ -37,7 +45,7 @@ const Tournaments = () => {
                 </div>
                 <TournamentsList />
             </div>
-            {modal && <Modal setModal={() => setModal(false)} format="tournament" />}
+            {modal && <Modal handleReloadData={handleReloadData} setModal={() => setModal(false)} format="tournament" />}
         </section>
     )
 }

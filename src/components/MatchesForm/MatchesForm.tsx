@@ -8,7 +8,7 @@ import { useAppDispatch, useAppSelector } from '@/redux/store';
 import useFirebaseContext from '@/contexts/firebaseConnection/hook';
 import MatchesResultsCard from './components/MatchesResultsCard';
 
-const MatchesForm = ({ data, handleReloadData }: { data: TablePlayers[][], handleReloadData: () => any }) => {
+const MatchesForm = ({ data, handleReloadData }: { data: TablePlayers[][], handleReloadData?: () => any }) => {
     const dispatch = useAppDispatch();
     const fbContext = useFirebaseContext();
 

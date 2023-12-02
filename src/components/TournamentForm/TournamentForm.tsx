@@ -28,7 +28,7 @@ import CustomizedAlert from '../CustomizedAlert/CustomizedAlert';
 import style from "./TournamentForm.module.scss";
 import { emptyTournamentinitialState } from '@/typesDefs/constants/tournaments/emptyTournamentInitialState';
 
-const TournamentForm = ({ handleReloadData }: { handleReloadData: () => any }) => {
+const TournamentForm = ({ handleReloadData }: { handleReloadData?: () => any }) => {
 
   const fbContext = useFirebaseContext();
   const userList = useAppSelector(state => state.usersList.data);

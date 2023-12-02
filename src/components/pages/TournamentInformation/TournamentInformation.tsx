@@ -59,6 +59,7 @@ const TournamentInformation = ({ tournamentId }: { tournamentId: string }) => {
             setTableToSort(tableToSortArray)
             setMatches(matchesArray)
             setTournament(tournamentData)
+            setRound(tournamentData.table && tournamentData.table.length > 0 ? tournamentData.table.length - 1 : 0)
         }
     }, [tournamentData, round])
 

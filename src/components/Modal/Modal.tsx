@@ -15,7 +15,8 @@ const Modal = ({ setModal, userData, format, matchesData, tournamentId, handleRe
     matchesData?: TablePlayers[][],
     format: "tournament" | "user" | "matches" | "sanction",
     tournamentId?: string,
-    standingIndex?: number
+    standingIndex?: number,
+    handleReloadData?: () => any
   }
 ) => {
 
