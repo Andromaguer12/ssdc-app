@@ -23,6 +23,7 @@ const TournamentInformation = ({ tournamentId }: { tournamentId: string }) => {
     const [tableToSort, setTableToSort] = useState(emptyTournamentinitialState.table[0].standings)
     const [round, setRound] = useState(-1)
     const { loading } = useAppSelector(({ tournamentList }) => tournamentList)
+    const loadingUpdateTournament = useAppSelector(state => state.tournament.loading)
 
     const tournamentData = useAppSelector(state => state.tournamentList.data[0]);
 
@@ -31,7 +32,7 @@ const TournamentInformation = ({ tournamentId }: { tournamentId: string }) => {
             context: fbContext,
             id: tournamentId
         }))
-    }, [/**SuccessUpdateTournament */]);
+    }, [/**SuccessUpdateTournament */loadingUpdateTournament]);
     useEffect(() => {
         if (tournamentData) {
             const array = tournamentData.table[round == -1 ? tournament.currentRound - 1 : round].standings.slice()
