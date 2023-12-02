@@ -8,7 +8,7 @@ import { useAppDispatch, useAppSelector } from '@/redux/store';
 import useFirebaseContext from '@/contexts/firebaseConnection/hook';
 import MatchesResultsCard from './components/MatchesResultsCard';
 
-const MatchesForm = ({ data }: { data: TablePlayers[][] }) => {
+const MatchesForm = ({ data, handleReloadData }: { data: TablePlayers[][], handleReloadData: () => any }) => {
     const dispatch = useAppDispatch();
     const fbContext = useFirebaseContext();
 
@@ -16,7 +16,7 @@ const MatchesForm = ({ data }: { data: TablePlayers[][] }) => {
 
     const tournament = useAppSelector(state => state.tournamentList.data[0]);
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
         const matchInfoToSend = data.map((match, i) => {
@@ -65,7 +65,7 @@ const MatchesForm = ({ data }: { data: TablePlayers[][] }) => {
             }
         })
 
-        dispatch(tournamentUpdateFunction({
+        await dispatch(tournamentUpdateFunction({
             context: fbContext,
             payload: {
                 ...tournament,
@@ -78,6 +78,8 @@ const MatchesForm = ({ data }: { data: TablePlayers[][] }) => {
             },
             tournament: tournament
         }))
+
+        if (handleReloadData) handleReloadData()
     };
 
     return (

@@ -28,7 +28,7 @@ import CustomizedAlert from '../CustomizedAlert/CustomizedAlert';
 import style from "./TournamentForm.module.scss";
 import { emptyTournamentinitialState } from '@/typesDefs/constants/tournaments/emptyTournamentInitialState';
 
-const TournamentForm = () => {
+const TournamentForm = ({ handleReloadData }: { handleReloadData: () => any }) => {
 
   const fbContext = useFirebaseContext();
   const userList = useAppSelector(state => state.usersList.data);
@@ -72,9 +72,8 @@ const TournamentForm = () => {
   const handleCheckAll = () => {
     setUsersName(userList.map(u => u.id))
   };
-  const handleSubmit = useCallback((event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = useCallback(async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log('entro aqui')
     if ((!formData.name || usersName.length < 20 || !(usersName.length % 4 === 0))) {
       if (!(usersName.length % 4 === 0) || usersName.length < 20) {
         setError(`El torneo debe tener al menos 20 integrantes y de numero de integrantes debe ser multiplo de 4, es decir que el torneo no puede ser de ${usersName.length} integrantes`)
@@ -87,11 +86,11 @@ const TournamentForm = () => {
     }
 
     setError("");
-    console.log(formData, 'pa')
-    dispatch(tournamentCreateFunction({
+    await dispatch(tournamentCreateFunction({
       context: fbContext,
       tournamentData: formData
     }));
+    if(handleReloadData) handleReloadData()
   }, [formData, usersName])
 
 

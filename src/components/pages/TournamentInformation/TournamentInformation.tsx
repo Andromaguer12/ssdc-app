@@ -70,6 +70,13 @@ const TournamentInformation = ({ tournamentId }: { tournamentId: string }) => {
         // }))
     }
 
+    const handleReloadData = () => {
+        dispatch(tournamentGetById({
+            context: fbContext,
+            id: tournamentId
+        }))
+    }
+
     const isTournamentFinish = (tournament.currentRound > 5) && (tableToSort[0].points !== tableToSort[1].points); // pendiente por acomodar
 
     return (
@@ -85,9 +92,14 @@ const TournamentInformation = ({ tournamentId }: { tournamentId: string }) => {
 
             {!loading && tournamentData &&
                 <>
-                    <div className={style.TournamentInformationHeader}>
-                        <Typography variant="h2" color="secondary">{tournament.name}</Typography>
-                        <Typography variant="h6" color="secondary">({tournament.game})</Typography>
+                    <div className={style.titleAndRound}>
+                        <div className={style.TournamentInformationHeader}>
+                            <Typography variant="h2" color="secondary">{tournament.name}</Typography>
+                            <Typography variant="h6" color="secondary">({tournament.game})</Typography>
+                        </div>
+                        <div className={style.TournamentInformationHeader}>
+                            <Typography variant="h4" color="secondary">Ronda actual: {round + 1}</Typography>
+                        </div>
                     </div>
                     {isTournamentFinish
                         && <Typography variant="h6">Ganador: {tableToSort[0].team[0].name}</Typography>}
@@ -98,7 +110,7 @@ const TournamentInformation = ({ tournamentId }: { tournamentId: string }) => {
                         <div className={style.buttons}>
                             {tournamentData.table.map((tab, index) => {
                                 return (
-                                    <div className={style.button}
+                                    <div className={index == round ? style.button__selectedButton : style.button}
                                         onClick={() => setRound(index)} >
                                         <Typography>Ronda {index + 1}</Typography>
                                     </div>
@@ -113,11 +125,11 @@ const TournamentInformation = ({ tournamentId }: { tournamentId: string }) => {
                             >
                                 Terminar torneo
                             </Button>
-                            <Button disableElevation variant="contained" color="primary"
+                            {/* <Button disableElevation variant="contained" color="primary"
                                 onClick={() => setRound(round >= tournament.currentRound ? 1 : round + 1)}
                                 className={"style.TournamentFormButton"}>
                                 Cambiar ronda
-                            </Button>
+                            </Button> */}
                         </div>
                     </div>
                     <div className={style.tournamentInformationTableContainer}>
@@ -125,26 +137,29 @@ const TournamentInformation = ({ tournamentId }: { tournamentId: string }) => {
                             <Typography color="secondary" variant="h6">Tabla de Posiciones</Typography>
                             <PositionTable data={tableToSort} />
                         </div>
-                        <div className={style.vsContainer}>
-                            <Typography color="secondary" variant="h6">Enfrentamientos</Typography>
-                            <MatchesTable data={matches} />
-                            {(round + 1 === tournament.currentRound || round === -1) && <Button
-                                fullWidth
-                                disableElevation
-                                variant="contained"
-                                color="primary"
-                                onClick={() => setModal(true)}
-                                className={"style.TournamentFormButton"}
-                            >
-                                Registrar resultados
-                            </Button>}
+                        <div className={style.vsContainerAndPreviousResults}>
+                            <div className={style.vsContainer}>
+                                <Typography color="secondary" variant="h6">Enfrentamientos</Typography>
+                                <MatchesTable data={matches} />
+                                {(round + 1 === tournament.currentRound || round === -1) && <Button
+                                    fullWidth
+                                    disableElevation
+                                    variant="contained"
+                                    color="secondary"
+                                    onClick={() => setModal(true)}
+                                    sx={{ fontWeight: 'bold'}}
+                                    className={"style.TournamentFormButton"}
+                                >
+                                    Registrar resultados
+                                </Button>}
+                            </div>
+                            {tournamentData.table[round == -1 ? tournament.currentRound - 1 : round].results.length > 0 && <div className={style.vsContainer}>
+                                <Typography color="secondary" variant="h6">Resultados de la ronda anterior</Typography>
+                                <ResultsTable data={tournamentData.table[round == -1 ? tournament.currentRound - 1 : round].results} />
+                            </div>}
                         </div>
-                        {tournamentData.table[round == -1 ? tournament.currentRound - 1 : round].results.length > 0 && <div className={style.vsContainer}>
-                            <Typography color="secondary" variant="h6">Resultados de la ronda anterior</Typography>
-                            <ResultsTable data={tournamentData.table[round == -1 ? tournament.currentRound - 1 : round].results} />
-                        </div>}
                     </div>
-                    {modal && <Modal setModal={() => setModal(false)} format="matches" matchesData={matches} />}
+                    {modal && <Modal setModal={() => setModal(false)} handleReloadData={handleReloadData} format="matches" matchesData={matches} />}
                 </>
             }
         </section>

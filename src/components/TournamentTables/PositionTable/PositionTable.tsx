@@ -73,7 +73,6 @@ const PositionTable = ({ data, tournamentId, standingIndex }
                         <TableCell sx={{ color: '#fff' }} align="center">Derrotas</TableCell>
                         <TableCell sx={{ color: '#fff' }} align="center">Efectividad</TableCell>
                         <TableCell sx={{ color: '#fff' }} align="center">Puntos</TableCell>
-                        {/* <TableCell sx={{ color: '#fff' }} align="center">Sancion</TableCell> */}
                         <TableCell sx={{ color: '#fff' }} align="center"></TableCell>
                     </TableRow>
                 </TableHead>
@@ -84,13 +83,13 @@ const PositionTable = ({ data, tournamentId, standingIndex }
                             sx={{ '&:last-child td, &:last-child th': { border: 0 }, background: index % 2 == 0 ? '#fff' : '#e7e7e7' }}
                         >
                             <TableCell align="center">{index + 1}</TableCell>
-                            <TableCell component="th" scope="row" align="center">
+                            <TableCell component="th" scope="row" align="center" sx={{ fontSize: '18px' }}>
                                 {team.team.map(user => user.name).toString()}
                             </TableCell>
-                            <TableCell align="center">{team.won}</TableCell>
-                            <TableCell align="center">{team.lost}</TableCell>
-                            <TableCell align="center">{team.difference}</TableCell>
-                            <TableCell align="center">{team.points}</TableCell>
+                            <TableCell align="center" sx={{ color: 'darkblue', fontWeight: 'bold' }}>{team.won}</TableCell>
+                            <TableCell align="center" sx={{ color: 'orange', fontWeight: 'bold' }}>{team.lost}</TableCell>
+                            <TableCell align="center" sx={{ color: team.difference > 0 ? 'green' : 'red', fontWeight: 'bold' }}>{team.difference > 0 ? '+' : ''}{team.difference}</TableCell>
+                            <TableCell align="center" sx={{ color: 'blue', fontWeight: 'bold' }}>{team.points}</TableCell>
                             { /*<TableCell align="center">{team.sanction ? team.sanction : ''}</TableCell>*/}
                             <TableCell align="center">
                                 <div onClick={() => setSanctionUser(team.team[0])}>

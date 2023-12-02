@@ -8,7 +8,7 @@ import { TablePlayers } from '@/typesDefs/constants/tournaments/types';
 import { MatchesForm } from '../MatchesForm/MatchesForm';
 import { SanctionForm } from '../SanctionForm/SanctionForm';
 
-const Modal = ({ setModal, userData, format, matchesData, tournamentId, standingIndex }:
+const Modal = ({ setModal, userData, format, matchesData, tournamentId, handleReloadData, standingIndex }:
   {
     setModal: (boolean: boolean) => void,
     userData?: UserReducerInitialState,
@@ -34,7 +34,7 @@ const Modal = ({ setModal, userData, format, matchesData, tournamentId, standing
         <div className={style.Modal}>
           <section onSubmit={() => setModal(false)}>
             <ClearIcon onClick={() => setModal(false)} className={style.ModalCloseICon} />
-            <TournamentForm />
+            <TournamentForm handleReloadData={handleReloadData} />
           </section>
         </div>
       )
@@ -43,7 +43,7 @@ const Modal = ({ setModal, userData, format, matchesData, tournamentId, standing
         <div className={style.Modal}>
           <section onSubmit={() => setModal(false)}>
             <ClearIcon onClick={() => setModal(false)} className={style.ModalCloseICon} />
-            {matchesData && <MatchesForm data={matchesData} />}
+            {matchesData && <MatchesForm handleReloadData={handleReloadData} data={matchesData} />}
           </section>
         </div>
       )
