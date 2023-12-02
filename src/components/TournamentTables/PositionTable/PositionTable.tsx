@@ -59,7 +59,7 @@ export default function ActionsPlayerMenu({ setModal }: { setModal: (boolean: bo
 }
 
 const PositionTable = ({ data, tournamentId, standingIndex }
-    : { data: TablePlayers[], tournamentId: string, standingIndex: number }) => {
+    : { data: TablePlayers[], tournamentId?: string, standingIndex?: number }) => {
     const [modal, setModal] = useState<boolean>(false);
     const [sanctionUser, setSanctionUser] = useState<UserReducerInitialState>(data[0].team[0]);
     return (
@@ -102,7 +102,7 @@ const PositionTable = ({ data, tournamentId, standingIndex }
                 </TableBody>
             </Table>
             {modal && <Modal setModal={() => setModal(false)} format="sanction"
-                tournamentId={tournamentId} standingIndex={standingIndex} userData={sanctionUser} />}
+               /* tournamentId={tournamentId} standingIndex={standingIndex} */ userData={sanctionUser} />}
         </TableContainer>
     )
 }

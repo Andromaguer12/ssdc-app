@@ -3,7 +3,7 @@ import { createUserWithEmailAndPassword, signOut, deleteUser, getAuth, signInWit
 import { collection, doc, getDoc, getDocs, getFirestore, query, where, setDoc, addDoc, deleteDoc } from 'firebase/firestore'
 import initFirebaseFunction from './firebaseInitConfig';
 import { UserReducerInitialState } from '@/redux/reducers/user/actions';
-import { TablePlayers, TournamentFormat, TournamentInterface } from '@/typesDefs/constants/tournaments/types';
+import { TableInterface, TablePlayers, TournamentFormat, TournamentInterface } from '@/typesDefs/constants/tournaments/types';
 import { UserInterface } from '@/typesDefs/constants/users/types';
 import { TournamentReducerInitialState } from '@/redux/reducers/tournament/actions';
 
@@ -122,7 +122,7 @@ class Firebase {
     endDate: string,
     currentRound: number,
     winner: UserInterface | null,
-    table: TablePlayers[],
+    table: TableInterface[],
     game: 'Domino'
   ) {
 
@@ -146,10 +146,11 @@ class Firebase {
 
   async updateTournament(tournament: TournamentReducerInitialState, payload: TournamentReducerInitialState) {
     const table = payload.table
+    const currentRound = payload.currentRound
     return await setDoc(doc(this.db, "tournaments", tournament.id), {
       ...tournament,
       table: table,
-      //currentRound: payload.currentRound + 1,
+      currentRound: currentRound,
     });
   }
 

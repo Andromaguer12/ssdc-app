@@ -1,22 +1,20 @@
 'use client'
-import { TableInterface, TablePlayers } from '@/typesDefs/constants/tournaments/types'
-import { Button, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, TextField, Typography } from '@mui/material'
-import React, { useEffect, useState, useCallback } from 'react'
+import { ResultsFormat, TablePlayers } from '@/typesDefs/constants/tournaments/types'
+import { Button, Typography } from '@mui/material'
+import React, { useState, } from 'react'
 import style from './MatchesForm.module.scss';
 import { tournamentUpdateFunction } from '@/redux/reducers/tournament/actions';
 import { useAppDispatch, useAppSelector } from '@/redux/store';
-
 import useFirebaseContext from '@/contexts/firebaseConnection/hook';
-import { styles } from '../commonLayout/Footer/styles/sxStyles';
 import MatchesResultsCard from './components/MatchesResultsCard';
-
 
 const MatchesForm = ({ data }: { data: TablePlayers[][] }) => {
     const dispatch = useAppDispatch();
     const fbContext = useFirebaseContext();
-    const tournament = useAppSelector(state => state.tournamentList.data[0]);
-    const [winnersList, setWinnersList] = useState<string[]>([]);
+
     const [results, setResults] = useState<any>({})
+
+    const tournament = useAppSelector(state => state.tournamentList.data[0]);
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -58,6 +56,15 @@ const MatchesForm = ({ data }: { data: TablePlayers[][] }) => {
 
         })
 
+        const resultsToSend: ResultsFormat[] = matchInfoToSend.map((match, index) => {
+            return {
+                winner: match.winner,
+                loser: match.loser,
+                match: index,
+                result: match.points
+            }
+        })
+
         dispatch(tournamentUpdateFunction({
             context: fbContext,
             payload: {
@@ -65,19 +72,13 @@ const MatchesForm = ({ data }: { data: TablePlayers[][] }) => {
                 currentRound: tournament.currentRound + 1,
                 table: [...tournament.table, {
                     ...tournament.table[tournament.currentRound - 1],
-                    standings: standingsToSend
+                    standings: standingsToSend,
+                    results: resultsToSend,
                 }]
             },
             tournament: tournament
         }))
     };
-
-    // Actualiza los resultados de los match
-    useEffect(() => {
-
-    }, [winnersList.length >= data.length]);
-
-
 
     return (
         <form className={style.MatchesForm} onSubmit={handleSubmit}>
