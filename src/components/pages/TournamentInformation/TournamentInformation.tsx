@@ -36,6 +36,7 @@ const TournamentInformation = ({ tournamentId }: { tournamentId: string }) => {
     }, [/**SuccessUpdateTournament */loadingUpdateTournament]);
     useEffect(() => {
         if (tournamentData) {
+            console.log(tournament.winner)
             const array = tournamentData.table[round == -1 ? tournament.currentRound - 1 : round].standings.slice()
             const tableToSortArray = array.sort((a, b) => {
                 // Ordenar por victorias
@@ -62,7 +63,8 @@ const TournamentInformation = ({ tournamentId }: { tournamentId: string }) => {
             setTournament(tournamentData)
             //setRound(tournamentData.table && tournamentData.table.length > 0 ? tournamentData.table.length - 1 : 0)
 
-            if ((tournament.currentRound > 5) && (tableToSort[0].points !== tableToSort[1].points) && !tournamentData.winner) {
+            if ((tournament.currentRound > 5) && (tableToSort[0].won !== tableToSort[1].won) && !tournamentData.winner) {
+                console.log('hp;a')
                 dispatch(tournamentUpdateFunction({
                     context: fbContext,
                     payload: {
@@ -94,7 +96,7 @@ const TournamentInformation = ({ tournamentId }: { tournamentId: string }) => {
         }))
     }
 
-    const showWinnerCard = tournament.format === 'individual' ? tournament.table.length  === 6 : false 
+    //const showWinnerCard = tournament.format === 'individual' ? tournament.table.length === 6 : false
 
     return (
         <section className={style.TournamentInformation}>
@@ -115,7 +117,7 @@ const TournamentInformation = ({ tournamentId }: { tournamentId: string }) => {
                             <Typography variant="h6" color="secondary">({tournament.game})</Typography>
                         </div>
                         <div className={style.TournamentInformationHeader}>
-                            <Typography variant="h4" color="secondary">Ronda actual: {round <  0 ? 1  : round + 1}</Typography>
+                            <Typography variant="h4" color="secondary">Ronda actual: {round < 0 ? 1 : round + 1}</Typography>
                         </div>
                     </div>
                     {tournament.winner
@@ -123,8 +125,8 @@ const TournamentInformation = ({ tournamentId }: { tournamentId: string }) => {
                     <Typography color="secondary" variant="h6">Formato del torneo: {tournament.format}</Typography>
                     <Typography color="secondary" variant="h6">Fecha de inicio: {tournament.startDate}</Typography>
                     <Typography color="secondary" variant="h6">Rondas jugadas: {tournament.table.length ? tournament.table.length - 1 : 0}</Typography>
-                    {showWinnerCard && <FinishedTournamentResumeCard data={tournamentData.table[tournamentData.currentRound - 1].standings.slice(0, 5)} />}
-                    {!showWinnerCard && <>
+                    {tournament.winner && <FinishedTournamentResumeCard data={tableToSort.slice(0, 5)} />}
+                    {!tournament.winner && <>
                         <div className={style.roundsButtons}>
                             <div className={style.buttons}>
                                 {tournamentData.table.map((tab, index) => {
