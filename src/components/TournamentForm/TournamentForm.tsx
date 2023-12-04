@@ -74,6 +74,7 @@ const TournamentForm = ({ handleReloadData }: { handleReloadData?: () => any }) 
   };
   const handleSubmit = useCallback(async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    console.log((!formData.name || usersName.length < 20 || !(usersName.length % 4 === 0)))
     if ((!formData.name || usersName.length < 20 || !(usersName.length % 4 === 0))) {
       if (!(usersName.length % 4 === 0) || usersName.length < 20) {
         setError(`El torneo debe tener al menos 20 integrantes y de numero de integrantes debe ser multiplo de 4, es decir que el torneo no puede ser de ${usersName.length} integrantes`)
@@ -106,8 +107,6 @@ const TournamentForm = ({ handleReloadData }: { handleReloadData?: () => any }) 
       const user = list[0];
       return user;
     });
-    console.log(userList, 'lisrt')
-    console.log(usersToAdd)
     const tableToAdd: TablePlayers[] = usersToAdd.map((user, index) => ({
       team: [user],
       won: 0,

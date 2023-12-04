@@ -8,7 +8,7 @@ const FinishedTournamentResumeCard = ({ data }
 
     return (
         <section>
-            <Typography variant="h3">Resumen del torneo (TOP 5)</Typography>
+            <Typography color={'secondary'} variant="h3" sx={{ margin: '20px 0'}}>Resumen del torneo (TOP 5)</Typography>
             <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>
