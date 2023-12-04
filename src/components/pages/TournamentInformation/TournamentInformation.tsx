@@ -12,6 +12,7 @@ import style from './TournamentInformation.module.scss';
 import { emptyTournamentinitialState } from '@/typesDefs/constants/tournaments/emptyTournamentInitialState';
 import { tournamentGetById } from '@/redux/reducers/tournamentsList/actions';
 import { ResultsTable } from '@/components/TournamentTables/ResultsTable/ResultsTable';
+import { FinishedTournamentResumeCard } from '@/components/FinishedTournamentResumeCard/FinishedTournamentResumeCard';
 
 const TournamentInformation = ({ tournamentId }: { tournamentId: string }) => {
     const dispatch = useAppDispatch();
@@ -59,16 +60,31 @@ const TournamentInformation = ({ tournamentId }: { tournamentId: string }) => {
             setTableToSort(tableToSortArray)
             setMatches(matchesArray)
             setTournament(tournamentData)
-            setRound(tournamentData.table && tournamentData.table.length > 0 ? tournamentData.table.length - 1 : 0)
+            //setRound(tournamentData.table && tournamentData.table.length > 0 ? tournamentData.table.length - 1 : 0)
+
+            if ((tournament.currentRound > 5) && (tableToSort[0].points !== tableToSort[1].points) && !tournamentData.winner) {
+                dispatch(tournamentUpdateFunction({
+                    context: fbContext,
+                    payload: {
+                        ...tournamentData,
+                        winner: tableToSort[0].team[0]
+                    },
+                    tournament: tournamentData
+                }))
+            }
         }
     }, [tournamentData, round])
 
     const handleFinishTournament = () => {
-        console.log(tournament.table)
-        // dispatch(tournamentFinishFunction({
-        //     context: fbContext,
-        //     winnerId: tournament.table
-        // }))
+
+        dispatch(tournamentUpdateFunction({
+            context: fbContext,
+            payload: {
+                ...tournamentData,
+                winner: tableToSort[0].team[0]
+            },
+            tournament: tournamentData
+        }))
     }
 
     const handleReloadData = () => {
@@ -77,8 +93,6 @@ const TournamentInformation = ({ tournamentId }: { tournamentId: string }) => {
             id: tournamentId
         }))
     }
-
-    const isTournamentFinish = (tournament.currentRound > 5) && (tableToSort[0].points !== tableToSort[1].points); // pendiente por acomodar
 
     return (
         <section className={style.TournamentInformation}>
@@ -102,11 +116,12 @@ const TournamentInformation = ({ tournamentId }: { tournamentId: string }) => {
                             <Typography variant="h4" color="secondary">Ronda actual: {round + 1}</Typography>
                         </div>
                     </div>
-                    {isTournamentFinish
-                        && <Typography variant="h6">Ganador: {tableToSort[0].team[0].name}</Typography>}
+                    {tournament.winner
+                        && <Typography variant="h3">Ganador: {tournament.winner.name}</Typography>}
                     <Typography color="secondary" variant="h6">Formato del torneo: {tournament.format}</Typography>
                     <Typography color="secondary" variant="h6">Fecha de inicio: {tournament.startDate}</Typography>
                     <Typography color="secondary" variant="h6">Rondas jugadas: {round == -1 ? tournament.currentRound : round + 1}</Typography>
+                    <FinishedTournamentResumeCard data={tournamentData.table[tournamentData.currentRound - 1].standings.slice(0, 5)} />
                     <div className={style.roundsButtons}>
                         <div className={style.buttons}>
                             {tournamentData.table.map((tab, index) => {
@@ -142,13 +157,13 @@ const TournamentInformation = ({ tournamentId }: { tournamentId: string }) => {
                             <div className={style.vsContainer}>
                                 <Typography color="secondary" variant="h6">Enfrentamientos</Typography>
                                 <MatchesTable data={matches} />
-                                {(round + 1 === tournament.currentRound || round === -1) && <Button
+                                {((round + 1 === tournament.currentRound || round === -1) && !tournament.winner) && <Button
                                     fullWidth
                                     disableElevation
                                     variant="contained"
                                     color="secondary"
                                     onClick={() => setModal(true)}
-                                    sx={{ fontWeight: 'bold'}}
+                                    sx={{ fontWeight: 'bold' }}
                                     className={"style.TournamentFormButton"}
                                 >
                                     Registrar resultados

@@ -147,10 +147,12 @@ class Firebase {
   async updateTournament(tournament: TournamentReducerInitialState, payload: TournamentReducerInitialState) {
     const table = payload.table
     const currentRound = payload.currentRound
+    const winner = payload.winner
     return await setDoc(doc(this.db, "tournaments", tournament.id), {
       ...tournament,
       table: table,
       currentRound: currentRound,
+      winner: winner
     });
   }
 

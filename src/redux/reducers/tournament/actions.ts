@@ -55,8 +55,8 @@ export const tournamentUpdateFunction = createAsyncThunk(
 
 export const tournamentFinishFunction = createAsyncThunk(
     'tournaments/tournamentFinishFunction',
-    async ({ context, tournament }: { context: any, winnerId: string }) => {
-        return context.finishTournament(tournament, winnerId);
+    async ({ context, tournamentId, winnerId }: { context: any, winnerId: string, tournamentId: string }) => {
+        return context.finishTournament(tournamentId, winnerId);
     }
 )
 
