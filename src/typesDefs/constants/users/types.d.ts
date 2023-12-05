@@ -3,5 +3,5 @@ export interface UserInterface {
     email: string;
     phone: string;
     rank: "A" | "B" | "C";
-    uid: string;
+    uid?: string;
 }

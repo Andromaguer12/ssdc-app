@@ -41,7 +41,6 @@ const tournamentsListSlice: Slice<TournamentListReducerInitialState, {}, 'tourna
         });
         builder.addCase(getTournamentsList.rejected, (state, action: any) => {
             state.error = action.error;
-            console.log(action.error)
         });
         builder.addCase(tournamentGetById.pending, (state, action: any) => {
             state.loading = true;

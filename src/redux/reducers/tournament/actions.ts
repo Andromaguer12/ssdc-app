@@ -6,7 +6,7 @@ export interface TournamentReducerInitialState extends TournamentInterface {
     successCreated: boolean,
     error: string,
     loading: boolean,
-    id: string,
+    id?: string,
 }
 
 const initialState: TournamentReducerInitialState = {
@@ -46,7 +46,7 @@ export const tournamentCreateFunction = createAsyncThunk(
 
 export const tournamentUpdateFunction = createAsyncThunk(
     'tournaments/tournamentUpdateFunction',
-    async ({ context, tournament, payload }: { context: any, payload: TournamentReducerInitialState, tournament: TournamentReducerInitialState }) => {
+    async ({ context, tournament, payload }: { context: any, payload: any, tournament: any }) => {
         return context.updateTournament(tournament, payload);
 
     }
@@ -72,7 +72,6 @@ const tournamentSlice = createSlice({
             state.successCreated = true;
             state.loading = initialState.loading;
             state.error = initialState.error
-            console.log("creado")
         });
         builder.addCase(tournamentCreateFunction.rejected, (state, action: any) => {
             state.loading = false;
@@ -84,12 +83,10 @@ const tournamentSlice = createSlice({
         });
         builder.addCase(tournamentUpdateFunction.fulfilled, (state, action) => {
             const { payload }: { payload: TournamentReducerInitialState } = action
-            console.log("payload", payload);
         });
         builder.addCase(tournamentUpdateFunction.rejected, (state, action: any) => {
             state.loading = false;
             state.error = action.error;
-            console.log(action.error);
         });
 
     }

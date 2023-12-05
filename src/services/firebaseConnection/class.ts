@@ -148,7 +148,7 @@ class Firebase {
     const table = payload.table
     const currentRound = payload.currentRound
     const winner = payload.winner
-    return await setDoc(doc(this.db, "tournaments", tournament.id), {
+    return await setDoc(doc(this.db, "tournaments", tournament?.id ?? ''), {
       ...tournament,
       table: table,
       currentRound: currentRound,

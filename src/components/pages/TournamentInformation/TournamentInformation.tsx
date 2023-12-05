@@ -33,13 +33,9 @@ const TournamentInformation = ({ tournamentId }: { tournamentId: string }) => {
             context: fbContext,
             id: tournamentId
         }))
-        console.log(loadingUpdateTournament, 'loading')
     }, [round]);
     useEffect(() => {
         if (tournamentData) {
-            console.log(tournament.winner)
-            console.log(tournamentData.currentRound)
-            console.log(tournamentData.table[round == -1 ? tournamentData.currentRound - 1 : round].standings)
             const array = tournamentData.table[round == -1 ? tournamentData.currentRound - 1 : round].standings.slice()
             const tableToSortArray = array.sort((a, b) => {
                 // Ordenar por victorias
@@ -65,11 +61,7 @@ const TournamentInformation = ({ tournamentId }: { tournamentId: string }) => {
             setTableToSort(tableToSortArray)
             setMatches(matchesArray)
             setTournament(tournamentData)
-            //setRound(tournamentData.table && tournamentData.table.length > 0 ? tournamentData.table.length - 1 : 0)
-            console.log('PRUEBA PARA HACER PUSH')
-            console.log(tableToSort)
             if ((tournamentData.currentRound > 6) && (tableToSortArray[0].won !== tableToSortArray[1].won) && !tournamentData.winner) {
-                console.log('hp;a')
                 dispatch(tournamentUpdateFunction({
                     context: fbContext,
                     payload: {

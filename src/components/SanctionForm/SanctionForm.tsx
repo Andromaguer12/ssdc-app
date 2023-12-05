@@ -20,10 +20,6 @@ const SanctionForm = ({ user, format, tournamentId, standingIndex }: {
 
     const [tournamentToSend, setTournamentToSend] = useState(tournamentToUpdate);
 
-    useEffect(() => {
-        console.log(tournamentToUpdate, 'torneo')
-    }, [tournamentToUpdate])
-
     /* useEffect(() => {
         dispatch(tournamentUpdateFunction({
             context: fbContext,
@@ -33,7 +29,6 @@ const SanctionForm = ({ user, format, tournamentId, standingIndex }: {
     }, [tournamentToSend]) */
 
     const handleAddSanction = (sanctionToAdd: 'Pase agachado' | 'Cabra') => {
-        console.log(standingIndex, 'index')
         const standingToSend = tournamentToSend.table[standingIndex].standings.map(player => {
             if (player.team[0].id === user.id) {
                 return {
@@ -60,8 +55,6 @@ const SanctionForm = ({ user, format, tournamentId, standingIndex }: {
                 }
             }
         })
-
-        console.log(standingToSend, 'aaa')
 
         setTournamentToSend({
             ...tournamentToSend,

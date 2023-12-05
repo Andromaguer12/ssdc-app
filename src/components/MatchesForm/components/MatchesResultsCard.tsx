@@ -13,11 +13,11 @@ interface MatchesResultsCardProps {
 }
 
 const MatchesResultsCard = ({ match, tournament, results, setResults, index }: MatchesResultsCardProps) => {
-    const firstInput = useRef()
-    const secondaryInput = useRef()
+    const firstInput = useRef<any>()
+    const secondaryInput = useRef<any>()
 
   const handlePoints = useCallback(
-    (e: any, team: number) => {
+    () => {
         const result1 = firstInput.current?.value
         const result2 = secondaryInput.current?.value
 

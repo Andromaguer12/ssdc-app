@@ -2,8 +2,12 @@ import { TournamentReducerInitialState } from "@/redux/reducers/tournament/actio
 import { emptyUserInitialState } from "../users/emptyInitialState";
 import { TablePlayers, TournamentInterface } from "./types";
 
+interface CurrentEmptyTablePlayerInitialState extends TablePlayers {
+    team: any[]
+}
 
-export const emptyTablePlayerInitialState: TablePlayers = {
+
+export const emptyTablePlayerInitialState: CurrentEmptyTablePlayerInitialState = {
     team: [{
         ...emptyUserInitialState,
         loadingUser: false,
@@ -40,5 +44,8 @@ export const emptyTournamentinitialState: TournamentReducerInitialState = {
         }],
         standings: [emptyTablePlayerInitialState]
     }],
-    game: "Domino"
+    game: "Domino",
+    successCreated: false,
+    error: '',
+    loading: false
 }

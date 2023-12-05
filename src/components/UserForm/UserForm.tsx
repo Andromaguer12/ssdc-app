@@ -37,11 +37,11 @@ const UserForm = ({ data, eventSubmit }: { data?: UserReducerInitialState | null
                 data: formData
             }));
         } else if (data) {
-            console.log(dispatch(userUpdateFunction({
+            dispatch(userUpdateFunction({
                 context: fbContext,
                 data: data,
                 payload: formData
-            })));
+            }))
         }
 
     };
