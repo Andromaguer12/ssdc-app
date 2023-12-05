@@ -62,7 +62,7 @@ const TournamentInformation = ({ tournamentId }: { tournamentId: string }) => {
             setMatches(matchesArray)
             setTournament(tournamentData)
             //setRound(tournamentData.table && tournamentData.table.length > 0 ? tournamentData.table.length - 1 : 0)
-
+console.log('PRUEBA PARA HACER PUSH')
             if ((tournament.currentRound > 5) && (tableToSort[0].won !== tableToSort[1].won) && !tournamentData.winner) {
                 console.log('hp;a')
                 dispatch(tournamentUpdateFunction({
