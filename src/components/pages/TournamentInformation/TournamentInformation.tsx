@@ -33,11 +33,14 @@ const TournamentInformation = ({ tournamentId }: { tournamentId: string }) => {
             context: fbContext,
             id: tournamentId
         }))
-    }, [/**SuccessUpdateTournament */loadingUpdateTournament]);
+        console.log(loadingUpdateTournament, 'loading')
+    }, [round]);
     useEffect(() => {
         if (tournamentData) {
             console.log(tournament.winner)
-            const array = tournamentData.table[round == -1 ? tournament.currentRound - 1 : round].standings.slice()
+            console.log(tournamentData.currentRound)
+            console.log(tournamentData.table[round == -1 ? tournamentData.currentRound - 1 : round].standings)
+            const array = tournamentData.table[round == -1 ? tournamentData.currentRound - 1 : round].standings.slice()
             const tableToSortArray = array.sort((a, b) => {
                 // Ordenar por victorias
                 if (a.won !== b.won) {
@@ -58,24 +61,30 @@ const TournamentInformation = ({ tournamentId }: { tournamentId: string }) => {
                 matchesArray.push(element)
             }
 
+            setRound(tournamentData.currentRound - 1)
             setTableToSort(tableToSortArray)
             setMatches(matchesArray)
             setTournament(tournamentData)
             //setRound(tournamentData.table && tournamentData.table.length > 0 ? tournamentData.table.length - 1 : 0)
-console.log('PRUEBA PARA HACER PUSH')
-            if ((tournament.currentRound > 5) && (tableToSort[0].won !== tableToSort[1].won) && !tournamentData.winner) {
+            console.log('PRUEBA PARA HACER PUSH')
+            console.log(tableToSort)
+            if ((tournamentData.currentRound > 6) && (tableToSortArray[0].won !== tableToSortArray[1].won) && !tournamentData.winner) {
                 console.log('hp;a')
                 dispatch(tournamentUpdateFunction({
                     context: fbContext,
                     payload: {
                         ...tournamentData,
-                        winner: tableToSort[0].team[0]
+                        winner: tableToSortArray[0].team[0]
                     },
                     tournament: tournamentData
                 }))
+                dispatch(tournamentGetById({
+                    context: fbContext,
+                    id: tournamentId
+                }))
             }
         }
-    }, [tournamentData, round])
+    }, [tournamentData])
 
     const handleFinishTournament = () => {
 

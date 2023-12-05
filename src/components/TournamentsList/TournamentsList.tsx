@@ -117,7 +117,7 @@ const TournamentsList = () => {
                                     <TableCell align="right">
                                         {tournament.currentRound > 5 ? "Terminado" : "En curso..."}
                                     </TableCell>
-                                    <TableCell align="right">{tournament.table.length}</TableCell>
+                                    <TableCell align="right">{tournament.table[0].standings.length}</TableCell>
                                     <TableCell align="right">{tournament.currentRound}</TableCell>
                                     <TableCell align="right">{tournament.startDate}</TableCell>
                                     <TableCell align="right">
