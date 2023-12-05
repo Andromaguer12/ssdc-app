@@ -13,7 +13,7 @@ import { clearStateUser, getUserByUserUid } from "@/redux/reducers/user/actions"
 import FetchingContext from "@/contexts/backendConection/context"
 import { useRouter } from "next/navigation"
 
-function Main({ children }) {
+function Main({ children }: { children: any }) {
   const dispatch = useAppDispatch()
   const firebaseClass = new Firebase();
   const router = useRouter()

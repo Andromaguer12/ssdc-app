@@ -5,7 +5,6 @@ import { useAppDispatch, useAppSelector } from '@/redux/store';
 import { Button, CircularProgress, Grid, TextField, Typography } from '@mui/material';
 import CustomizedAlert from '@/components/CustomizedAlert/CustomizedAlert';
 import styles from './styles/Login.module.scss';
-import useFirebaseContext from '@/contexts/firebaseConnection/hook';
 import { clearStateUser, userLoginFunction } from '@/redux/reducers/user/actions';
 import useFetchingContext from '@/contexts/backendConection/hook';
 
@@ -51,7 +50,7 @@ export default function Login() {
         userLoginFunction({
           context: fbContext,
           email: formData.email,
-          password: formData.password //12345ja
+          password: formData.password
         })
       )
     }

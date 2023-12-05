@@ -11,11 +11,11 @@ export interface UserReducerInitialState extends UserInterface {
   requestState: {
     loadingUser: boolean;
     success: boolean;
-    error: null;
+    error: null | any;
   },
   registerRequestState: {
     loadingUser: boolean;
-    error: null;
+    error: null | any;
   }
 }
 
