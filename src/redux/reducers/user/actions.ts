@@ -54,7 +54,7 @@ export const userLogoutFunction = createAsyncThunk(
   'users/userLogoutFunction',
   async (params: { context: any }, { dispatch }) => {
     await params.context.logoutUser();
-+
+
     Cookies.remove("auth");
     Cookies.remove("accessToken");
 
