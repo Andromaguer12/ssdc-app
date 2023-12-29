@@ -16,7 +16,7 @@ import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import { DeleteForever } from '@mui/icons-material';
 import { UserReducerInitialState, userDeleteFunction } from '@/redux/reducers/user/actions';
 import useFirebaseContext from '@/contexts/firebaseConnection/hook';
-import Modal from '../Modal/Modal';
+import Modal from '../../../../Modal/Modal';
 import { Chip, CircularProgress, Typography } from '@mui/material';
 
 

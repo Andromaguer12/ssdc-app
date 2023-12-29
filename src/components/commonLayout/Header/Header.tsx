@@ -4,7 +4,7 @@ import Link from 'next/link';
 import React from 'react';
 import styles from './Header.module.scss';
 import { HeaderButtons } from '../../../constants/components/commonLayout/Header/header';
-import { Menu } from '@/components/Menu/Menu';
+import { Menu } from '@/components/commonLayout/Menu/Menu';
 
 export default function Header() {
   return (

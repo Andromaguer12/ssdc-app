@@ -1,13 +1,15 @@
-import { Tournaments } from '@/components/pages/Tournaments/Tournaments'
+import Header from '@/components/commonLayout/Header/Header'
+import TournamentsPage from '@/components/pages/TournamentsPage/TournamentsPage'
 import React from 'react'
 
-const TournamentPage = () => {
+const Tournament = () => {
     return (
         <>
-           <Tournaments />
+            <Header />
+            <TournamentsPage />
         </>
 
     )
 }
 
-export default TournamentPage
+export default Tournament

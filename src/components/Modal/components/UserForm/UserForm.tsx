@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useAppDispatch } from '@/redux/store';
 import { UserReducerInitialState, userRegisterFunction, userUpdateFunction } from '@/redux/reducers/user/actions';
 import useFirebaseContext from '@/contexts/firebaseConnection/hook';
-import CustomizedAlert from '../CustomizedAlert/CustomizedAlert';
+import CustomizedAlert from '../../../CustomizedAlert/CustomizedAlert';
 import { UserInterface } from '@/typesDefs/constants/users/types';
 import { Button, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, TextField } from '@mui/material';
 
