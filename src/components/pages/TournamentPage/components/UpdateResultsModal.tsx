@@ -55,7 +55,7 @@ const UpdateTournamentModal: React.FC<ModalProps> = ({ open, tournament, handleC
 
   const handleCleanClose = (resetForm?: any) => {
     handleClose()
-    if(formikForm.current) formikForm.current.resetForm()
+    if(formikForm.current) formikForm.current.resetForm();
   }
 
   const handleSubmitForm = React.useCallback(
