@@ -21,7 +21,7 @@ const TournamentPage: React.FC<TournamentPageProps> = ({
   const dispatch = useAppDispatch();
   const fContext = useFetchingContext();
   const { tournamentData, errorDocument: errorGetTournamentById } = useTournamentData(tournamentId)
-  const [openUpdateResults, setOpenUpdateResults] = useState(null)
+  const [openUpdateResults, setOpenUpdateResults] = useState("")
 
   useEffect(() => {
     dispatch(getTournamentById({
@@ -144,11 +144,13 @@ const TournamentPage: React.FC<TournamentPageProps> = ({
                 )
               : "Error"
           }
-        <UpdateResultsModal 
-          open={openUpdateResults}
-          tournament={tournamentData as TournamentInterface}
-          handleClose={() => setOpenUpdateResults(null)}
-        />
+        {tournamentData && (
+          <UpdateResultsModal 
+            open={openUpdateResults}
+            tournament={tournamentData as TournamentInterface}
+            handleClose={() => setOpenUpdateResults(null)}
+          />
+        )}
     </section>
   )
 }
