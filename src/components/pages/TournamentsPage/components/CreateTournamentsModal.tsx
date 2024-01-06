@@ -265,7 +265,7 @@ const CreateTournamentsModal: React.FC<ModalProps> = ({ open, handleClose }) => 
                                       </FormControl>
                                     </Grid>
                                   </Grid>
-                                  <Grid item xs={12}>
+                                  {/* <Grid item xs={12}>
                                     <Grid item xs={4}>
                                       <FormControl>
                                         <FormLabel>Agrupacion de jugadores por mesa</FormLabel>
@@ -278,7 +278,7 @@ const CreateTournamentsModal: React.FC<ModalProps> = ({ open, handleClose }) => 
                                         </RadioGroup>
                                       </FormControl>
                                     </Grid>
-                                  </Grid>
+                                  </Grid> */}
                                 </>
                               )}
                               {index === 1 && (
