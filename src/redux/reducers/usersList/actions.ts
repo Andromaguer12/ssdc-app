@@ -25,7 +25,13 @@ export const getUsersList = createAsyncThunk(
 const userListSlice: Slice<UserListReducerInitialState, {}, "user"> = createSlice({
   name: 'user',
   initialState,
-  reducers: {},
+  reducers: {
+    clearUsersList: (state) => {
+      state.loading = initialState.loading
+      state.error = initialState.error
+      state.data = initialState.data
+    }
+  },
   extraReducers: builder => {
     builder.addCase(getUsersList.pending, (state, action: any) => {
       state.loading = true;
@@ -41,4 +47,6 @@ const userListSlice: Slice<UserListReducerInitialState, {}, "user"> = createSlic
   }
 });
 
+export const  { clearUsersList } = userListSlice.actions;
+ 
 export default userListSlice.reducer;

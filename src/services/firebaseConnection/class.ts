@@ -3,7 +3,7 @@ import { createUserWithEmailAndPassword, signOut, deleteUser, getAuth, signInWit
 import { collection, doc, getDoc, getDocs, getFirestore, query, where, setDoc, addDoc, deleteDoc } from 'firebase/firestore'
 import initFirebaseFunction from './firebaseInitConfig';
 import { UserReducerInitialState } from '@/redux/reducers/user/actions';
-import { TableInterface, TablePlayers, TournamentFormat, TournamentInterface } from '@/typesDefs/constants/tournaments/types';
+import { IndividualTableInterface, PairsTableInterface, TableInterface, TablePlayers, TournamentFormat, TournamentInterface } from '@/typesDefs/constants/tournaments/types';
 import { UserInterface } from '@/typesDefs/constants/users/types';
 import { TournamentReducerInitialState } from '@/redux/reducers/tournament/actions';
 
@@ -95,14 +95,15 @@ class Firebase {
    * Tournaments Api
    */
 
-  async getTournamentsList() {
-    const tournamentsRef = query(collection(this.db, "tournaments"));
+  async getAllTournaments() {
+    const tournamentsRef = query(collection(this.db, "tournaments"), where("softDeleted", "!=", true));
     const docs = await getDocs(tournamentsRef);
     const data: any[] = []
 
     docs.forEach((doc) => {
       data.push({
-        ...doc.data()
+        ...doc.data(),
+        id: doc.id,
       })
     });
 
@@ -116,43 +117,45 @@ class Firebase {
 
   async createTournament(
     name: string,
-    rules: string,
+    players: string[],
+    tables: IndividualTableInterface | PairsTableInterface,
     format: TournamentFormat,
-    startDate: string,
-    endDate: string,
-    currentRound: number,
-    winner: UserInterface | null,
-    table: TableInterface[],
-    game: 'Domino'
+    customRounds: number
   ) {
-
     const dataToSend: TournamentInterface = {
       name,
-      rules,
       format,
-      startDate,
-      endDate,
-      currentRound,
-      winner,
-      table,
-      game
+      startDate: new Date().getTime(),
+      currentGlobalRound: 1,
+      allPlayers: players,
+      winner: null,
+      game: "domino",
+      softDeleted: false,
+      customRounds,
+      status: "inactive",
+      tables
     }
-    const newTournamentRef = doc(collection(this.db, "tournaments"));
-    return setDoc(newTournamentRef, {
-      ...dataToSend,
-      id: newTournamentRef.id,
+
+    const newTournamentRef = collection(this.db, "tournaments");
+  
+    try {
+      const doc = await addDoc(newTournamentRef, dataToSend)
+
+      return doc
+    } catch (error) {
+      return error      
+    }
+  }
+
+  async updateTournament(tournamentId: string, body: Partial<TournamentInterface>) {
+    return await setDoc(doc(this.db, "tournaments", tournamentId ?? ''), {
+      ...body
     });
   }
 
-  async updateTournament(tournament: TournamentReducerInitialState, payload: TournamentReducerInitialState) {
-    const table = payload.table
-    const currentRound = payload.currentRound
-    const winner = payload.winner
-    return await setDoc(doc(this.db, "tournaments", tournament?.id ?? ''), {
-      ...tournament,
-      table: table,
-      currentRound: currentRound,
-      winner: winner
+  async deleteTournament(tournamentId: string) {
+    return await setDoc(doc(this.db, "tournaments", tournamentId ?? ''), {
+      softDeleted: true
     });
   }
 

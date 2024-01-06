@@ -3,15 +3,13 @@ import thunkMiddleware from 'redux-thunk';
 import { combineReducers } from '@reduxjs/toolkit';
 import user from './reducers/user/actions';
 import usersList from './reducers/usersList/actions';
-import tournament from './reducers/tournament/actions';
-import tournamentList from './reducers/tournamentsList/actions'
+import tournaments from './reducers/tournaments/actions';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 
 const reducers = combineReducers({
   user,
   usersList,
-  tournament,
-  tournamentList
+  tournaments
 });
 
 const store = configureStore({

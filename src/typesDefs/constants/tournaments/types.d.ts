@@ -2,9 +2,8 @@ import { UserReducerInitialState } from "@/redux/reducers/user/actions";
 import { UserInterface } from "../users/types";
 
 type TournamentFormat = "individual" | "pairs" | "team";
-type TournamentGame = "Domino" | "Ajedrez"
-type Form = "L" | "W" | "D";
-type SanctionType = "Pase agachado" | "Cabra" | null;
+type TournamentState = "active" | "inactive" | "paused";
+type TournamentGame = "domino" | "ajedrez"
 
 export type TablePlayers = {
     position: number,
@@ -26,20 +25,48 @@ export type ResultsFormat = {
     result: number[]
 }
 
-export type TableInterface = {
-    results: ResultsFormat[]
-    standings: TablePlayers[]
+export type PairInterface = {
+    pair: string[],
+    table: string,
+}
+
+export type IndividualInterface = {
+    player: string,
+    table: string,
+}
+
+export type TableObjectInterface = {
+    tableId: string,
+    table: string[],
+    pair1Color: string,
+    pair2Color: string,
+    currentTableRound: number,
+}
+
+export type PairsTableInterface = {
+    tables: TableObjectInterface[],
+    pairs: PairInterface[]
+}
+
+export type IndividualTableInterface = {
+    tables: TableObjectInterface[],
+    individual: IndividualInterface[]
 }
 
 export interface TournamentInterface {
+    id?: string,
+    softDeleted?: boolean,
     name: string,
-    rules: string,
     format: TournamentFormat,
-    startDate: string,
-    endDate: string,
-    currentRound: number,
+    startDate: Date | number,
+    endDate?: Date | number,
+    currentGlobalRound: number,
+    allPlayers: string[],
+    status: TournamentState,
+    customRounds: number,
     winner: UserInterface | null,
-    table: TableInterface[],
     game: TournamentGame,
+    tables: IndividualTableInterface | PairsTableInterface,
+    // playerResults: 
 }
 

@@ -1,0 +1,115 @@
+.header {
+  padding: 20px;
+  width: 100%;
+  box-sizing: border-box;
+  border-bottom: 1px solid #b8b8b8;
+}
+
+.body {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .stepperContainer {
+    width: 100%;
+    padding: 20px 50px;
+    box-sizing: border-box;
+  }
+
+  .subContainer{
+    padding: 20px;
+    width: 100%;
+    padding-bottom: 40px;
+    box-sizing: border-box;
+    height: 100%;
+    max-height: 400px;
+
+
+    .title{
+      margin-bottom: 20px;
+    }
+
+    .subtitle{
+      font-size: 14px;
+    }
+
+    .usersList {
+      width: 100%;
+      flex-direction: column;
+      align-items: center;
+      display: flex;
+      overflow-y: auto;
+      box-sizing: border-box;
+      scrollbar-width: none;
+      padding-top: 10px;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+
+      .userCard {
+        width: 100%;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        background-color: #fafafa;
+        border-radius: 7px;
+        border: 1px solid #e7e7e7;
+        padding: 10px;
+        margin-bottom: 10px;
+        cursor: pointer;
+
+        &__selected {
+          width: 100%;
+          box-sizing: border-box;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          background-color: #3290c211;
+          border-radius: 7px;
+          border: 1px solid #3290c2;
+          padding: 10px;
+          cursor: pointer;
+          margin-bottom: 10px;
+        }
+      }
+    }
+  }
+}
+
+.buttons {
+  padding: 20px;
+  width: 100%;
+  box-sizing: border-box;
+  border-top: 1px solid #b8b8b8;
+  flex-direction: row;
+  display: flex;
+  justify-content: flex-end;
+
+  .cancelButton {
+    padding: 10px 20px;
+    margin: 0;
+    color: #7a7a7a;
+    background-color: #e7e7e7;
+    margin-right: 15px;
+    font-weight: bold;
+  }
+
+  .button {
+    padding: 10px 20px;
+    margin: 0;
+    font-weight: bold;
+  }
+}
+
+.loader {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 50px 0;
+}

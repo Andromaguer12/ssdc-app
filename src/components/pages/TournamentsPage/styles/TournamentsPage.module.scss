@@ -38,12 +38,19 @@
         width: 100%;
         flex-wrap: wrap;
         box-sizing: border-box;
-        margin-bottom: 20px;
+        margin-bottom: 50px;
     }
 
     .listBody {
       width: 100%;
-      min-height: 200px;
+
+      .loading {
+        width: 100%;
+        padding: 50px 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
     }
 }
 .DashboardRegisterUser{
@@ -61,4 +68,17 @@
 }
 .DashboardRegisterUser:hover {
     background-color: $primary-color-alt;
+}
+
+.stateCell {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        margin-left: 7px;
+    }
 }

@@ -4,4 +4,5 @@ export interface UserInterface {
     phone: string;
     rank: "A" | "B" | "C";
     uid?: string;
+    id?: string;
 }
