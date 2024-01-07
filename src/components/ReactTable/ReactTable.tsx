@@ -41,17 +41,18 @@ const ReactTable: React.FC<ReactTableProps> = ({
 
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ width: "100%" }} size="small" aria-label="a dense table">
+      <Table sx={{ width: "100%" }} style={{ boxSizing: "border-box"}} size="small" aria-label="a dense table">
         <TableHead>
           <TableRow style={{ background: "#003994"}}>
             {
               columns.map((column, index) => {
+                console.log(column)
                 return (
                   <TableCell 
                     sx={{ width: column?.width ?? "fit-content" }}
                     align={column.align ?? "left"}  
                     className={styles.headerCell}
-                    style={{ textAlign: column.textAlign }}
+                    style={{ textAlign: column.textAlign, padding: column?.padding ?? "20px" }}
                     >
                     {column?.header}
                   </TableCell>

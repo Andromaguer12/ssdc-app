@@ -12,6 +12,9 @@ import { Formik } from "formik";
 import { UserInterface } from '@/typesDefs/constants/users/types';
 import TableComponent from './TableComponent';
 import { TableObjectInterface, TournamentInterface } from '@/typesDefs/constants/tournaments/types';
+import useTournamentData from '@/hooks/useTournamentData/useTournamentData';
+import { useAppDispatch, useAppSelector } from '@/redux/store';
+import { clearUpdateTournamentState } from '@/redux/reducers/tournaments/actions';
 
 interface ModalProps {
   open: string,
@@ -38,7 +41,19 @@ const UpdateTournamentModal: React.FC<ModalProps> = ({ open, tournament, handleC
     borderRadius: '7px'
   };  
 
-  const formikForm = React.useRef()
+  const {
+    updateTournament: {
+      loadingUpdateTournament,
+      successUpdateTournament,
+      errorUpdateTournament
+    }
+  } = useAppSelector(({ tournaments }) => tournaments)
+
+  const dispatch = useAppDispatch()
+
+  const formikForm = React.useRef<any>()
+
+  const { tournamentAPI } = useTournamentData(tournament.id as string)
 
   const formInitialFormState: formState = {
     p1: 0,
@@ -55,21 +70,38 @@ const UpdateTournamentModal: React.FC<ModalProps> = ({ open, tournament, handleC
 
   const handleCleanClose = (resetForm?: any) => {
     handleClose()
-    if(formikForm.current) formikForm.current.resetForm();
+    dispatch(clearUpdateTournamentState())
+    if(formikForm.current) formikForm.current?.resetForm();
   }
 
   const handleSubmitForm = React.useCallback(
     (values: formState, { resetForm }: { resetForm:any }) => {
-      
+      if (values.p1 > -1 && values.p2 > -1 && values.p3 > -1 && values.p4 > -1 && !successUpdateTournament) {
+        tournamentAPI
+          .registerResultsByTable(
+            currentTableData.tableId,
+            currentTableData.currentTableRound, 
+            values
+          )
+      }
     },
-    [],
+    [currentTableData, successUpdateTournament],
   )
+
+  React.useEffect(() => {
+    if(successUpdateTournament) {
+      setTimeout(() => {
+        handleCleanClose()
+      }, 1500);
+    }
+  }, [successUpdateTournament])
+  
 
   return (
     <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
-        open={open}
+        open={Boolean(open)}
         onClose={() => handleCleanClose()}
         closeAfterTransition
         slots={{ backdrop: Backdrop }}
@@ -80,7 +112,7 @@ const UpdateTournamentModal: React.FC<ModalProps> = ({ open, tournament, handleC
         }}
       >
         <Formik innerRef={formikForm} onSubmit={handleSubmitForm} initialValues={formInitialFormState}>
-          {({ values, handleChange, submitForm, resetForm }) => {
+          {({ values, handleChange, submitForm }) => {
             return (
             <Fade in={!!open}>
               <Box sx={style}>
@@ -101,7 +133,7 @@ const UpdateTournamentModal: React.FC<ModalProps> = ({ open, tournament, handleC
                     <Typography style={{ width: '100%' }} variant="h4" fontWeight={"bold"}>
                       Resultados Ronda {currentTableData.currentTableRound}
                     </Typography>
-                    {currentTableData?.thisTablePairs.map((pair, index: number) => {
+                    {currentTableData?.thisTablePairs.map((pair: any, index: number) => {
                       return (
                         <div 
                           className={styles.pair} 
@@ -114,7 +146,28 @@ const UpdateTournamentModal: React.FC<ModalProps> = ({ open, tournament, handleC
                               currentTableData[`pair${index+1}Color`] 
                           }}
                         >
-                          {pair.map((player: UserInterface) => {
+                          {pair.map((player: UserInterface, indexPlayer: number) => {
+                            let currentPlayer = "";
+
+                            switch (index.toString()+indexPlayer.toString()) {
+                              case "00":
+                                currentPlayer = "p1"
+                                break;
+                              case "01":
+                                currentPlayer = "p2"
+                                break;
+                              case "10":
+                                currentPlayer = "p3"
+                                break;
+                              case "11":
+                                currentPlayer = "p4"
+                                break;
+                            
+                              default:
+                                currentPlayer = "p1"
+                                break;
+                            }
+
                             return (
                               <div className={styles.inputs}>
                                 <Typography fontWeight={"bold"}>
@@ -124,8 +177,8 @@ const UpdateTournamentModal: React.FC<ModalProps> = ({ open, tournament, handleC
                                   fullWidth
                                   type='number'
                                   style={{ marginTop: '7px' }}
-                                  value={values[`p${index + 1}`]}
-                                  onChange={handleChange(`p${index + 1}`)}
+                                  value={values[currentPlayer as keyof typeof formInitialFormState]}
+                                  onChange={handleChange(currentPlayer)}
                                 />
                               </div>
                             )
@@ -153,7 +206,11 @@ const UpdateTournamentModal: React.FC<ModalProps> = ({ open, tournament, handleC
                     variant="contained" 
                     onClick={() => submitForm()} 
                     className={styles.button} 
-                    endIcon={<Check />}>{"Registrar"}</Button>
+                    style={{ background: successUpdateTournament ? "green" : "#003994" }}
+                    endIcon={!loadingUpdateTournament ? <Check /> : <></>}
+                  >
+                    {loadingUpdateTournament ? "Registrando" : successUpdateTournament ? "Registrado!" : "Registrar"}
+                  </Button>
                 </div>
               </Box>
             </Fade>

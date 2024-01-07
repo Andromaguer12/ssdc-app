@@ -1,5 +1,7 @@
 import useFetchingContext from '@/contexts/backendConection/hook'
-import { TournamentInterface } from '@/typesDefs/constants/tournaments/types'
+import { updateTournament } from '@/redux/reducers/tournaments/actions'
+import { useAppDispatch } from '@/redux/store'
+import { ResultsByRoundInterface, TableObjectInterface, TournamentInterface, TournamentState } from '@/typesDefs/constants/tournaments/types'
 import { collection, doc, getDoc, onSnapshot } from 'firebase/firestore'
 import { useCallback, useEffect, useState } from 'react'
 
@@ -10,6 +12,7 @@ const useTournamentData = (tournamentId: string) => {
   const [errorDocument, setErrorDocument] = useState("")
   const [usersData, setUsersData] = useState<any[]>([])
   const [currentFormat, setCurrentFormat] = useState("");
+  const dispatch = useAppDispatch()
   
   const groupedByTable = useCallback(
     (data: any) => data.reduce((accumulator: any, currentItem: any) => {
@@ -104,15 +107,141 @@ const useTournamentData = (tournamentId: string) => {
   }, [])
 
 
-  const registerResultsByTable = (table) => {
+  const registerResultsByTable = useCallback(
+    (
+      tableId: string,
+      tableRound: number,
+      { p1, p2, p3, p4 }: { p1: number, p2: number, p3: number, p4: number }
+    ) => {
+      if(tournament?.status === "active"){
+        if (p1 > -1 && p2 > -1 && p3 > -1 && p4 > -1) {
+          const pair1Results = p1 + p2;
+          const pair2Results = p3 + p4;
+          const resultsPayload: ResultsByRoundInterface = {
+            currentTableRound: tableRound,
+            pointsPerPlayer: {
+              p1,
+              p2,
+              p3,
+              p4
+            },
+            pointsPerPair: {
+              pair1: pair1Results,
+              pair2: pair2Results,
+            },
+            effectivenessByPlayer: {
+              p1: pair1Results - pair2Results,
+              p2: pair1Results - pair2Results,
+              p3: pair2Results - pair1Results,
+              p4: pair2Results - pair1Results,
+            },
+            effectivenessByPair: {
+              pair1: pair1Results - pair2Results,
+              pair2: pair2Results - pair1Results,
+            },
+            roundWinner: pair2Results > pair1Results ? 1 : 0,
+            sanctions: [],
+            finalWinner: null,
+            tableMatchEnded: pair2Results >= 100 || pair1Results >= 100
+          }
+  
+          const indexOfTable = 
+            tournament?.tables
+              .tables
+              .findIndex(({tableId: tId}: {tableId: string}) => tId === tableId)
+  
+          const currentTableWithRoundUpdated: any = {
+            ...(tournament 
+              ? tournament
+                  .tables
+                  .tables
+                  .find(
+                    ({ tableId: tId }) => tId === tableId 
+                  ) ?? {}
+              : {}),
+            currentTableRound: (tableRound ?? 0) + 1   
+          }
+  
+          const copyOfTablesUpdated  = [...(tournament?.tables.tables ?? [])]
+  
+          copyOfTablesUpdated.splice(indexOfTable ?? 0, 1, currentTableWithRoundUpdated)
+          
+          const tournamentPayload: any = {
+            ...tournament as TournamentInterface,
+            tables: {
+              ...(
+                tournament 
+                  ? tournament.tables ?? {} 
+                  : {}
+              ),
+              tables: copyOfTablesUpdated
+            },
+            results: {
+              ...(
+                tournament 
+                  ? tournament.results ?? {} 
+                  : {}
+              ),
+              [tableId]: {
+                resultsByRound: [
+                  ...(
+                    tournament 
+                      ? tournament.results?.[tableId as keyof typeof tournament.results]
+                          ?  tournament
+                              .results?.[tableId as keyof typeof tournament.results]
+                              .resultsByRound
+                          : []
+                      : {}
+                  ),
+                  resultsPayload
+                ],
+                players: 
+                  tournament 
+                  ? (tournament
+                      .tables
+                      .tables
+                      .find(
+                        ({ tableId: tId }) => tId === tableId 
+                      ) ?? {})
+                      .table ?? []
+                  : []
+              }
+            }
+          }
+    
+          dispatch(updateTournament({
+            context: fContext,
+            id: tournament?.id,
+            body: tournamentPayload
+          }))
+        }
+      }
+    },
+    [tournament],
+  )
 
-  }
+  const updateTournamentStatus = useCallback(
+    (newStatus: TournamentState) => {
+      dispatch(updateTournament({
+        context: fContext,
+        id: tournament?.id,
+        body: {
+          ...tournament,
+          status: newStatus
+        }
+      }))
+    },
+    [tournament],
+  )
+  
+  
 
   return {
     tournamentData,
     errorDocument,
     tournamentAPI: {
-
+      registerResultsByTable,
+      updateTournamentStatus
     }
   }
 }

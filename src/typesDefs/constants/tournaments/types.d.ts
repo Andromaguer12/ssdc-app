@@ -53,6 +53,41 @@ export type IndividualTableInterface = {
     individual: IndividualInterface[]
 }
 
+export type ResultsByRoundInterface = {
+    currentTableRound: number,
+    pointsPerPlayer: {
+        p1: number,
+        p2: number,
+        p3: number,
+        p4: number
+    },
+    pointsPerPair :{
+        pair1: number,
+        pair2: number
+    },
+    effectivenessByPair: {
+        pair1: number,
+        pair2: number
+    },
+    effectivenessByPlayer: {
+        p1: number,
+        p2: number,
+        p3: number,
+        p4: number
+    },
+    roundWinner: number,
+    finalWinner: number | null,
+    tableMatchEnded: boolean
+    sanctions: any[]
+}
+
+export type ResultsInterface = {
+    [string]: {
+        resultsByRound: ResultsByRoundInterface[],
+        players: string[]
+    }
+}
+
 export interface TournamentInterface {
     id?: string,
     softDeleted?: boolean,
@@ -66,7 +101,7 @@ export interface TournamentInterface {
     customRounds: number,
     winner: UserInterface | null,
     game: TournamentGame,
-    tables: IndividualTableInterface | PairsTableInterface,
-    // playerResults: 
+    tables: PairsTableInterface,
+    results: ResultsInterface
 }
 

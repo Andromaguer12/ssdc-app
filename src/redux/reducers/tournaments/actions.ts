@@ -92,8 +92,7 @@ export const createTournament = createAsyncThunk(
   'tournaments/createTournament',
    async (params:any, { rejectWithValue }) => {
       const tables:any = organizeTournamentsPlayersArray(
-        params.players, 
-        params.format, 
+        params.players 
       )
 
       if(tables?.error) {
@@ -121,7 +120,7 @@ export const updateTournament = createAsyncThunk(
    async (params:any, { rejectWithValue }) => {
       const response = await params.context.updateTournament(params.id, params.body)
       
-      if(response.toString().includes("FirebaseError")) {
+      if(response?.toString().includes("FirebaseError")) {
         return rejectWithValue(JSON.stringify(response))
       }
 
@@ -152,6 +151,9 @@ const tournamentsSlice = createSlice({
     },
     clearCreateTournamentState: (state) => {
       state.createTournament = initialState.createTournament
+    },
+    clearUpdateTournamentState: (state) => {
+      state.updateTournament = initialState.updateTournament
     }
   },
   extraReducers: builder => {
@@ -198,6 +200,19 @@ const tournamentsSlice = createSlice({
       state.createTournament.errorCreateTournament = action.payload;
     });
 
+    builder.addCase(updateTournament.pending, (state, action: any) => {
+      state.updateTournament.loadingUpdateTournament = true;
+    });
+    builder.addCase(updateTournament.fulfilled, (state, action) => {
+      state.updateTournament.loadingUpdateTournament = false;
+      state.updateTournament.successUpdateTournament = true;
+      state.updateTournament.errorUpdateTournament = null;
+    });
+    builder.addCase(updateTournament.rejected, (state, action: any) => {
+      state.updateTournament.loadingUpdateTournament = false;
+      state.updateTournament.errorUpdateTournament = action.payload;
+    });
+
     builder.addCase(deleteTournament.pending, (state, action: any) => {
       state.deleteTournament.loadingDeleteTournament = true;
     });
@@ -214,6 +229,6 @@ const tournamentsSlice = createSlice({
 });
 
 
-export const { clearGetTournaments,clearCreateTournamentState } = tournamentsSlice.actions;
+export const { clearGetTournaments, clearCreateTournamentState, clearUpdateTournamentState } = tournamentsSlice.actions;
 
 export default tournamentsSlice.reducer;
