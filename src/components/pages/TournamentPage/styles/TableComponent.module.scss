@@ -13,6 +13,26 @@
     font-size: 12px;
   }
 
+  .pair {
+    box-sizing: border-box;
+    width: 100%;
+    border: 2.5px solid #7a7a7a;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px 15px;
+    border-radius: 7px;
+    max-width: 80%;
+
+    .inputs{
+      width: 47.5%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+
   .cardContainer{
     width: 400px;
     height: 400px;
@@ -24,6 +44,22 @@
     align-items: center;
     justify-content: space-between;
     position: relative;
+
+    .shadow{
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      border-radius: 15px;
+      background: #7a7a7a7a;
+      backdrop-filter: blur(5px);
+      z-index: 25;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
 
     .infoTopCard{
       position: absolute;
@@ -42,6 +78,26 @@
           margin-left: 7px;
           border: 3px solid #fff;
         }
+      }
+
+      .effectiveness{
+        font-size: 12px;
+        font-weight: bold;
+        margin-left: 5px;
+        align-self: flex-end;
+      }
+    }
+
+    .tooltip{
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+  
+      .effectiveness1 {
+        background-color: #fff;
+        border-radius: 3px;
+        padding: 3px;
       }
     }
   

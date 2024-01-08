@@ -9,11 +9,11 @@ import ReactTable from '@/components/ReactTable/ReactTable'
 import { ErrorOutline } from '@mui/icons-material'
 
 interface PositionsTableProps {
-  tables: PairsTableInterface
+  calculateTablePositions: any
 }
 
-const PositionsTable: React.FC<PositionsTableProps> = ({ 
-  tables
+const PositionsTable: React.FC<PositionsTableProps> = ({
+  calculateTablePositions
 }) => {
   const [performancesBy, setPerformancesBy] = useState<number>(0)
 
@@ -21,19 +21,19 @@ const PositionsTable: React.FC<PositionsTableProps> = ({
     {
       columns: positionsTableIndividualColumns,
       mapper: positionsTableIndividualMapper,
-      data: [],
+      data: calculateTablePositions("individual"),
       name: "individual"
     },
     {
       columns: positionsTableByPairsColumns,
       mapper: positionsTableByPairsMapper,
-      data: [],
+      data: calculateTablePositions("pairs"),
       name: "pairs"
     },
     {
       columns: positionsTableByPairsColumns,
       mapper: positionsTableByPairsMapper,
-      data: [],
+      data: calculateTablePositions("tables"),
       name: "tables"
     },
   ]

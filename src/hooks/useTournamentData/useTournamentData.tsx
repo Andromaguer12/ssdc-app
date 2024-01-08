@@ -126,8 +126,8 @@ const useTournamentData = (tournamentId: string) => {
               p4
             },
             pointsPerPair: {
-              pair1: pair1Results,
-              pair2: pair2Results,
+              pair1: pair2Results > pair1Results ? 0 : pair1Results,
+              pair2: pair2Results > pair1Results ? pair2Results : 0,
             },
             effectivenessByPlayer: {
               p1: pair1Results - pair2Results,
@@ -141,7 +141,7 @@ const useTournamentData = (tournamentId: string) => {
             },
             roundWinner: pair2Results > pair1Results ? 1 : 0,
             sanctions: [],
-            finalWinner: null,
+            finalWinner: (pair2Results >= 100 || pair1Results >= 100) ? pair2Results >= 100 ? 1 : 0 : null,
             tableMatchEnded: pair2Results >= 100 || pair1Results >= 100
           }
   
@@ -234,14 +234,31 @@ const useTournamentData = (tournamentId: string) => {
     [tournament],
   )
   
-  
+  const calculateTablePositions = useCallback(
+    (type: "individual" | "pairs" | "tables") => {
+      if(type === "individual") {
+        // console.log(tournament?.results)
+        const players = usersData.map((user) => {
+          return {
+            name: user.name
+          }
+        })
+        
+        return []
+      }
+
+      return []
+    },
+    [tournament, usersData],
+  )
 
   return {
     tournamentData,
     errorDocument,
     tournamentAPI: {
       registerResultsByTable,
-      updateTournamentStatus
+      updateTournamentStatus,
+      calculateTablePositions
     }
   }
 }

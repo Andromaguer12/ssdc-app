@@ -48,8 +48,8 @@ const TournamentPage: React.FC<TournamentPageProps> = ({
             : errorGetTournamentById 
                 ? (
                   <div className={styles.loading}>
-                    <Warning style={{ color: "#7a7a7a", fontSize: 50 }} />
-                    <Typography variant="h6" style={{ marginTop: '20px' }}>{errorGetTournamentById}</Typography>
+                    <Warning style={{ color: "#fff", fontSize: 50 }} />
+                    <Typography variant="h6" style={{ marginTop: '20px' }} color={"secondary"}>{errorGetTournamentById}</Typography>
                   </div>
                 )
                 : tournamentData
@@ -198,6 +198,7 @@ const TournamentPage: React.FC<TournamentPageProps> = ({
                         {tournamentData.tables.tables.map((table: any, index) => {
                           return (
                             <TableComponent 
+                              tournament={tournamentData}
                               key={table.tableId} 
                               tableData={table}
                               thisTablePairs={table.thisTablePairs} 
@@ -210,7 +211,7 @@ const TournamentPage: React.FC<TournamentPageProps> = ({
                       </div>
                       <div className={showPositionsPanel ? styles.asideContainer__active : styles.asideContainer}>
                         <PositionsTable 
-                          tables={tournamentData.tables}
+                          calculateTablePositions={tournamentAPI.calculateTablePositions}
                         />
                       </div>
                     </div>

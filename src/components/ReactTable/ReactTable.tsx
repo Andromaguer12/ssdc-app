@@ -46,7 +46,6 @@ const ReactTable: React.FC<ReactTableProps> = ({
           <TableRow style={{ background: "#003994"}}>
             {
               columns.map((column, index) => {
-                console.log(column)
                 return (
                   <TableCell 
                     sx={{ width: column?.width ?? "fit-content" }}
