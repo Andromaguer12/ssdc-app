@@ -43,10 +43,16 @@ const TournamentPage: React.FC<TournamentPageProps> = ({
     const finishedTables = []
 
     tableKeys.forEach((key) => {
-      tournamentData?.results[key].roundResults.filter(({ finalWinner }) => finishedTables.push({finalWinner}))
+      const thereIsFinalWinner = tournamentData?.results[key].resultsByRound.find(({ finalWinner }) => typeof finalWinner === "number").finalWinner
+
+      if (thereIsFinalWinner) finishedTables.push(thereIsFinalWinner)
     })
 
-    // if()
+    if(finishedTables.length === tournamentData?.tables.tables.length) {
+      return true
+    }
+
+    return false
   }
 
   return (
@@ -185,14 +191,14 @@ const TournamentPage: React.FC<TournamentPageProps> = ({
                           <FormGroup style={{ marginLeft: "10px"}}>
                             <FormControlLabel control={<Switch onClick={() => setShowPositionsPanel(!showPositionsPanel)} checked={showPositionsPanel} />} label="Mostrar panel de posiciones" />
                           </FormGroup>
-                          <Button 
+                          {isPossibleChangeRound() && <Button 
                             disableElevation 
                             variant="contained" 
                             className={styles.button} 
                             endIcon={<NextPlan />}
                           >
                             Siguiente Ronda!
-                          </Button>
+                          </Button>}
                         </div>
                         <div className={styles.loader}>
                           {loadingUpdateTournament && <CircularProgress color="primary" size={25} />}
