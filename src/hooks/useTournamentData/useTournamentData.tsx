@@ -236,20 +236,160 @@ const useTournamentData = (tournamentId: string) => {
   
   const calculateTablePositions = useCallback(
     (type: "individual" | "pairs" | "tables") => {
-      if(type === "individual") {
-        // console.log(tournament?.results)
-        const players = usersData.map((user) => {
+      if(tournament && tournamentData && tournament.results && Object.keys(tournament.results)) {
+        const thisTablePairsMapped = tournamentData.tables.tables.map((tab) => {
           return {
-            name: user.name
+            ...tab,
+            thisTablePairs: groupedByTable(
+              tournamentData.tables[
+                tournamentData.format as string
+              ]
+            )[tab.tableId],
           }
-        })
-        
-        return []
-      }
+        }).map((d) => ({ tablePlayers: d.thisTablePairs, tableId: d.tableId}))
 
+        const tableKeys = Object.keys(tournament.results) 
+  
+        if(type === "individual") {
+          const logs: any[] = []
+
+          tableKeys.forEach((key, tableIdx) => {
+            const currentTable = thisTablePairsMapped.find(({ tableId }) => tableId === key)
+
+            currentTable?.tablePlayers.forEach((pair: any, pairIdx: number) => {
+              pair.forEach((player, pIdx: number) => {
+                let currentPlayer = "";
+
+                let currentPlayerPoints = 0;
+                let currentPlayerEffect = 0;
+
+                switch (pairIdx.toString()+pIdx.toString()) {
+                  case "00":
+                    currentPlayer = "p1"
+                    break;
+                  case "01":
+                    currentPlayer = "p2"
+                    break;
+                  case "10":
+                    currentPlayer = "p3"
+                    break;
+                  case "11":
+                    currentPlayer = "p4"
+                    break;
+                
+                  default:
+                    currentPlayer = "p1"
+                    break;
+                }
+
+                tournament.results[key].resultsByRound.forEach(({pointsPerPlayer,effectivenessByPlayer}) => {
+                  currentPlayerPoints+=pointsPerPlayer[currentPlayer]
+                  currentPlayerEffect+=effectivenessByPlayer[currentPlayer]
+                });
+
+                const payload = {
+                  name: player.name,
+                  pair: pairIdx + 1,
+                  table: tableIdx + 1,
+                  points: currentPlayerPoints,
+                  effectiveness: currentPlayerEffect,
+                }
+
+                logs.push(payload)
+              })
+            });
+          })
+
+          logs.sort((a, b) => {
+            return a.points - b.points
+          })
+
+          logs.reverse()
+          
+          return logs
+        }  
+
+        if(type === "pairs") {
+          const logs: any[] = []
+
+          tableKeys.forEach((key, tableIdx) => {
+            const currentTable = thisTablePairsMapped.find(({ tableId }) => tableId === key)
+
+            currentTable?.tablePlayers.forEach((pair: any, pairIdx: number) => {
+              let currentPairPoints = 0
+              let currentPairEffect = 0
+
+              tournament?.results[key].resultsByRound.forEach(({pointsPerPair,effectivenessByPair}) => {
+                currentPairPoints+=pointsPerPair[`pair${pairIdx+1}`]
+                currentPairEffect+=effectivenessByPair[`pair${pairIdx+1}`]
+              });
+
+              const payload = {
+                name: pair[0].name + " - " + pair[1].name,
+                pair: pairIdx + 1,
+                table: tableIdx + 1,
+                points: currentPairPoints,
+                effectiveness: currentPairEffect,
+              }
+
+              logs.push(payload)
+            });
+          })
+
+          logs.sort((a, b) => {
+            return a.points - b.points
+          })
+
+          logs.reverse()
+          
+          return logs
+        }
+
+        if(type === "tables") {
+          const logs: any[] = []
+
+          tableKeys.forEach((key, tableIdx) => {
+            let currentTableIndex = 0
+            const currentTable = thisTablePairsMapped.find(({ tableId }, index) => {
+              currentTableIndex = index
+              return tableId === key
+            })
+
+            let pair1Points = 0
+            let pair2Points = 0
+
+            tournament?.results[key].resultsByRound.forEach((roundResults: any) => {
+              pair1Points+=roundResults.pointsPerPair.pair1
+              pair2Points+=roundResults.pointsPerPair.pair2
+            });
+
+            const lastRound = tournament?.results[key].resultsByRound[tournament?.results[key].resultsByRound.length - 1]
+            
+
+            const payload = {
+              table: currentTableIndex + 1,
+              pair1Points,
+              pair2Points,
+              currentTableRound: lastRound.currentTableRound,
+              lastWinner: lastRound.roundWinner ?? "--",
+              finalWinner: lastRound.finalWinner ?? "--"
+            }
+
+            logs.push(payload)
+          })
+
+          logs.sort((a, b) => {
+            return a.currentTableRound - b.currentTableRound
+          })
+
+          logs.reverse()
+          
+          return logs
+        }
+      }
       return []
     },
-    [tournament, usersData],
+    [tournament, tournamentData, usersData],
   )
 
   return {

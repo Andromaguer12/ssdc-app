@@ -2,8 +2,8 @@ import { IndividualTableInterface, PairsTableInterface, TableObjectInterface, To
 import { Avatar, IconButton, Tab, Tabs, Tooltip, Typography, stepLabelClasses } from '@mui/material'
 import React, { useState } from 'react'
 import styles from '../styles/PositionsTable.module.scss'
-import { positionsTableByPairsColumns, positionsTableIndividualColumns } from '../constants/positionsTableColumns'
-import { positionsTableByPairsMapper, positionsTableIndividualMapper } from '../constants/mapper'
+import { positionsTableByPairsColumns, positionsTableByTablesColumns, positionsTableIndividualColumns } from '../constants/positionsTableColumns'
+import { positionsTableByPairsMapper, positionsTableByTablesMapper, positionsTableIndividualMapper } from '../constants/mapper'
 import SwipeableViews from 'react-swipeable-views';
 import ReactTable from '@/components/ReactTable/ReactTable'
 import { ErrorOutline } from '@mui/icons-material'
@@ -20,20 +20,17 @@ const PositionsTable: React.FC<PositionsTableProps> = ({
   const modes = [
     {
       columns: positionsTableIndividualColumns,
-      mapper: positionsTableIndividualMapper,
-      data: calculateTablePositions("individual"),
+      data: positionsTableIndividualMapper(calculateTablePositions("individual")),
       name: "individual"
     },
     {
       columns: positionsTableByPairsColumns,
-      mapper: positionsTableByPairsMapper,
-      data: calculateTablePositions("pairs"),
+      data: positionsTableByPairsMapper(calculateTablePositions("pairs")),
       name: "pairs"
     },
     {
-      columns: positionsTableByPairsColumns,
-      mapper: positionsTableByPairsMapper,
-      data: calculateTablePositions("tables"),
+      columns: positionsTableByTablesColumns,
+      data: positionsTableByTablesMapper(calculateTablePositions("tables")),
       name: "tables"
     },
   ]

@@ -64,14 +64,18 @@ const ReactTable: React.FC<ReactTableProps> = ({
           {data.map((row: any, index) => (
             <TableRow
               key={"row-"+index}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              sx={{ 
+                '&:last-child td, &:last-child th': { border: 0 }, 
+                background:  index % 2 !== 0 ? "#e7e7e7": "#ffffff"
+              }}
             >
               {
-                columns.map(({ accessor, textAlign }, index) => {
+                columns.map(({ accessor, textAlign, align }, index) => {
                   return (
                     <TableCell 
                       key={"row-cell-"+index}
                       className={styles.commonCell}
+                      align={align ?? "left"} 
                       style={{ textAlign }}
                     >
                       {row?.[accessor] ?? ""}
