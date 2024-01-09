@@ -1,9 +1,9 @@
 import { IndividualTableInterface, PairsTableInterface, TableObjectInterface, TournamentFormat, TournamentInterface } from '@/typesDefs/constants/tournaments/types'
-import { Avatar, Collapse, IconButton, Tooltip, Typography, stepLabelClasses } from '@mui/material'
+import { Avatar, Collapse, IconButton, List, ListItem, Tooltip, Typography, stepLabelClasses } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import styles from '../styles/TableComponent.module.scss'
 import { UserInterface } from '@/typesDefs/constants/users/types'
-import { EditNote, KeyboardArrowDown, TableRestaurant } from '@mui/icons-material'
+import { EditNote, EmojiEvents, KeyboardArrowDown, TableRestaurant } from '@mui/icons-material'
 import { generateHexColor } from '@/utils/generate-hex-color'
 import ReactTable from '@/components/ReactTable/ReactTable'
 import { roundsHistoryColumns } from '../constants/positionsTableColumns'
@@ -143,6 +143,32 @@ const TableComponent: React.FC<TableComponentProps> = ({
     if(pair === 2) return pair2Points
   }
 
+  const victoriesByPair = (pair: number) => {
+    let pair1Victories = 0
+    let pair2Victories = 0
+
+    thisTableResults.forEach((roundResults: any) => {
+      pair1Victories+=(roundResults.roundWinner === 1 ? 0 : 1);
+      pair2Victories+=(roundResults.roundWinner === 0 ? 0 : 1);
+    });
+
+    if(pair === 1) return pair1Victories
+    if(pair === 2) return pair2Victories
+  }
+
+  const defeatsByPair = (pair: number) => {
+    let pair1Defeats = 0
+    let pair2Defeats = 0
+
+    thisTableResults.forEach((roundResults: any) => {
+      pair1Defeats+=(roundResults.roundWinner !== 0 ? 1 : 0);
+      pair2Defeats+=(roundResults.roundWinner !== 1 ? 1 : 0);
+    });
+
+    if(pair === 1) return pair1Defeats
+    if(pair === 2) return pair2Defeats
+  }
+
   const pointsByPlayer = (player: string) => {
     let playerPoints = 0
 
@@ -189,33 +215,80 @@ const TableComponent: React.FC<TableComponentProps> = ({
       <div className={styles.cardContainer}>
         {typeof lastResultsLog?.finalWinner === "number" && lastResultsLog?.tableMatchEnded && (
           <div className={styles.shadow}>
-            <Typography style={{ color: "#ffffff"}} variant='h4'>
+            <Typography className={styles.title1} variant='h4'>
               Mesa Cerrada
             </Typography>
-            <Typography style={{ color: "green" }} variant='h4'>
-              Ganadores
-            </Typography>
-            <div 
-              className={styles.pair} 
-              style={{ 
-                background: 
-                  tableData[`pair${lastResultsLog?.finalWinner ?? 1}Color`] + "1f",
-                borderColor: 
-                  tableData[`pair${lastResultsLog?.finalWinner ?? 1}Color`],
-                color: 
-                  tableData[`pair${lastResultsLog?.finalWinner ?? 1}Color`] 
-              }}
-            >
-              {thisTablePairs[lastResultsLog?.finalWinner ?? 1]
-                .map((player: UserInterface, indexPlayer: number) => {
-                return (
-                  <div className={styles.inputs}>
-                    <Typography fontSize={"20px"} fontWeight={"bold"}>
-                      {player.name.split(" ")}
-                    </Typography>
-                  </div>
-                )
-              })}
+            <div className={styles.winnerContainer}>
+              <Typography  className={styles.title}>
+                Ganador de la mesa
+              </Typography>
+              <div 
+                className={styles.pair} 
+                style={{ 
+                  background: 
+                    tableData[`pair${lastResultsLog?.finalWinner ?? 1}Color`] + "1f",
+                  borderColor: 
+                    tableData[`pair${lastResultsLog?.finalWinner ?? 1}Color`],
+                  color: 
+                    tableData[`pair${lastResultsLog?.finalWinner ?? 1}Color`] 
+                }}
+              >
+                {thisTablePairs[lastResultsLog?.finalWinner ?? 1]
+                  .map((player: UserInterface, indexPlayer: number) => {
+                  return (
+                    <>
+                      <div className={styles.inputs}>
+                        <Typography fontSize={"20px"} fontWeight={"bold"}>
+                          {player.name.split(" ")}
+                        </Typography>
+                      </div>
+                      {indexPlayer < 1 && <EmojiEvents style={{ color: tableData[`pair${lastResultsLog?.finalWinner ?? 1}Color`] }} />}
+                    </>
+                  )
+                })}
+              </div>
+              <Typography  className={styles.title2}>
+                Puntaje
+              </Typography>
+              <List className={styles.resultsWinner}>
+                <ListItem className={styles.listItem} style={{ background: "#f5f5f5"}}>
+                  <Typography className={styles.pairColors}>
+                    Puntos:{" "} 
+                  </Typography>
+                  <Typography fontWeight={"bold"} className={styles.pairColors}>
+                  {pointsByPair(lastResultsLog?.finalWinner + 1) ?? "--"} pts
+                  </Typography>
+                </ListItem>
+                <ListItem className={styles.listItem} style={{ background: "#e7e7e7"}}>
+                  <Typography className={styles.pairColors}>
+                    Efectividad:{" "} 
+                  </Typography>
+                  <Typography fontWeight={"bold"} style={{ color: effectivenessByPair(lastResultsLog?.finalWinner + 1) > 0 ? "green" : "red" }} className={styles.pairColors}>
+                    {effectivenessByPair(lastResultsLog?.finalWinner + 1) > 0 ? "+" : ""}{effectivenessByPair(lastResultsLog?.finalWinner + 1) ?? "--"}
+                  </Typography>
+                </ListItem>
+                <ListItem className={styles.listItem} style={{ background: "#f5f5f5"}}>
+                  <Typography className={styles.pairColors}>
+                    Victorias:{" "} 
+                  </Typography>
+                  <Typography fontWeight={"bold"} style={{ color: victoriesByPair(lastResultsLog?.finalWinner + 1) === 0 ? "red" : victoriesByPair(lastResultsLog?.finalWinner + 1) >= 3 ? "green" : "orange" }} className={styles.pairColors}>
+                    {victoriesByPair(lastResultsLog?.finalWinner + 1)}
+                  </Typography>
+                </ListItem>
+                <ListItem className={styles.listItem} style={{ background: "#e7e7e7"}}>
+                  <Typography className={styles.pairColors}>
+                    Derrotas:{" "} 
+                  </Typography>
+                  <Typography fontWeight={"bold"} style={{ color: defeatsByPair(lastResultsLog?.finalWinner + 1) === 0 ? "green" : defeatsByPair(lastResultsLog?.finalWinner + 1) >= 3 ? "red" : "orange" }} className={styles.pairColors}>
+                    {defeatsByPair(lastResultsLog?.finalWinner + 1)}
+                  </Typography>
+                </ListItem>
+              </List>
+              <Tooltip title="Ver resultados recientes">
+                <IconButton size='small' onClick={() => setOpenCollapse(!openCollapse)} style={{ marginRight: "10px" }}>
+                  <KeyboardArrowDown className={styles.transition} sx={{ transform: `rotateZ(${openCollapse ? "180deg" : "0deg"})`}} />
+                </IconButton>
+              </Tooltip>
             </div>
           </div>
         )}

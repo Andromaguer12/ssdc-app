@@ -1,12 +1,12 @@
 "use client"
 import styles from './styles/TournamentPage.module.scss';
-import { CircularProgress, FormControl, FormControlLabel, FormGroup, InputLabel, MenuItem, Select, Switch, Typography } from "@mui/material";
+import { Button, CircularProgress, FormControl, FormControlLabel, FormGroup, InputLabel, MenuItem, Select, Switch, Typography } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { useEffect, useState } from 'react';
 import { getTournamentById } from '@/redux/reducers/tournaments/actions';
 import useFetchingContext from '@/contexts/backendConection/hook';
 import ReactTable from '@/components/ReactTable/ReactTable';
-import { SignalWifiStatusbarConnectedNoInternet4, Warning } from '@mui/icons-material';
+import { NextPlan, SignalWifiStatusbarConnectedNoInternet4, Warning } from '@mui/icons-material';
 import useTournamentData from '@/hooks/useTournamentData/useTournamentData';
 import TableComponent from './components/TableComponent';
 import UpdateResultsModal from './components/UpdateResultsModal';
@@ -37,6 +37,17 @@ const TournamentPage: React.FC<TournamentPageProps> = ({
       id: tournamentId
     }))
   }, [])
+
+  const isPossibleChangeRound = () => {
+    const tableKeys = Object.keys(tournamentData.results)
+    const finishedTables = []
+
+    tableKeys.forEach((key) => {
+      tournamentData?.results[key].roundResults.filter(({ finalWinner }) => finishedTables.push({finalWinner}))
+    })
+
+    // if()
+  }
 
   return (
     <section className={styles.pageContainer}>
@@ -174,6 +185,14 @@ const TournamentPage: React.FC<TournamentPageProps> = ({
                           <FormGroup style={{ marginLeft: "10px"}}>
                             <FormControlLabel control={<Switch onClick={() => setShowPositionsPanel(!showPositionsPanel)} checked={showPositionsPanel} />} label="Mostrar panel de posiciones" />
                           </FormGroup>
+                          <Button 
+                            disableElevation 
+                            variant="contained" 
+                            className={styles.button} 
+                            endIcon={<NextPlan />}
+                          >
+                            Siguiente Ronda!
+                          </Button>
                         </div>
                         <div className={styles.loader}>
                           {loadingUpdateTournament && <CircularProgress color="primary" size={25} />}
