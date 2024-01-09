@@ -117,6 +117,7 @@ const useTournamentData = (tournamentId: string) => {
         if (p1 > -1 && p2 > -1 && p3 > -1 && p4 > -1) {
           const pair1Results = p1 + p2;
           const pair2Results = p3 + p4;
+          const currentWinner =  pair2Results > pair1Results ? 1 : 0;
           const resultsPayload: ResultsByRoundInterface = {
             currentTableRound: tableRound,
             pointsPerPlayer: {
@@ -126,8 +127,8 @@ const useTournamentData = (tournamentId: string) => {
               p4
             },
             pointsPerPair: {
-              pair1: pair2Results > pair1Results ? 0 : pair1Results,
-              pair2: pair2Results > pair1Results ? pair2Results : 0,
+              pair1: currentWinner === 1 ? 0 : pair1Results,
+              pair2: currentWinner === 1 ? pair2Results : 0,
             },
             effectivenessByPlayer: {
               p1: pair1Results - pair2Results,
@@ -139,7 +140,7 @@ const useTournamentData = (tournamentId: string) => {
               pair1: pair1Results - pair2Results,
               pair2: pair2Results - pair1Results,
             },
-            roundWinner: pair2Results > pair1Results ? 1 : 0,
+            roundWinner: currentWinner,
             sanctions: [],
             finalWinner: (pair2Results >= 100 || pair1Results >= 100) ? pair2Results >= 100 ? 1 : 0 : null,
             tableMatchEnded: pair2Results >= 100 || pair1Results >= 100
@@ -262,6 +263,8 @@ const useTournamentData = (tournamentId: string) => {
 
                 let currentPlayerPoints = 0;
                 let currentPlayerEffect = 0;
+                let currentPlayerWins = 0;
+                let currentPlayerDefeats = 0;
 
                 switch (pairIdx.toString()+pIdx.toString()) {
                   case "00":
@@ -282,9 +285,11 @@ const useTournamentData = (tournamentId: string) => {
                     break;
                 }
 
-                tournament.results[key].resultsByRound.forEach(({pointsPerPlayer,effectivenessByPlayer}) => {
-                  currentPlayerPoints+=pointsPerPlayer[currentPlayer]
-                  currentPlayerEffect+=effectivenessByPlayer[currentPlayer]
+                tournament.results[key].resultsByRound.forEach(({pointsPerPlayer,effectivenessByPlayer,roundWinner}) => {
+                  currentPlayerPoints+=pointsPerPlayer[currentPlayer];
+                  currentPlayerEffect+=effectivenessByPlayer[currentPlayer];
+                  currentPlayerWins+=(roundWinner === pairIdx ? 1 : 0);
+                  currentPlayerDefeats+=(roundWinner !== pairIdx ? 1 : 0);
                 });
 
                 const payload = {
@@ -292,6 +297,8 @@ const useTournamentData = (tournamentId: string) => {
                   pair: pairIdx + 1,
                   table: tableIdx + 1,
                   points: currentPlayerPoints,
+                  wins: currentPlayerWins,
+                  defeats: currentPlayerDefeats,
                   effectiveness: currentPlayerEffect,
                 }
 
@@ -318,10 +325,14 @@ const useTournamentData = (tournamentId: string) => {
             currentTable?.tablePlayers.forEach((pair: any, pairIdx: number) => {
               let currentPairPoints = 0
               let currentPairEffect = 0
+              let currentPlayerWins = 0
+              let currentPlayerDefeats = 0
 
-              tournament?.results[key].resultsByRound.forEach(({pointsPerPair,effectivenessByPair}) => {
+              tournament?.results[key].resultsByRound.forEach(({pointsPerPair,effectivenessByPair, roundWinner}) => {
                 currentPairPoints+=pointsPerPair[`pair${pairIdx+1}`]
                 currentPairEffect+=effectivenessByPair[`pair${pairIdx+1}`]
+                currentPlayerWins+=(roundWinner === pairIdx ? 1 : 0);
+                currentPlayerDefeats+=(roundWinner !== pairIdx ? 1 : 0);
               });
 
               const payload = {
@@ -329,6 +340,8 @@ const useTournamentData = (tournamentId: string) => {
                 pair: pairIdx + 1,
                 table: tableIdx + 1,
                 points: currentPairPoints,
+                wins:currentPlayerWins,
+                defeats:currentPlayerDefeats, 
                 effectiveness: currentPairEffect,
               }
 

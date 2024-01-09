@@ -24,6 +24,24 @@ export const positionsTableIndividualMapper = (data: any) => {
             {row.points}
           </Typography>        
         </>,
+      wins: 
+        <>
+          <Typography
+            style={{ color: row.wins === 0 ? "red" : row.wins >= 3 ? "green" : "orange" }}
+            fontWeight={"bold"}
+          >
+            {row.wins}
+          </Typography>        
+        </>,
+      defeats: 
+        <>
+          <Typography
+            style={{ color: row.defeats === 0 ? "green" : row.defeats >= 3 ? "red" : "orange" }}
+            fontWeight={"bold"}
+          >
+            {row.defeats}
+          </Typography>        
+        </>,
       effectiveness: 
         <>
           <Typography
@@ -65,6 +83,24 @@ export const positionsTableByPairsMapper = (data: any) => {
           >
             {row.points}
           </Typography>
+        </>,
+      wins: 
+        <>
+          <Typography
+            style={{ color: row.wins === 0 ? "red" : row.wins >= 3 ? "green" : "orange" }}
+            fontWeight={"bold"}
+          >
+            {row.wins}
+          </Typography>        
+        </>,
+      defeats: 
+        <>
+          <Typography
+            style={{ color: row.defeats === 0 ? "green" : row.defeats >= 3 ? "red" : "orange" }}
+            fontWeight={"bold"}
+          >
+            {row.defeats}
+          </Typography>        
         </>,
       effectiveness: 
         <>
