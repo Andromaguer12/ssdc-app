@@ -86,6 +86,12 @@
         margin-left: 5px;
         align-self: flex-end;
       }
+
+      .transition{
+        transition: all ease 500ms;
+
+        // background: red;
+      }
     }
 
     .tooltip{
@@ -127,5 +133,14 @@
       align-items: center;
       justify-content: space-around;
     }
+  }
+
+  .historyCollapse{
+    width: 100%;
+    background-color: #e7e7e7;
+    padding: 20px;
+    box-sizing: border-box;
+    padding-top: 40px;
+    border-radius: 0 0 15px 15px;
   }
 }

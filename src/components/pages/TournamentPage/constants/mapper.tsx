@@ -163,3 +163,44 @@ export const positionsTableByTablesMapper = (data: any) => {
         </>
   }})
 }
+
+export const roundsHistoryMapper = (data: any) => {
+  return data.map((row: any) => {
+    return {
+      currentTableRound: 
+        <>
+          <Typography
+            fontWeight={"bold"}
+          >
+            {row.currentTableRound}
+          </Typography>
+        </>,
+      pair1Points: 
+        <>
+          <Typography
+            style={{ color: row.pair1Points == 0 ? "red" : "green" }}
+            fontWeight={"bold"}
+          >
+            {row.pair1Points}
+          </Typography>
+        </>,
+      pair2Points: 
+        <>
+          <Typography
+            style={{ color: row.pair2Points == 0 ? "red" : "green" }}
+            fontWeight={"bold"}
+          >
+            {row.pair2Points}
+          </Typography>
+        </>,
+      winner: 
+        <>
+          <Typography
+            color="primary"
+            fontWeight={"bold"}
+          >
+            Pareja {row.winner + 1}
+          </Typography>
+        </>,
+    }})
+}

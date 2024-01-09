@@ -111,13 +111,24 @@ const useTournamentData = (tournamentId: string) => {
     (
       tableId: string,
       tableRound: number,
-      { p1, p2, p3, p4 }: { p1: number, p2: number, p3: number, p4: number }
+      { p1, p2, p3, p4 }: { p1: number, p2: number, p3: number, p4: number },
+      currentPointsByPair: {
+        pair1: number,
+        pair2: number,
+      }
     ) => {
       if(tournament?.status === "active"){
         if (p1 > -1 && p2 > -1 && p3 > -1 && p4 > -1) {
           const pair1Results = p1 + p2;
           const pair2Results = p3 + p4;
           const currentWinner =  pair2Results > pair1Results ? 1 : 0;
+          const isFinalWinner = 
+            currentPointsByPair.pair1 + (currentWinner === 1 ? 0 : pair1Results) >= 100 
+              ? 0
+              : currentPointsByPair.pair2 + (currentWinner === 1 ? pair2Results : 0) >= 100
+                ? 1
+                : null
+            
           const resultsPayload: ResultsByRoundInterface = {
             currentTableRound: tableRound,
             pointsPerPlayer: {
@@ -142,8 +153,8 @@ const useTournamentData = (tournamentId: string) => {
             },
             roundWinner: currentWinner,
             sanctions: [],
-            finalWinner: (pair2Results >= 100 || pair1Results >= 100) ? pair2Results >= 100 ? 1 : 0 : null,
-            tableMatchEnded: pair2Results >= 100 || pair1Results >= 100
+            finalWinner: isFinalWinner,
+            tableMatchEnded: typeof isFinalWinner === "number"
           }
   
           const indexOfTable = 

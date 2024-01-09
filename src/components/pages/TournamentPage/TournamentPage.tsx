@@ -23,7 +23,7 @@ const TournamentPage: React.FC<TournamentPageProps> = ({
   const fContext = useFetchingContext();
   const { tournamentData, tournamentAPI, errorDocument: errorGetTournamentById } = useTournamentData(tournamentId)
   const [openUpdateResults, setOpenUpdateResults] = useState("")
-  const [showPositionsPanel, setShowPositionsPanel] = useState(false)
+  const [showPositionsPanel, setShowPositionsPanel] = useState(true)
 
   const {
     updateTournament: {

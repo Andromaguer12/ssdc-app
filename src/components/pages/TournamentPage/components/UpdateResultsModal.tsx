@@ -76,16 +76,28 @@ const UpdateTournamentModal: React.FC<ModalProps> = ({ open, tournament, handleC
 
   const handleSubmitForm = React.useCallback(
     (values: formState, { resetForm }: { resetForm:any }) => {
+      let pair1 = 0
+      let pair2 = 0
+  
+      tournament.results[currentTableData.tableId].resultsByRound.forEach((roundResults: any) => {
+        pair1+=roundResults.pointsPerPair.pair1
+        pair2+=roundResults.pointsPerPair.pair2
+      });      
+            
       if (values.p1 > -1 && values.p2 > -1 && values.p3 > -1 && values.p4 > -1 && !successUpdateTournament) {
         tournamentAPI
           .registerResultsByTable(
             currentTableData.tableId,
             currentTableData.currentTableRound, 
-            values
+            values,
+            {
+              pair1,
+              pair2,
+            }
           )
       }
     },
-    [currentTableData, successUpdateTournament],
+    [currentTableData, successUpdateTournament, currentTableData, tournament],
   )
 
   React.useEffect(() => {

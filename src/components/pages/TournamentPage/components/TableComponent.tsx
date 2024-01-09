@@ -1,10 +1,13 @@
 import { IndividualTableInterface, PairsTableInterface, TableObjectInterface, TournamentFormat, TournamentInterface } from '@/typesDefs/constants/tournaments/types'
-import { Avatar, IconButton, Tooltip, Typography, stepLabelClasses } from '@mui/material'
+import { Avatar, Collapse, IconButton, Tooltip, Typography, stepLabelClasses } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import styles from '../styles/TableComponent.module.scss'
 import { UserInterface } from '@/typesDefs/constants/users/types'
 import { EditNote, KeyboardArrowDown, TableRestaurant } from '@mui/icons-material'
 import { generateHexColor } from '@/utils/generate-hex-color'
+import ReactTable from '@/components/ReactTable/ReactTable'
+import { roundsHistoryColumns } from '../constants/positionsTableColumns'
+import { roundsHistoryMapper } from '../constants/mapper'
 
 const PlayerCard = ({player, effectiveness, points, color}: { player: UserInterface, points: number,effectiveness: number, color: string }) => {
   return (
@@ -94,6 +97,7 @@ const TableComponent: React.FC<TableComponentProps> = ({
   const p4 = thisTablePairs[1][1]
   const [thisTableResults, setThisTableResults] = useState([])
   const [lastResultsLog, setLastResultsLog] = useState(null)
+  const [openCollapse, setOpenCollapse] = useState(false)
 
   const { pair1Color, pair2Color } = tableData;
   
@@ -161,6 +165,17 @@ const TableComponent: React.FC<TableComponentProps> = ({
     return pair1Points > pair2Points ? 0 : 1
   }
 
+  const mapRoundHistory = () => {
+    return thisTableResults.map((round: any) => {
+      return {
+        currentTableRound: round.currentTableRound,
+        pair1Points: round.pointsPerPair.pair1,
+        pair2Points: round.pointsPerPair.pair2,
+        winner: round.roundWinner,
+      }
+    })
+  }
+
   return (
     <div className={styles.actionsContainer} style={{ marginBottom: showHUD ? "50px" : "0" }}>
       
@@ -172,7 +187,7 @@ const TableComponent: React.FC<TableComponentProps> = ({
         Mesa # {tableNumber}
       </Typography>}
       <div className={styles.cardContainer}>
-        {typeof lastResultsLog?.finalWinner === "number" && (
+        {typeof lastResultsLog?.finalWinner === "number" && lastResultsLog?.tableMatchEnded && (
           <div className={styles.shadow}>
             <Typography style={{ color: "#ffffff"}} variant='h4'>
               Mesa Cerrada
@@ -313,8 +328,8 @@ const TableComponent: React.FC<TableComponentProps> = ({
           }}
         >
           <Tooltip title="Ver resultados recientes">
-            <IconButton style={{ marginRight: "10px" }}>
-              <KeyboardArrowDown />
+            <IconButton onClick={() => setOpenCollapse(!openCollapse)} style={{ marginRight: "10px" }}>
+              <KeyboardArrowDown className={styles.transition} sx={{ transform: `rotateZ(${openCollapse ? "180deg" : "0deg"})`}} />
             </IconButton>
           </Tooltip>
           <Tooltip title="Registrar resultados">
@@ -324,6 +339,23 @@ const TableComponent: React.FC<TableComponentProps> = ({
           </Tooltip>
         </div>}
       </div>
+      <Collapse
+        style={{ width: "100%", marginTop: "-20px" }}
+        in={openCollapse}
+      >
+        <div className={styles.historyCollapse}>
+          <Typography fontWeight={"bold"} className={styles.title}>
+            Historial
+          </Typography>
+          <Typography fontSize={"12px"} style={{ marginBottom: "10px", color: "#7a7a7a"}} >
+            Este es el historial de cada ronda jugada de esta mesa.
+          </Typography>
+          <ReactTable
+            columns={roundsHistoryColumns}
+            data={roundsHistoryMapper(mapRoundHistory()) ?? []}
+          /> 
+        </div>
+      </Collapse>
     </div>
   )
 }

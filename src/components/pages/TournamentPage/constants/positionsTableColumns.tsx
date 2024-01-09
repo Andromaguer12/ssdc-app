@@ -141,5 +141,36 @@ export const positionsTableByTablesColumns = [
   },
 ]
 
+export const roundsHistoryColumns = [
+  {
+    header: "Ronda",
+    accessor: "currentTableRound",
+    padding: "5px",
+    width: "10%",
+    align: "center"
+  },
+  {
+    header: "Pts Par. 1",
+    accessor: "pair1Points",
+    padding: "5px",
+    width: "10%",
+    align: "center"
+  },
+  {
+    header: "Pts Par. 2",
+    accessor: "pair2Points",
+    padding: "5px",
+    width: "10%",
+    align: "center"
+  },
+  {
+    header: "Ganador",
+    accessor: "winner",
+    padding: "5px",
+    width: "10%",
+    align: "center"
+  },
+]
+
 
 
