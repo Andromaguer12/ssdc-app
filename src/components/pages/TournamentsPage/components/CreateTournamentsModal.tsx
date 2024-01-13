@@ -12,8 +12,8 @@ import SwipeableViews from 'react-swipeable-views';
 import { Formik } from "formik";
 import { act } from 'react-dom/test-utils';
 import { useDispatch, useSelector } from 'react-redux';
-import { clearUsersList, getUsersList } from '@/redux/reducers/usersList/actions';
-import { useAppDispatch } from '@/redux/store';
+import { clearGetUsers, getAllUsers } from '@/redux/reducers/usersList/actions';
+import { useAppDispatch, useAppSelector } from '@/redux/store';
 import useFetchingContext from '@/contexts/backendConection/hook';
 import { UserInterface } from '@/typesDefs/constants/users/types';
 import { clearCreateTournamentState, createTournament } from '@/redux/reducers/tournaments/actions';
@@ -52,10 +52,12 @@ const CreateTournamentsModal: React.FC<ModalProps> = ({ open, handleClose }) => 
   const fContext = useFetchingContext()
 
   const { 
-    loading: loadingUsersList,
-    error: errorUsersList,
-    data: usersList
-  } = useSelector(({usersList}) => usersList)
+    getUsers: {
+      loadingGetUsers:loadingUsersList,
+      usersList,
+      errorGetUsers:errorUsersList,
+    }
+  } = useAppSelector(({usersList}) => usersList)
 
   const { 
     createTournament: {
@@ -88,7 +90,7 @@ const CreateTournamentsModal: React.FC<ModalProps> = ({ open, handleClose }) => 
   const handleCleanClose = (resetForm?: any) => {
     setActiveStep(0)
     dispatch(clearCreateTournamentState())
-    dispatch(clearUsersList())
+    dispatch(clearGetUsers())
     handleClose()
     if(resetForm) resetForm()
   }
@@ -101,7 +103,7 @@ const CreateTournamentsModal: React.FC<ModalProps> = ({ open, handleClose }) => 
         }
       }
       if(activeStep == 1) {
-        if(selectedUsers.length > 0 && selectedUsers.length % 4 === 0){
+        if(selectedUsers.length > 0 && selectedUsers.length % 4 === 0 && selectedUsers.length / 4 > 1){
           setActiveStep(activeStep + 1)
           dispatch(createTournament({
             context: fContext,
@@ -122,7 +124,7 @@ const CreateTournamentsModal: React.FC<ModalProps> = ({ open, handleClose }) => 
   const handlePreviousStep = React.useCallback(
     () => {
       setActiveStep(activeStep - 1)
-      dispatch(clearUsersList())
+      dispatch(clearGetUsers())
       setSelectedUsers([])
       setSearchUsers([])
     },
@@ -139,12 +141,12 @@ const CreateTournamentsModal: React.FC<ModalProps> = ({ open, handleClose }) => 
 
   React.useEffect(() => {
     if(activeStep === 1) {
-      dispatch(getUsersList({
+      dispatch(getAllUsers({
         context: fContext
       }))
     }
     if(activeStep !== 1) {
-      dispatch(clearUsersList())
+      dispatch(clearGetUsers())
     }
   }, [activeStep])
 
@@ -247,7 +249,7 @@ const CreateTournamentsModal: React.FC<ModalProps> = ({ open, handleClose }) => 
                                         >
                                           <FormControlLabel value="individual" control={<Radio />} label="Individual" />
                                           <FormControlLabel value="pairs" control={<Radio />} label="Parejas" />
-                                          <FormControlLabel value="groups" control={<Radio />} label="Grupos" />
+                                          {/* <FormControlLabel value="groups" control={<Radio />} label="Grupos" /> */}
                                         </RadioGroup>
                                       </FormControl>
                                     </Grid>

@@ -5,7 +5,7 @@ import { IconButton } from "@mui/material"
 import { Delete, Edit, PanoramaFishEye, RemoveRedEye } from "@mui/icons-material"
 import Link from "next/link"
 
-export const tournamentsMapper = (data: any) => {
+export const tournamentsMapper = (data: any, handleDeleteModal: any) => {
   return data.map((row: TournamentInterface) => {
     return {
       name: (
@@ -43,11 +43,6 @@ export const tournamentsMapper = (data: any) => {
           {row?.allPlayers?.length}
         </>
       ),
-      winner: (
-        <>
-          {row.winner ?? "No existe aun"}
-        </>
-      ),
       game: (
         <>
           {row.game}
@@ -79,10 +74,8 @@ export const tournamentsMapper = (data: any) => {
               <RemoveRedEye />
             </IconButton>
           </Link>
-          {/* <IconButton color="primary">
-            <Edit />
-          </IconButton> */}
-          <IconButton>
+          
+          <IconButton onClick={() => handleDeleteModal(row?.id ?? "")}>
             <Delete style={{ color: "red" }} />
           </IconButton>
         </>

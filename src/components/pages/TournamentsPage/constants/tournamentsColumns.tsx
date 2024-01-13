@@ -31,11 +31,11 @@ export const tournamentsColumns = [
     textAlign: "center"
 
   },
-  {
-    header: "Ganador",
-    accessor: "winner",
-    textAlign: "center"
-  },
+  // {
+  //   header: "Ganador",
+  //   accessor: "winner",
+  //   textAlign: "center"
+  // },
   {
     header: "Juego",
     accessor: "game",

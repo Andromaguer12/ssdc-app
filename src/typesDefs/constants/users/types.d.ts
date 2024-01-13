@@ -2,7 +2,8 @@ export interface UserInterface {
     name: string;
     email: string;
     phone: string;
-    rank: "A" | "B" | "C";
+    image: string;
+    isAdmin?: boolean;
     uid?: string;
     id?: string;
 }

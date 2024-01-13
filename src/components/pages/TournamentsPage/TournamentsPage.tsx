@@ -4,12 +4,13 @@ import { Button, CircularProgress, Typography } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { EmojiEvents, Warning } from '@mui/icons-material';
 import CreateTournamentsModal from './components/CreateTournamentsModal';
-import { useEffect, useState } from 'react';
-import { clearGetTournaments, getAllTournaments } from '@/redux/reducers/tournaments/actions';
+import { useCallback, useEffect, useState } from 'react';
+import { clearGetTournaments, deleteTournament, getAllTournaments } from '@/redux/reducers/tournaments/actions';
 import useFetchingContext from '@/contexts/backendConection/hook';
 import ReactTable from '@/components/ReactTable/ReactTable';
 import { tournamentsColumns } from './constants/tournamentsColumns';
 import { tournamentsMapper } from './constants/mapper';
+import AcceptModal from '@/components/AcceptModal/AcceptModal';
 
 const TournamentsPage = () => {
   const dispatch = useAppDispatch()
@@ -24,8 +25,14 @@ const TournamentsPage = () => {
     },
     createTournament: {
       successCreateTournament,
+    },
+    deleteTournament: {
+      loadingDeleteTournament,
+      successDeleteTournament,
+      errorDeleteTournament
     }
   } = useAppSelector(({ tournaments }) => tournaments)
+  const [DeleteTournament, setDeleteTournament] = useState('')
 
   const [allTournaments, setAllTournaments] = useState([])
 
@@ -37,9 +44,13 @@ const TournamentsPage = () => {
     setOpenModal(false)
   }
 
+  const handleDeleteModal = (id: string) => {
+    setDeleteTournament(id)
+  }
+
   useEffect(() => {
     if(successGetTournaments && tournamentsList) {
-      const mappedData = tournamentsMapper(tournamentsList)
+      const mappedData = tournamentsMapper(tournamentsList, handleDeleteModal)
 
       setAllTournaments(mappedData)
     }
@@ -53,19 +64,32 @@ const TournamentsPage = () => {
   }, [])
 
   useEffect(() => {
-    if(successCreateTournament) {
+    if(successCreateTournament || successDeleteTournament) {
       dispatch(getAllTournaments({
         context: fContext,
       }))
+      setDeleteTournament("")
     }
-  }, [successCreateTournament])
+  }, [successCreateTournament, successDeleteTournament])
 
   useEffect(() => {  
     return () => {
       dispatch(clearGetTournaments())
     }
   }, [])
-  
+ 
+  const acceptAction = useCallback(
+    () => {
+      if(DeleteTournament) {
+        dispatch(deleteTournament({ 
+          context: fContext,
+          id: DeleteTournament
+        }))
+      }
+    },
+    [DeleteTournament],
+  )
+    
   return (
     <section className={styles.pageContainer}>
       <Typography sx={{ marginBottom: '20px', color: '#fff'}} variant="h3">Torneos</Typography>
@@ -99,6 +123,15 @@ const TournamentsPage = () => {
       <CreateTournamentsModal 
         open={openModal}
         handleClose={handleCloseModal}
+      />
+      <AcceptModal 
+        acceptAction={acceptAction}
+        handleClose={() => setDeleteTournament("")}
+        open={Boolean(DeleteTournament)}
+        loading={loadingDeleteTournament}
+        error={errorDeleteTournament}
+        text='Estas seguro de eliminar este torneo?'
+        title='Advertencia'
       />
     </section>
   )

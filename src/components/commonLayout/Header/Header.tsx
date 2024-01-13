@@ -23,9 +23,9 @@ export default function Header() {
               </Link>
             );
           })}
-          <IconButton className={styles.iconButtons}>
+          {/* <IconButton className={styles.iconButtons}>
             <Language sx={{ color: '#ffffff' }} />
-          </IconButton>
+          </IconButton> */}
         </div>
       </div>
     </div>

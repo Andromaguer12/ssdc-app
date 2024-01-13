@@ -1,36 +1,82 @@
 "use client"
 import UserList from "@/components/pages/Dashboard/components/UserList/UserList"
 import styles from './Dashboard.module.scss';
-import { Typography } from "@mui/material";
-import { useState, useEffect } from "react";
-import Modal from "@/components/Modal/Modal";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
-import { getUsersList } from "@/redux/reducers/usersList/actions";
 import useFirebaseContext from "@/contexts/firebaseConnection/hook";
+import { Button, Typography } from "@mui/material";
+import { EmojiEvents, Group } from "@mui/icons-material";
+import Link from "next/link";
+import useFetchingContext from "@/contexts/backendConection/hook";
+import { userLogoutFunction } from "@/redux/reducers/user/actions";
 
 const Dashboard = () => {
   const dispatch = useAppDispatch()
-  const fbContext = useFirebaseContext();
+  const fContext = useFetchingContext()
 
-  const [form, setForm] = useState(false);
-
-  useEffect(() => {
-    dispatch(getUsersList({
-        context: fbContext,
-    }))
-  }, [])
+  const handleLogout = () => {
+    dispatch(userLogoutFunction({ context: fContext }))
+  }
 
   return (
     <section className={styles.Dashboard}>
-      <Typography sx={{ marginBottom: '20px', color: '#fff'}} variant="h3">Panel Principal</Typography>
-      <div className={styles.DashboardUserList}>
-        <div className={styles.DashboardUserListDiv}>
-          <Typography variant="h5">Lista de usuarios</Typography>
-          <span className={styles.DashboardRegisterUser} onClick={() => setForm(true)}><Typography variant="button">Registrar usuario</Typography></span>
+      <div className={styles.container}>
+        <div className={styles.title}>
+          <Typography color="secondary" variant="h2">
+            Bienvenido a DominoElite
+          </Typography>
+
+          <Typography color="secondary" className={styles.subtitle}>
+            {"(Sistema Suizo de Domino Competitivo)"}
+          </Typography>
         </div>
-        <UserList />
+        <div className={styles.cards}>
+          <div className={styles.card}>
+            <div className={styles.header}>
+              <Typography style={{ marginBottom: "10px"}} className={styles.subtitle}>
+                Administracion
+              </Typography>
+              <Typography className={styles.title1} variant="h5">
+                Administrar Usuarios Jugadores
+              </Typography>
+
+              <Typography className={styles.subtitle}>
+                Ver / Crear / Editar / Eliminar, En este apartado podras gestionar todo lo relacionado a los usuarios jugadores, que podras utilizar para crear tus torneos
+              </Typography>
+            </div>
+            <Group color="primary" style={{ fontSize: "200px"}} />
+            <Link style={{ width: "100%", fontWeight: "bold" }} href={'/admin/users'}>
+              <Button style={{ fontWeight: "bold" }} fullWidth variant="contained" color="primary">
+                Entrar
+              </Button>
+            </Link>
+          </div>
+          <div className={styles.card}>
+            <div className={styles.header}>
+              <Typography style={{ marginBottom: "10px"}} className={styles.subtitle}>
+                Administracion
+              </Typography>
+              <Typography className={styles.title1} variant="h5">
+                Administrar Torneos
+              </Typography>
+
+              <Typography className={styles.subtitle}>
+                Ver / Crear / Editar / Eliminar, En este apartado podras manejar todo lo relacionado a los torneos, agregar los jugadores que tu desees, y visualizar en tiempo real todas sus estadisticas 
+              </Typography>
+            </div>
+            <EmojiEvents color="primary" style={{ fontSize: "200px"}} />
+            <Link style={{ width: "100%", fontWeight: "bold" }} href={'/admin/tournaments'}>
+              <Button style={{ fontWeight: "bold" }} fullWidth variant="contained" color="primary">
+                Entrar
+              </Button>
+            </Link>
+          </div>
+        </div>
+        <div className={styles.title}>
+          <Button onClick={handleLogout} className={styles.button} color="secondary" variant="contained">
+            Cerrar sesion
+          </Button>
+        </div>
       </div>
-      {form && <Modal setModal={() => setForm(false)} format="user"/>}
     </section>
   )
 }

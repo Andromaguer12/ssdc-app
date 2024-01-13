@@ -16,7 +16,7 @@ const useTournamentData = (tournamentId: string) => {
   const dispatch = useAppDispatch()
   
   const groupedByTable = useCallback(
-    (data: any) => data.reduce((accumulator: any, currentItem: any) => {
+    (data: any) => (data ?? []).reduce((accumulator: any, currentItem: any) => {
       const tableId = currentItem.table;
     
       if(accumulator[tableId]) {
@@ -39,7 +39,7 @@ const useTournamentData = (tournamentId: string) => {
   )
   
   useEffect(() => {
-    if(tournament && usersData.length) {
+    if(tournament && tournament.tables && usersData.length) {
       const mappedUsersTournament = {
         ...tournament,
         tables: {
@@ -49,9 +49,7 @@ const useTournamentData = (tournamentId: string) => {
             return {
               ...tab,
               thisTablePairs: groupedByTable(
-                tournament.tables[
-                  tournament.format as string
-                ]
+                tournament.tables.pairs
               )[tab.tableId],
               table: tab.table.map((userId) => {
                 return usersData.find(({ id }) => userId === id)
@@ -297,9 +295,7 @@ const useTournamentData = (tournamentId: string) => {
             return {
               ...tab,
               thisTablePairs: groupedByTable(
-                resultsToCalculate.tables[
-                  tournamentData.format as string
-                ]
+                resultsToCalculate.tables.pairs
               )[tab.tableId],
             }
           }).map((d) => ({ tablePlayers: d.thisTablePairs, tableId: d.tableId}))
@@ -461,9 +457,7 @@ const useTournamentData = (tournamentId: string) => {
           return {
             ...tab,
             thisTablePairs: groupedByTable(
-              tournamentData.tables[
-                tournamentData.format as string
-              ]
+              tournamentData.tables.pairs
             )[tab.tableId],
           }
         }).map((d) => ({ tablePlayers: d.thisTablePairs, tableId: d.tableId}))

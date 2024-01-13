@@ -120,10 +120,6 @@ export const updateTournament = createAsyncThunk(
    async (params:any, { rejectWithValue }) => {
       const response = await params.context.updateTournament(params.id, params.body)
       
-      if(response?.toString().includes("FirebaseError")) {
-        return rejectWithValue(JSON.stringify(response))
-      }
-
       return response
   }
 );
@@ -132,10 +128,7 @@ export const deleteTournament = createAsyncThunk(
   'tournaments/deleteTournament',
    async (params:any, { rejectWithValue }) => {
       const response = await params.context.deleteTournament(params.id)
-      
-      if(response.toString().includes("FirebaseError")) {
-        return rejectWithValue(JSON.stringify(response))
-      }
+
 
       return response
   }

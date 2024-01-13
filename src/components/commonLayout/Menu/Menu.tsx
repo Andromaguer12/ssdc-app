@@ -45,7 +45,7 @@ const Menu = () => {
 
     const [open, setOpen] = React.useState(true);
 
-      const { name } = useAppSelector(({ user }) => user)
+    const { userData } = useAppSelector(({ user }) => user)
 
     const handleClick = () => {
         setOpen(!open);
@@ -82,7 +82,7 @@ const Menu = () => {
                         <AccountCircleIcon color="secondary" sx={{ fontSize: 50 }} />
                     </ListItemIcon>
                     <div>
-                        <ListItemText sx={{ color: "#fff "}} primary={name} />
+                        <ListItemText sx={{ color: "#fff "}} primary={userData?.name ?? "--"} />
                         <ListItemText sx={{ color: "#7a7a7a", fontSize: "13px !important" }} primary={"Admin"} />
                     </div>
                 </ListItem>

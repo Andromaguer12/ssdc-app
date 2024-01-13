@@ -12,11 +12,12 @@ import { useEffect } from "react"
 import { clearStateUser, getUserByUserUid } from "@/redux/reducers/user/actions"
 import FetchingContext from "@/contexts/backendConection/context"
 import { useRouter } from "next/navigation"
+import useFetchingContext from "@/contexts/backendConection/hook"
 
 function Main({ children }: { children: any }) {
   const dispatch = useAppDispatch()
-  const firebaseClass = new Firebase();
   const router = useRouter()
+  const fContext = useFetchingContext()
 
   const { signedOut } = useAppSelector(({ user }) => user)
   
@@ -36,7 +37,7 @@ function Main({ children }: { children: any }) {
       dispatch(getUserByUserUid({
         uid, 
         accessToken,
-        context: firebaseClass
+        context: fContext
       }))
     }
   }, []);
@@ -58,13 +59,11 @@ export default function RootLayout({
   const firebaseClass = new Firebase();
   return (
     <Provider store={store}>
-      <FirebaseContext.Provider value={firebaseClass}>
-        <FetchingContext.Provider value={firebaseClass}>
-          <ThemeProvider theme={theme}>
-            <Main>{children}</Main>
-          </ThemeProvider>
-        </FetchingContext.Provider>
-      </FirebaseContext.Provider>
+      <FetchingContext.Provider value={firebaseClass}>
+        <ThemeProvider theme={theme}>
+          <Main>{children}</Main>
+        </ThemeProvider>
+      </FetchingContext.Provider>
     </Provider>
   )
 }

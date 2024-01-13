@@ -1,0 +1,101 @@
+@import '../../../../constants/styling/theme/variables.scss';
+
+.pageContainer{
+    background-image: linear-gradient(to bottom right, #3794e0, #0035a7);
+    min-height: 100vh;
+    max-width: 100vw;
+    padding-top: 60px;
+    padding-bottom: 20px;
+
+    & > h3 {
+      padding-top: 1.5rem;
+      margin-left: 1.5rem 
+  }
+}
+
+.commonCell {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    .name {
+        font-size: 16px;
+        margin-left: 10px;
+        font-weight: bold;
+        min-width: 50px;
+        text-align: left;
+        justify-content: flex-start;
+    }
+}
+
+.tounamentsContainer{
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+    margin: 1.5rem;
+    margin-bottom: 0;
+    margin-top: 0.5rem;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+    overflow: scroll;
+    scrollbar-width: none;
+    background-color: #fff;
+    border-radius: 6px;
+    padding: 20px;    
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    .listHeader{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        flex-wrap: wrap;
+        box-sizing: border-box;
+        margin-bottom: 50px;
+    }
+
+    .listBody {
+      width: 100%;
+
+      .loading {
+        width: 100%;
+        padding: 50px 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+}
+.DashboardRegisterUser{
+ text-decoration: none;
+ background-color: $primary-color;
+ color: white;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ padding: 0.5rem 1rem;
+ margin-top: 1.5rem;
+ margin-left: 1.5rem; 
+ border-radius: 5px;
+ cursor: pointer;
+}
+.DashboardRegisterUser:hover {
+    background-color: $primary-color-alt;
+}
+
+.stateCell {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        margin-left: 7px;
+    }
+}

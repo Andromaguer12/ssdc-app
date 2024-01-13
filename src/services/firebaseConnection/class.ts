@@ -47,44 +47,56 @@ class Firebase {
     return data.length > 0 ? { ...data[0], uid, accessToken } : undefined
   }
 
-  async getUsersList() {
-    const userRef = query(collection(this.db, "users"));
-    const docs = await getDocs(userRef);
+  async getAllUsers() {
+    const tournamentsRef = query(collection(this.db, "users"));
+    const docs = await getDocs(tournamentsRef);
     const data: any[] = []
 
     docs.forEach((doc) => {
       data.push({
-        ...doc.data()
+        ...doc.data(),
+        id: doc.id,
       })
     });
 
     return data
   }
 
-  async registerUser(email: string, password: string, data: UserReducerInitialState) {
-    const res = await createUserWithEmailAndPassword(this.auth, email, password);
-    const dataToSend: UserReducerInitialState = {
-      ...data,
-      uid: res.user.uid,
+
+  async createUser(
+    name: string,
+    email: string,
+    phone: string,
+    image: string,
+  ) {
+    const dataToSend: UserInterface = {
+      name,
+      email,
+      phone,
+      image,
     }
-    const newUserRef = doc(collection(this.db, "users"));
-    return setDoc(newUserRef, {
-      ...dataToSend,
-      id: newUserRef.id
-    })
-    //return addDoc(collection(this.db, "users"), dataToSend);
+
+    const newUserRef = collection(this.db, "users");
+  
+    try {
+      const doc = await addDoc(newUserRef, dataToSend)
+
+      return doc
+    } catch (error) {
+      return error      
+    }
   }
 
-  async updateUser(data: UserReducerInitialState, payload: UserInterface) {
-    return await setDoc(doc(this.db, "users", data.id), {
-      ...data,
-      ...payload
+  async updateUser(tournamentId: string, body: Partial<UserInterface>) {
+    return await setDoc(doc(this.db, "users", tournamentId ?? ''), {
+      ...body
     });
   }
 
-  async removeUser(user: UserReducerInitialState) {
-    await deleteUser(this.auth.currentUser);
-    return deleteDoc(doc(this.db, "users", user.id));
+  async deleteUser(tournamentId: string) {
+    return await setDoc(doc(this.db, "user", tournamentId ?? ''), {
+      softDeleted: true
+    });
   }
 
   /**
@@ -164,6 +176,7 @@ class Firebase {
       winner
     })
   }
+
   /** 
    * End Tournament Api
    */

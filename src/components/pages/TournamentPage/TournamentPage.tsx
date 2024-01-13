@@ -43,21 +43,22 @@ const TournamentPage: React.FC<TournamentPageProps> = ({
   }, [])
 
   const isPossibleChangeRound = () => {
-    const tableKeys = Object.keys(tournamentData.results)
-    const finishedTables = []
-
-    if(tournamentData && tournamentData?.results) {
-      tableKeys.forEach((key) => {
-        const thereIsFinalWinner = tournamentData?.results[key].resultsByRound.find((p) => typeof p?.finalWinner === "number")?.finalWinner
+    if(tournamentData.results && Object.keys(tournamentData.results).length > 0) {
+      const tableKeys = Object.keys(tournamentData.results)
+      const finishedTables = []
   
-        if (typeof thereIsFinalWinner === "number" && thereIsFinalWinner > -1) finishedTables.push(thereIsFinalWinner)
-      })
-  
-      if(finishedTables.length === tournamentData?.tables.tables.length) {
-        return true
+      if(tournamentData && tournamentData?.results) {
+        tableKeys.forEach((key) => {
+          const thereIsFinalWinner = tournamentData?.results[key].resultsByRound.find((p) => typeof p?.finalWinner === "number")?.finalWinner
+    
+          if (typeof thereIsFinalWinner === "number" && thereIsFinalWinner > -1) finishedTables.push(thereIsFinalWinner)
+        })
+    
+        if(finishedTables.length === tournamentData?.tables.tables.length) {
+          return true
+        }
       }
     }
-
     return false
   }
 
@@ -263,7 +264,7 @@ const TournamentPage: React.FC<TournamentPageProps> = ({
                     </div>}
                     {!viewAnalytics && <div className={styles.tournamentTablesContainer} style={{ paddingLeft: showPositionsPanel ? "0" : "20px"}}>
                       {tournamentData.status !== "active" && 
-                        <div style={{ background: tournamentData.status === "finished" ? "transparent" : "initial" }} className={styles.shadow}>
+                        <div style={{ background: tournamentData.status === "finished" ? "transparent" : "#7A7A7A7A" }} className={styles.shadow}>
                           {tournamentData.status === "paused" && <CircularProgress color='secondary' size={50} />}
                           {tournamentData.status === "inactive" && <SignalWifiStatusbarConnectedNoInternet4 sx={{ fontSize: "50px", color: "#ffffff" }} />}
                           {tournamentData.status === "finished" && <EmojiEvents sx={{ fontSize: "50px", color: "#ffffff" }} />}
