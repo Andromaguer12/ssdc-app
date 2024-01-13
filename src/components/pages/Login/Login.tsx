@@ -77,66 +77,74 @@ export default function Login() {
   return (
     <section className={styles.Login}>
       <Grid
-      container
-      className={styles.loginContainer}
-      display={'flex'}
-      flexDirection={'column'}
-      alignItems={'center'}
-      justifyContent={'center'}
-    >
-      <Grid
-        item
+        container
+        className={styles.loginContainer}
         display={'flex'}
         flexDirection={'column'}
         alignItems={'center'}
-        className={styles.loginForm}
+        justifyContent={'center'}
       >
-        <Typography variant="h5" align="center">
-          Sistema Suizo Dominó Competitivo
-        </Typography>
-        <form className={styles.form} onSubmit={handleSubmit}>
-          <Typography variant="h5">Iniciar sesión</Typography>
-          <TextField
-            className={styles.input}
-            label="Email"
-            name="email"
-            type="email"
-            fullWidth
-            color="primary"
-            value={formData.email}
-            onChange={handleChange}
-          />
-          <TextField
-            className={styles.input}
-            label="Contraseña"
-            name="password"
-            type="password"
-            fullWidth
-            color="primary"
-            value={formData.password}
-            onChange={handleChange}
-            style={{ marginBottom: "10px" }}
-          />
-          {error && (
-            <CustomizedAlert noElevation type="error" message={error} />
-          )}
-          <Button
-            fullWidth
-            disableElevation
-            className={styles.button}
-            variant="contained"
-            color="primary"
-            type="submit"
-          >
-            {loadingUser ? (
-              <CircularProgress size={'15px'} sx={{ color: "#fff", margin: '8px 0'}} />
-            ) : (
-              "Iniciar sesion"
+        <Grid
+          item
+          display={'flex'}
+          flexDirection={'column'}
+          alignItems={'center'}
+          className={styles.loginForm}
+        >
+          <Typography variant="h4" align="center">
+            DominoElite
+          </Typography>
+          <form className={styles.form} onSubmit={handleSubmit}>
+            <Typography className={styles.title}>Sistema suizo de domino competitivo</Typography>
+            <TextField
+              className={styles.input}
+              label="Email"
+              name="email"
+              type="email"
+              fullWidth
+              color="primary"
+              value={formData.email}
+              onChange={handleChange}
+            />
+            <TextField
+              className={styles.input}
+              label="Contraseña"
+              name="password"
+              type="password"
+              fullWidth
+              color="primary"
+              value={formData.password}
+              onChange={handleChange}
+              style={{ marginBottom: "10px" }}
+            />
+            {error && (
+              <CustomizedAlert noElevation type="error" message={error} />
             )}
-          </Button>
-        </form>
+            <Button
+              fullWidth
+              disableElevation
+              className={styles.button}
+              variant="contained"
+              color="primary"
+              type="submit"
+            >
+              {loadingUser ? (
+                <CircularProgress size={'15px'} sx={{ color: "#fff", margin: '8px 0'}} />
+              ) : (
+                "Iniciar sesion"
+              )}
+            </Button>
+          </form>
+        </Grid>
+        <div className={styles.texts}>
+          <Typography color="secondary" variant='h3'>
+            Juega y administra tus partidas de domino
+          </Typography>
+          <Typography color="secondary" variant='h5'>
+            basandose en el sistema suizo de domino
+          </Typography>
+        </div>
       </Grid>
-    </Grid>
     </section>
     
   );
