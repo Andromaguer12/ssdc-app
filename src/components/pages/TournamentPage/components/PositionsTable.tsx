@@ -1,5 +1,5 @@
-import { IndividualTableInterface, PairsTableInterface, TableObjectInterface, TournamentFormat } from '@/typesDefs/constants/tournaments/types'
-import { Avatar, IconButton, Tab, Tabs, Tooltip, Typography, stepLabelClasses } from '@mui/material'
+import { StoredRoundDataInterface } from '@/typesDefs/constants/tournaments/types'
+import { Tab, Tabs, Typography } from '@mui/material'
 import React, { useState } from 'react'
 import styles from '../styles/PositionsTable.module.scss'
 import { positionsTableByPairsColumns, positionsTableByTablesColumns, positionsTableIndividualColumns } from '../constants/positionsTableColumns'
@@ -9,28 +9,30 @@ import ReactTable from '@/components/ReactTable/ReactTable'
 import { ErrorOutline } from '@mui/icons-material'
 
 interface PositionsTableProps {
-  calculateTablePositions: any
+  calculateTablePositions?: any,
+  resultsToCalculate?: StoredRoundDataInterface
 }
 
 const PositionsTable: React.FC<PositionsTableProps> = ({
-  calculateTablePositions
+  calculateTablePositions,
+  resultsToCalculate
 }) => {
   const [performancesBy, setPerformancesBy] = useState<number>(0)
 
   const modes = [
     {
       columns: positionsTableIndividualColumns,
-      data: positionsTableIndividualMapper(calculateTablePositions("individual")),
+      data: positionsTableIndividualMapper(calculateTablePositions("individual", resultsToCalculate)),
       name: "individual"
     },
     {
       columns: positionsTableByPairsColumns,
-      data: positionsTableByPairsMapper(calculateTablePositions("pairs")),
+      data: positionsTableByPairsMapper(calculateTablePositions("pairs", resultsToCalculate)),
       name: "pairs"
     },
     {
       columns: positionsTableByTablesColumns,
-      data: positionsTableByTablesMapper(calculateTablePositions("tables")),
+      data: positionsTableByTablesMapper(calculateTablePositions("tables", resultsToCalculate)),
       name: "tables"
     },
   ]

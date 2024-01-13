@@ -1,7 +1,8 @@
 import useFetchingContext from '@/contexts/backendConection/hook'
 import { updateTournament } from '@/redux/reducers/tournaments/actions'
 import { useAppDispatch } from '@/redux/store'
-import { ResultsByRoundInterface, TableObjectInterface, TournamentInterface, TournamentState } from '@/typesDefs/constants/tournaments/types'
+import { PairsTableInterface, ResultsByRoundInterface, ResultsInterface, StoredRoundDataInterface, TableObjectInterface, TournamentFormat, TournamentInterface, TournamentState } from '@/typesDefs/constants/tournaments/types'
+import { organizeTournamentsPlayersWithSimilarPerformanceArray } from '@/utils/organize-tournaments-players-with-similar-performance-array'
 import { collection, doc, getDoc, onSnapshot } from 'firebase/firestore'
 import { useCallback, useEffect, useState } from 'react'
 
@@ -232,6 +233,48 @@ const useTournamentData = (tournamentId: string) => {
     [tournament],
   )
 
+  const handleNextGlobalRound = useCallback(
+    () => {
+      if(tournament && tournament.results){
+        const storedRoundPayload: StoredRoundDataInterface = {
+          currentRoundId: tournament.currentGlobalRound,
+          tables: tournament.tables,
+          results: tournament.results,
+          storedDate: new Date().getTime()
+        }
+
+        
+        const newPlayersLayout: any = organizeTournamentsPlayersWithSimilarPerformanceArray(
+          tournament.results as ResultsInterface,
+          tournament.tables.tables.map(({tableId}) => tableId)
+        )
+
+        if(!newPlayersLayout.error) {
+          const tournamentPayload: TournamentInterface = {
+            ...tournament,
+            results: {},
+            tables: newPlayersLayout as PairsTableInterface,
+            currentGlobalRound:  tournament.currentGlobalRound + (tournament.currentGlobalRound === tournament.customRounds ? 0 : 1),
+            status: tournament.currentGlobalRound === tournament.customRounds ? "finished" : tournament.status,
+            endDate: tournament.currentGlobalRound === tournament.customRounds ? new Date().getTime() : null,
+            storedRounds: [
+              ...(tournament.storedRounds ?? []),
+              storedRoundPayload
+            ]
+          }
+
+          dispatch(updateTournament({
+            context: fContext,
+            id: tournament?.id,
+            body: tournamentPayload
+          }))
+        }
+      }
+    },
+    [tournament],
+  )
+  
+
   const updateTournamentStatus = useCallback(
     (newStatus: TournamentState) => {
       dispatch(updateTournament({
@@ -247,8 +290,173 @@ const useTournamentData = (tournamentId: string) => {
   )
   
   const calculateTablePositions = useCallback(
-    (type: "individual" | "pairs" | "tables") => {
-      if(tournament && tournamentData && tournament.results && Object.keys(tournament.results)) {
+    (type: "individual" | "pairs" | "tables", resultsToCalculate?: StoredRoundDataInterface) => {
+      if(tournament && tournamentData && (resultsToCalculate || tournament.results) && Object.keys(resultsToCalculate ?? tournament.results)) {
+        if(resultsToCalculate && usersData.length > 0) {
+          const thisTablePairsMapped = resultsToCalculate.tables.tables.map((tab) => {
+            return {
+              ...tab,
+              thisTablePairs: groupedByTable(
+                resultsToCalculate.tables[
+                  tournamentData.format as string
+                ]
+              )[tab.tableId],
+            }
+          }).map((d) => ({ tablePlayers: d.thisTablePairs, tableId: d.tableId}))
+  
+          const tableKeys = Object.keys(resultsToCalculate.results)
+          if(type === "individual") {
+            const logs: any[] = []
+  
+            tableKeys.forEach((key, tableIdx) => {
+              const currentTable = thisTablePairsMapped.find(({ tableId }) => tableId === key)
+  
+              currentTable?.tablePlayers.forEach((pair: any, pairIdx: number) => {
+                pair.forEach((player, pIdx: number) => {
+                  let currentPlayer = "";
+  
+                  let currentPlayerPoints = 0;
+                  let currentPlayerEffect = 0;
+                  let currentPlayerWins = 0;
+                  let currentPlayerDefeats = 0;
+  
+                  switch (pairIdx.toString()+pIdx.toString()) {
+                    case "00":
+                      currentPlayer = "p1"
+                      break;
+                    case "01":
+                      currentPlayer = "p2"
+                      break;
+                    case "10":
+                      currentPlayer = "p3"
+                      break;
+                    case "11":
+                      currentPlayer = "p4"
+                      break;
+                  
+                    default:
+                      currentPlayer = "p1"
+                      break;
+                  }
+  
+                  resultsToCalculate.results[key].resultsByRound.forEach(({pointsPerPlayer,effectivenessByPlayer,roundWinner}) => {
+                    currentPlayerPoints+=pointsPerPlayer[currentPlayer];
+                    currentPlayerEffect+=effectivenessByPlayer[currentPlayer];
+                    currentPlayerWins+=(roundWinner === pairIdx ? 1 : 0);
+                    currentPlayerDefeats+=(roundWinner !== pairIdx ? 1 : 0);
+                  });
+  
+                  const payload = {
+                    name: player.name,
+                    pair: pairIdx + 1,
+                    table: tableIdx + 1,
+                    points: currentPlayerPoints,
+                    wins: currentPlayerWins,
+                    defeats: currentPlayerDefeats,
+                    effectiveness: currentPlayerEffect,
+                  }
+  
+                  logs.push(payload)
+                })
+              });
+            })
+  
+            logs.sort((a, b) => {
+              return a.points - b.points
+            })
+  
+            logs.reverse()
+            
+            return logs
+          }  
+  
+          if(type === "pairs") {
+            const logs: any[] = []
+  
+            tableKeys.forEach((key, tableIdx) => {
+              const currentTable = thisTablePairsMapped.find(({ tableId }) => tableId === key)
+  
+              currentTable?.tablePlayers.forEach((pair: any, pairIdx: number) => {
+                let currentPairPoints = 0
+                let currentPairEffect = 0
+                let currentPlayerWins = 0
+                let currentPlayerDefeats = 0
+  
+                resultsToCalculate?.results[key].resultsByRound.forEach(({pointsPerPair,effectivenessByPair, roundWinner}) => {
+                  currentPairPoints+=pointsPerPair[`pair${pairIdx+1}`]
+                  currentPairEffect+=effectivenessByPair[`pair${pairIdx+1}`]
+                  currentPlayerWins+=(roundWinner === pairIdx ? 1 : 0);
+                  currentPlayerDefeats+=(roundWinner !== pairIdx ? 1 : 0);
+                });
+  
+                const payload = {
+                  name: pair[0]?.name + " - " + pair[1]?.name,
+                  pair: pairIdx + 1,
+                  table: tableIdx + 1,
+                  points: currentPairPoints,
+                  wins:currentPlayerWins,
+                  defeats:currentPlayerDefeats, 
+                  effectiveness: currentPairEffect,
+                }
+  
+                logs.push(payload)
+              });
+            })
+  
+            logs.sort((a, b) => {
+              return a.points - b.points
+            })
+  
+            logs.reverse()
+            
+            return logs
+          }
+  
+          if(type === "tables") {
+            const logs: any[] = []
+  
+            tableKeys.forEach((key, tableIdx) => {
+              let currentTableIndex = 0
+              const currentTable = thisTablePairsMapped.find(({ tableId }, index) => {
+                currentTableIndex = index
+                return tableId === key
+              })
+  
+              let pair1Points = 0
+              let pair2Points = 0
+  
+              resultsToCalculate.results[key].resultsByRound.forEach((roundResults: any) => {
+                pair1Points+=roundResults.pointsPerPair.pair1
+                pair2Points+=roundResults.pointsPerPair.pair2
+              });
+  
+              const lastRound = resultsToCalculate.results[key].resultsByRound[resultsToCalculate.results[key].resultsByRound.length - 1]
+              
+  
+              const payload = {
+                table: currentTableIndex + 1,
+                pair1Points,
+                pair2Points,
+                currentTableRound: lastRound.currentTableRound,
+                lastWinner: lastRound.roundWinner ?? "--",
+                finalWinner: lastRound.finalWinner ?? "--"
+              }
+  
+              logs.push(payload)
+            })
+  
+            logs.sort((a, b) => {
+              return a.currentTableRound - b.currentTableRound
+            })
+  
+            logs.reverse()
+            
+            return logs
+          }
+
+          return []
+        }
+
         const thisTablePairsMapped = tournamentData.tables.tables.map((tab) => {
           return {
             ...tab,
@@ -416,13 +624,83 @@ const useTournamentData = (tournamentId: string) => {
     [tournament, tournamentData, usersData],
   )
 
+  const calculateFinalResults = useCallback(
+    (format?: TournamentFormat) => {
+      if(tournament && tournamentData && tournament?.storedRounds && tournament?.storedRounds?.length > 0 && tournament.status === "finished") {
+        const {storedRounds} = tournament
+        const concatenation: any = []
+        const participants: any = []
+        const finalParticipantResults: any = []
+
+        storedRounds?.forEach(gRound => {
+          const resultInFormat = calculateTablePositions(format, gRound)    
+        
+          concatenation.push(resultInFormat)
+        });
+
+        if(concatenation.length) {
+          concatenation[0].forEach((part: any) => {
+            participants.push({
+              name: part.name
+            })
+          });
+  
+          if(participants.length > 0) {
+            participants.forEach((part: any) => {
+              const resultsOfCurrentParticipant = []
+              const payload = {
+                points: 0,
+                effectiveness: 0,
+                wins: 0,
+                defeats: 0,
+                name: part.name,
+              }
+
+              concatenation.forEach((concat: any) => {
+                const currentParticipantRoundResults = concat.find(({ name }) => name === part.name)
+                resultsOfCurrentParticipant.push(currentParticipantRoundResults)
+              });
+
+              resultsOfCurrentParticipant.forEach((pairGlobalResults) => {
+                payload.points+=pairGlobalResults.points
+                payload.effectiveness+=pairGlobalResults.effectiveness
+                payload.wins+=pairGlobalResults.wins
+                payload.defeats+=pairGlobalResults.defeats
+              })
+
+              finalParticipantResults.push(payload)
+            });
+          }
+        }
+
+        finalParticipantResults.sort((a, b) => {
+          return b.points - a.points
+        })
+
+        return {
+          winnerInfo: finalParticipantResults[0] ?? null,
+          globalPositionsTable: finalParticipantResults
+        }
+      }
+
+      return {
+        winnerInfo: null,
+        globalPositionsTable: []
+      }
+    },
+    [tournament, tournamentData],
+  )
+  
+
   return {
     tournamentData,
     errorDocument,
     tournamentAPI: {
       registerResultsByTable,
       updateTournamentStatus,
-      calculateTablePositions
+      calculateTablePositions,
+      handleNextGlobalRound,
+      calculateFinalResults
     }
   }
 }

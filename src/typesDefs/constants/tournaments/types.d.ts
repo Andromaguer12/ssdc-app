@@ -2,7 +2,7 @@ import { UserReducerInitialState } from "@/redux/reducers/user/actions";
 import { UserInterface } from "../users/types";
 
 type TournamentFormat = "individual" | "pairs" | "team";
-type TournamentState = "active" | "inactive" | "paused";
+type TournamentState = "active" | "inactive" | "paused" | "finished";
 type TournamentGame = "domino" | "ajedrez"
 
 export type TablePlayers = {
@@ -88,13 +88,20 @@ export type ResultsInterface = {
     }
 }
 
+export type StoredRoundDataInterface = {
+    currentRoundId: number,
+    tables: PairsTableInterface,
+    results: ResultsInterface,
+    storedDate: Date | number,
+}
+
 export interface TournamentInterface {
     id?: string,
     softDeleted?: boolean,
     name: string,
     format: TournamentFormat,
     startDate: Date | number,
-    endDate?: Date | number,
+    endDate?: Date | number | null,
     currentGlobalRound: number,
     allPlayers: string[],
     status: TournamentState,
@@ -102,6 +109,7 @@ export interface TournamentInterface {
     winner: UserInterface | null,
     game: TournamentGame,
     tables: PairsTableInterface,
-    results: ResultsInterface
+    results?: ResultsInterface | null,
+    storedRounds?: StoredRoundDataInterface[]
 }
 

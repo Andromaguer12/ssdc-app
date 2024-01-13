@@ -50,6 +50,51 @@ export const positionsTableIndividualColumns = [
   },
 ]
 
+export const finalPositionsTableIndividualColumns = [
+  {
+    header: "Puesto",
+    accessor: "position",
+    padding: "5px",
+    width: "20%",
+    align: "center"
+  },
+  {
+    header: "Nombre",
+    accessor: "name",
+    padding: "5px",
+    width: "20%",
+    align: "center"
+  },
+  {
+    header: "Puntos",
+    accessor: "points",
+    padding: "5px",
+    width: "20%",
+    align: "center"
+  },
+  {
+    header: "Victorias",
+    accessor: "wins",
+    padding: "5px",
+    width: "10%",
+    align: "center"
+  },
+  {
+    header: "Derrotas",
+    accessor: "defeats",
+    padding: "5px",
+    width: "10%",
+    align: "center"
+  },
+  {
+    header: "Efect.",
+    accessor: "effectiveness",
+    padding: "5px",
+    width: "20%",
+    align: "center"
+  },
+]
+
 export const positionsTableByPairsColumns = [
   {
     header: "Nombres",
@@ -91,6 +136,51 @@ export const positionsTableByPairsColumns = [
     accessor: "effectiveness",
     padding: "5px",
     width: "10%",
+    align: "center"
+  },
+]
+
+export const finalPositionsTableByPairsColumns = [
+  {
+    header: "Puesto",
+    accessor: "position",
+    padding: "5px",
+    width: "20%",
+    align: "center"
+  },
+  {
+    header: "Nombre",
+    accessor: "name",
+    padding: "5px",
+    width: "20%",
+    align: "center"
+  },
+  {
+    header: "Puntos",
+    accessor: "points",
+    padding: "5px",
+    width: "20%",
+    align: "center"
+  },
+  {
+    header: "Victorias",
+    accessor: "wins",
+    padding: "5px",
+    width: "10%",
+    align: "center"
+  },
+  {
+    header: "Derrotas",
+    accessor: "defeats",
+    padding: "5px",
+    width: "10%",
+    align: "center"
+  },
+  {
+    header: "Efect.",
+    accessor: "effectiveness",
+    padding: "5px",
+    width: "20%",
     align: "center"
   },
 ]

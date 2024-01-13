@@ -118,7 +118,7 @@ class Firebase {
   async createTournament(
     name: string,
     players: string[],
-    tables: IndividualTableInterface | PairsTableInterface,
+    tables: PairsTableInterface,
     format: TournamentFormat,
     customRounds: number
   ) {
