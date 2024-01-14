@@ -79,22 +79,24 @@ const PositionsTable: React.FC<PositionsTableProps> = ({
           style={{ width: '100%', marginTop: '20px', height: '100%' }}
           index={performancesBy}
         >
-          {modes.map(({ name, data, columns }) => {
-            if (data.length === 0) {
-              return (
-                <div className={styles.message}>
-                  <ErrorOutline
-                    style={{ color: '#7a7a7a', fontSize: '60px' }}
-                  />
-                  <Typography style={{ color: '#7a7a7a' }} fontSize={'14px'}>
-                    Sin registros
-                  </Typography>
-                </div>
-              );
-            }
+          {
+            modes.map(({ name, data, columns }) => {
+              if (data.length === 0) {
+                return (
+                  <div className={styles.message}>
+                    <ErrorOutline
+                      style={{ color: '#7a7a7a', fontSize: '60px' }}
+                    />
+                    <Typography style={{ color: '#7a7a7a' }} fontSize={'14px'}>
+                      Sin registros
+                    </Typography>
+                  </div>
+                );
+              }
 
-            return <ReactTable key={name} columns={columns} data={data} />;
-          }) as any}
+              return <ReactTable key={name} columns={columns} data={data} />;
+            }) as any
+          }
         </SwipeableViews>
       </div>
     </div>

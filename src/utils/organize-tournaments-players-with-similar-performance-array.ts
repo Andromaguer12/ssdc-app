@@ -17,7 +17,8 @@ export function organizeTournamentsPlayersWithSimilarPerformanceArray(
 
   // Organizar jugadores por rendimiento
   Object.keys(results).forEach(tableId => {
-    const roundResults = results[tableId as keyof typeof results]?.resultsByRound;
+    const roundResults =
+      results[tableId as keyof typeof results]?.resultsByRound;
     roundResults.forEach((roundResult: any) => {
       const roundNumber = roundResult.currentTableRound;
       const players = results[tableId].players;

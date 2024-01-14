@@ -81,28 +81,33 @@ const TournamentPage: React.FC<TournamentPageProps> = ({ tournamentId }) => {
   }, []);
 
   const isPossibleChangeRound = () => {
-    if(tournamentData) {
+    if (tournamentData) {
       if (
         tournamentData.results &&
         Object.keys(tournamentData.results).length > 0
       ) {
         const tableKeys = Object.keys(tournamentData.results);
         const finishedTables = [];
-  
+
         if (tournamentData && tournamentData?.results) {
           tableKeys.forEach(key => {
-            if(tournamentData?.results) {
-              const thereIsFinalWinner = (tournamentData?.results[
-                key as keyof typeof tournamentData.results
-              ] as any).resultsByRound.find((p: any) => typeof p?.finalWinner === 'number')
-                ?.finalWinner;
-    
-              if (typeof thereIsFinalWinner === 'number' && thereIsFinalWinner > -1)
+            if (tournamentData?.results) {
+              const thereIsFinalWinner = (
+                tournamentData?.results[
+                  key as keyof typeof tournamentData.results
+                ] as any
+              ).resultsByRound.find(
+                (p: any) => typeof p?.finalWinner === 'number'
+              )?.finalWinner;
+
+              if (
+                typeof thereIsFinalWinner === 'number' &&
+                thereIsFinalWinner > -1
+              )
                 finishedTables.push(thereIsFinalWinner);
             }
-
           });
-  
+
           if (finishedTables.length === tournamentData?.tables.tables.length) {
             return true;
           }
@@ -121,10 +126,12 @@ const TournamentPage: React.FC<TournamentPageProps> = ({ tournamentId }) => {
     }
   };
 
-  const finalPositionsTable = (format: TournamentFormat): {
-    columns: any[],
-    data: any[],
-    name: TournamentFormat
+  const finalPositionsTable = (
+    format: TournamentFormat
+  ): {
+    columns: any[];
+    data: any[];
+    name: TournamentFormat;
   } => {
     if (format === 'individual') {
       return {
@@ -152,7 +159,9 @@ const TournamentPage: React.FC<TournamentPageProps> = ({ tournamentId }) => {
   };
 
   const finalWinnerResults: any = (data: TournamentInterface) =>
-    tournamentAPI.calculateFinalResults(data?.format as 'individual' | 'pairs' | 'tables').winnerInfo;
+    tournamentAPI.calculateFinalResults(
+      data?.format as 'individual' | 'pairs' | 'tables'
+    ).winnerInfo;
 
   return (
     <section className={styles.pageContainer}>

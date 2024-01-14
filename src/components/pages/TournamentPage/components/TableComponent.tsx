@@ -117,7 +117,8 @@ const TableComponent: React.FC<TableComponentProps> = ({
   const p3 = thisTablePairs[1][0];
   const p4 = thisTablePairs[1][1];
   const [thisTableResults, setThisTableResults] = useState([]);
-  const [lastResultsLog, setLastResultsLog] = useState<ResultsByRoundInterface | null>(null);
+  const [lastResultsLog, setLastResultsLog] =
+    useState<ResultsByRoundInterface | null>(null);
   const [openCollapse, setOpenCollapse] = useState(false);
 
   const { pair1Color, pair2Color } = tableData;
@@ -129,8 +130,16 @@ const TableComponent: React.FC<TableComponentProps> = ({
   }, [thisTableResults]);
 
   useEffect(() => {
-    if (tournament?.results && tournament?.results?.[tableData?.tableId as keyof typeof tournament.results]) {
-      const value = tournament?.results[tableData?.tableId as keyof typeof tournament.results]?.resultsByRound;
+    if (
+      tournament?.results &&
+      tournament?.results?.[
+        tableData?.tableId as keyof typeof tournament.results
+      ]
+    ) {
+      const value =
+        tournament?.results[
+          tableData?.tableId as keyof typeof tournament.results
+        ]?.resultsByRound;
 
       setThisTableResults(value);
     }
@@ -148,7 +157,7 @@ const TableComponent: React.FC<TableComponentProps> = ({
     if (pair === 1) return pair1Effect;
     if (pair === 2) return pair2Effect;
 
-    return 0
+    return 0;
   };
 
   const pointsByPair = (pair: number) => {
@@ -176,7 +185,7 @@ const TableComponent: React.FC<TableComponentProps> = ({
     if (pair === 1) return pair1Victories;
     if (pair === 2) return pair2Victories;
 
-    return 0
+    return 0;
   };
 
   const defeatsByPair = (pair: number) => {
@@ -191,7 +200,7 @@ const TableComponent: React.FC<TableComponentProps> = ({
     if (pair === 1) return pair1Defeats;
     if (pair === 2) return pair2Defeats;
 
-    return 0
+    return 0;
   };
 
   const pointsByPlayer = (player: string) => {

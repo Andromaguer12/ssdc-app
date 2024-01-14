@@ -67,7 +67,7 @@ const UserCard = ({
         styles.userCard,
         selected ? styles.userCard__selected : ''
       ].join(' ')}
-      onClick={() => onClick ? onClick(user) : user}
+      onClick={() => (onClick ? onClick(user) : user)}
     >
       <Avatar>
         {user.name.length
@@ -269,95 +269,98 @@ const CreateTournamentsModal: React.FC<ModalProps> = ({
                     index={activeStep}
                     style={{ width: '100%', height: '100%' }}
                   >
-                    {steps.map((label, index) => {
-                      return (
-                        <div key={index} className={styles.subContainer}>
-                          {activeStep < 2 && (
-                            <Typography
-                              fontWeight={'700'}
-                              className={styles.title}
-                              variant="h6"
-                              component="h2"
-                            >
-                              {label}
-                            </Typography>
-                          )}
-                          <Grid container spacing={2}>
-                            {index === 0 && (
-                              <>
-                                <Grid item xs={12}>
-                                  <Grid item xs={8}>
-                                    <TextField
-                                      label="Nombre del torneo"
-                                      fullWidth
-                                      value={values.name}
-                                      onChange={handleChange('name')}
-                                    />
-                                  </Grid>
-                                </Grid>
-                                <Grid item xs={12}>
-                                  <Grid item xs={4}>
-                                    <FormControl>
-                                      <FormLabel>Numero de rondas</FormLabel>
+                    {
+                      steps.map((label, index) => {
+                        return (
+                          <div key={index} className={styles.subContainer}>
+                            {activeStep < 2 && (
+                              <Typography
+                                fontWeight={'700'}
+                                className={styles.title}
+                                variant="h6"
+                                component="h2"
+                              >
+                                {label}
+                              </Typography>
+                            )}
+                            <Grid container spacing={2}>
+                              {index === 0 && (
+                                <>
+                                  <Grid item xs={12}>
+                                    <Grid item xs={8}>
                                       <TextField
-                                        label="Rondas"
+                                        label="Nombre del torneo"
                                         fullWidth
-                                        type="number"
-                                        size="small"
-                                        sx={{ marginTop: '15px' }}
-                                        value={values.customRounds}
-                                        onChange={handleChange('customRounds')}
+                                        value={values.name}
+                                        onChange={handleChange('name')}
                                       />
-                                    </FormControl>
+                                    </Grid>
                                   </Grid>
-                                </Grid>
-                                <Grid item xs={12}>
-                                  <Grid item xs={4}>
-                                    <FormControl>
-                                      <FormLabel>Formato</FormLabel>
-                                      <RadioGroup
-                                        defaultValue="domino"
-                                        name="radio-buttons-group"
-                                        value={values.format}
-                                        onChange={handleChange('format')}
-                                        style={{
-                                          flexDirection: 'row',
-                                          alignItems: 'center'
-                                        }}
-                                      >
-                                        <FormControlLabel
-                                          value="individual"
-                                          control={<Radio />}
-                                          label="Individual"
+                                  <Grid item xs={12}>
+                                    <Grid item xs={4}>
+                                      <FormControl>
+                                        <FormLabel>Numero de rondas</FormLabel>
+                                        <TextField
+                                          label="Rondas"
+                                          fullWidth
+                                          type="number"
+                                          size="small"
+                                          sx={{ marginTop: '15px' }}
+                                          value={values.customRounds}
+                                          onChange={handleChange(
+                                            'customRounds'
+                                          )}
                                         />
-                                        <FormControlLabel
-                                          value="pairs"
-                                          control={<Radio />}
-                                          label="Parejas"
-                                        />
-                                        {/* <FormControlLabel value="groups" control={<Radio />} label="Grupos" /> */}
-                                      </RadioGroup>
-                                    </FormControl>
+                                      </FormControl>
+                                    </Grid>
                                   </Grid>
-                                </Grid>
-                                <Grid item xs={12}>
-                                  <Grid item xs={4}>
-                                    <FormControl>
-                                      <FormLabel>Juego</FormLabel>
-                                      <RadioGroup
-                                        defaultValue="domino"
-                                        name="radio-buttons-group"
-                                      >
-                                        <FormControlLabel
-                                          value="domino"
-                                          control={<Radio />}
-                                          label="Domino"
-                                        />
-                                      </RadioGroup>
-                                    </FormControl>
+                                  <Grid item xs={12}>
+                                    <Grid item xs={4}>
+                                      <FormControl>
+                                        <FormLabel>Formato</FormLabel>
+                                        <RadioGroup
+                                          defaultValue="domino"
+                                          name="radio-buttons-group"
+                                          value={values.format}
+                                          onChange={handleChange('format')}
+                                          style={{
+                                            flexDirection: 'row',
+                                            alignItems: 'center'
+                                          }}
+                                        >
+                                          <FormControlLabel
+                                            value="individual"
+                                            control={<Radio />}
+                                            label="Individual"
+                                          />
+                                          <FormControlLabel
+                                            value="pairs"
+                                            control={<Radio />}
+                                            label="Parejas"
+                                          />
+                                          {/* <FormControlLabel value="groups" control={<Radio />} label="Grupos" /> */}
+                                        </RadioGroup>
+                                      </FormControl>
+                                    </Grid>
                                   </Grid>
-                                </Grid>
-                                {/* <Grid item xs={12}>
+                                  <Grid item xs={12}>
+                                    <Grid item xs={4}>
+                                      <FormControl>
+                                        <FormLabel>Juego</FormLabel>
+                                        <RadioGroup
+                                          defaultValue="domino"
+                                          name="radio-buttons-group"
+                                        >
+                                          <FormControlLabel
+                                            value="domino"
+                                            control={<Radio />}
+                                            label="Domino"
+                                          />
+                                        </RadioGroup>
+                                      </FormControl>
+                                    </Grid>
+                                  </Grid>
+                                  {/* <Grid item xs={12}>
                                     <Grid item xs={4}>
                                       <FormControl>
                                         <FormLabel>Agrupacion de jugadores por mesa</FormLabel>
@@ -371,156 +374,20 @@ const CreateTournamentsModal: React.FC<ModalProps> = ({
                                       </FormControl>
                                     </Grid>
                                   </Grid> */}
-                              </>
-                            )}
-                            {index === 1 && (
-                              <>
-                                {loadingUsersList && (
-                                  <Grid
-                                    alignItems={'center'}
-                                    justifyItems={'center'}
-                                    className={styles.loader}
-                                    xs={12}
-                                  >
-                                    <CircularProgress
-                                      size={60}
-                                      color="primary"
-                                    />
-                                    <Typography
-                                      fontWeight={'600'}
-                                      style={{ marginTop: '10px' }}
-                                      variant="h6"
-                                      component="h2"
-                                    >
-                                      Cargando usuarios...
-                                    </Typography>
-                                  </Grid>
-                                )}
-                                {!loadingUsersList && activeStep === 1 && (
-                                  <>
-                                    <Grid item sm={12} md={6}>
-                                      <FormControl fullWidth>
-                                        <InputLabel htmlFor="outlined-adornment-amount">
-                                          Buscar usuarios...
-                                        </InputLabel>
-                                        <OutlinedInput
-                                          id="outlined-adornment-amount"
-                                          startAdornment={
-                                            <InputAdornment position="start">
-                                              <Search />
-                                            </InputAdornment>
-                                          }
-                                          label="Buscar usuarios..."
-                                        />
-                                      </FormControl>
-                                      <div className={styles.usersList}>
-                                        <Button
-                                          disableElevation
-                                          fullWidth
-                                          style={{ marginBottom: '10px' }}
-                                          variant="contained"
-                                          onClick={selectAll}
-                                          className={styles.button}
-                                        >
-                                          Seleccionar todos
-                                        </Button>
-
-                                        {(searchUsers.length
-                                          ? searchUsers
-                                          : usersList
-                                        ).map((user: UserInterface) => {
-                                          return (
-                                            <UserCard
-                                              key={user.id}
-                                              user={user}
-                                              selected={Boolean(
-                                                selectedUsers.find(
-                                                  u => u.id === user.id
-                                                )
-                                              )}
-                                              onClick={handleClickUser}
-                                            />
-                                          );
-                                        })}
-                                      </div>
-                                    </Grid>
-                                    <Grid item sm={12} md={6}>
-                                      <Typography
-                                        fontWeight={'700'}
-                                        style={{ marginBottom: 0 }}
-                                        className={styles.title}
-                                        variant="h6"
-                                        component="h2"
-                                      >
-                                        Jugadores Seleccionados:{' '}
-                                        {selectedUsers.length}
-                                      </Typography>
-                                      <Typography className={styles.subtitle}>
-                                        Se generaran {selectedUsers.length / 4}{' '}
-                                        mesas.
-                                      </Typography>
-                                      {selectedUsers.length % 4 !== 0 && (
-                                        <Typography
-                                          style={{ color: 'red' }}
-                                          className={styles.subtitle}
-                                        >
-                                          No es posible comenzar un torneo con
-                                          mesas incompletas.
-                                        </Typography>
-                                      )}
-                                      <div className={styles.usersList}>
-                                        {selectedUsers.map(
-                                          (user: UserInterface) => {
-                                            return (
-                                              <UserCard
-                                                key={user.id}
-                                                user={user}
-                                              />
-                                            );
-                                          }
-                                        )}
-                                      </div>
-                                    </Grid>
-                                  </>
-                                )}
-                              </>
-                            )}
-                            {index === 2 && (
-                              <>
-                                {loadingCreateTournament && (
-                                  <Grid
-                                    alignItems={'center'}
-                                    justifyItems={'center'}
-                                    className={styles.loader}
-                                    xs={12}
-                                  >
-                                    <CircularProgress
-                                      size={60}
-                                      color="primary"
-                                    />
-                                    <Typography
-                                      fontWeight={'600'}
-                                      style={{ marginTop: '10px' }}
-                                      variant="h6"
-                                      component="h2"
-                                    >
-                                      Creando torneo...
-                                    </Typography>
-                                  </Grid>
-                                )}
-                                {!loadingCreateTournament &&
-                                  successCreateTournament && (
+                                </>
+                              )}
+                              {index === 1 && (
+                                <>
+                                  {loadingUsersList && (
                                     <Grid
                                       alignItems={'center'}
                                       justifyItems={'center'}
                                       className={styles.loader}
                                       xs={12}
                                     >
-                                      <CheckCircle
-                                        style={{
-                                          color: 'green',
-                                          fontSize: '60px'
-                                        }}
+                                      <CircularProgress
+                                        size={60}
+                                        color="primary"
                                       />
                                       <Typography
                                         fontWeight={'600'}
@@ -528,43 +395,180 @@ const CreateTournamentsModal: React.FC<ModalProps> = ({
                                         variant="h6"
                                         component="h2"
                                       >
-                                        Torneo creado existosamente!
+                                        Cargando usuarios...
                                       </Typography>
                                     </Grid>
                                   )}
-                                {!loadingCreateTournament &&
-                                  errorCreateTournament && (
+                                  {!loadingUsersList && activeStep === 1 && (
+                                    <>
+                                      <Grid item sm={12} md={6}>
+                                        <FormControl fullWidth>
+                                          <InputLabel htmlFor="outlined-adornment-amount">
+                                            Buscar usuarios...
+                                          </InputLabel>
+                                          <OutlinedInput
+                                            id="outlined-adornment-amount"
+                                            startAdornment={
+                                              <InputAdornment position="start">
+                                                <Search />
+                                              </InputAdornment>
+                                            }
+                                            label="Buscar usuarios..."
+                                          />
+                                        </FormControl>
+                                        <div className={styles.usersList}>
+                                          <Button
+                                            disableElevation
+                                            fullWidth
+                                            style={{ marginBottom: '10px' }}
+                                            variant="contained"
+                                            onClick={selectAll}
+                                            className={styles.button}
+                                          >
+                                            Seleccionar todos
+                                          </Button>
+
+                                          {(searchUsers.length
+                                            ? searchUsers
+                                            : usersList
+                                          ).map((user: UserInterface) => {
+                                            return (
+                                              <UserCard
+                                                key={user.id}
+                                                user={user}
+                                                selected={Boolean(
+                                                  selectedUsers.find(
+                                                    u => u.id === user.id
+                                                  )
+                                                )}
+                                                onClick={handleClickUser}
+                                              />
+                                            );
+                                          })}
+                                        </div>
+                                      </Grid>
+                                      <Grid item sm={12} md={6}>
+                                        <Typography
+                                          fontWeight={'700'}
+                                          style={{ marginBottom: 0 }}
+                                          className={styles.title}
+                                          variant="h6"
+                                          component="h2"
+                                        >
+                                          Jugadores Seleccionados:{' '}
+                                          {selectedUsers.length}
+                                        </Typography>
+                                        <Typography className={styles.subtitle}>
+                                          Se generaran{' '}
+                                          {selectedUsers.length / 4} mesas.
+                                        </Typography>
+                                        {selectedUsers.length % 4 !== 0 && (
+                                          <Typography
+                                            style={{ color: 'red' }}
+                                            className={styles.subtitle}
+                                          >
+                                            No es posible comenzar un torneo con
+                                            mesas incompletas.
+                                          </Typography>
+                                        )}
+                                        <div className={styles.usersList}>
+                                          {selectedUsers.map(
+                                            (user: UserInterface) => {
+                                              return (
+                                                <UserCard
+                                                  key={user.id}
+                                                  user={user}
+                                                />
+                                              );
+                                            }
+                                          )}
+                                        </div>
+                                      </Grid>
+                                    </>
+                                  )}
+                                </>
+                              )}
+                              {index === 2 && (
+                                <>
+                                  {loadingCreateTournament && (
                                     <Grid
                                       alignItems={'center'}
                                       justifyItems={'center'}
                                       className={styles.loader}
                                       xs={12}
                                     >
-                                      <Close
-                                        style={{
-                                          color: 'red',
-                                          fontSize: '60px'
-                                        }}
+                                      <CircularProgress
+                                        size={60}
+                                        color="primary"
                                       />
                                       <Typography
                                         fontWeight={'600'}
-                                        style={{
-                                          marginTop: '10px',
-                                          color: 'red'
-                                        }}
+                                        style={{ marginTop: '10px' }}
                                         variant="h6"
                                         component="h2"
                                       >
-                                        {errorCreateTournament}
+                                        Creando torneo...
                                       </Typography>
                                     </Grid>
                                   )}
-                              </>
-                            )}
-                          </Grid>
-                        </div>
-                      );
-                    }) as any}
+                                  {!loadingCreateTournament &&
+                                    successCreateTournament && (
+                                      <Grid
+                                        alignItems={'center'}
+                                        justifyItems={'center'}
+                                        className={styles.loader}
+                                        xs={12}
+                                      >
+                                        <CheckCircle
+                                          style={{
+                                            color: 'green',
+                                            fontSize: '60px'
+                                          }}
+                                        />
+                                        <Typography
+                                          fontWeight={'600'}
+                                          style={{ marginTop: '10px' }}
+                                          variant="h6"
+                                          component="h2"
+                                        >
+                                          Torneo creado existosamente!
+                                        </Typography>
+                                      </Grid>
+                                    )}
+                                  {!loadingCreateTournament &&
+                                    errorCreateTournament && (
+                                      <Grid
+                                        alignItems={'center'}
+                                        justifyItems={'center'}
+                                        className={styles.loader}
+                                        xs={12}
+                                      >
+                                        <Close
+                                          style={{
+                                            color: 'red',
+                                            fontSize: '60px'
+                                          }}
+                                        />
+                                        <Typography
+                                          fontWeight={'600'}
+                                          style={{
+                                            marginTop: '10px',
+                                            color: 'red'
+                                          }}
+                                          variant="h6"
+                                          component="h2"
+                                        >
+                                          {errorCreateTournament}
+                                        </Typography>
+                                      </Grid>
+                                    )}
+                                </>
+                              )}
+                            </Grid>
+                          </div>
+                        );
+                      }) as any
+                    }
                   </SwipeableViews>
                 </div>
 
