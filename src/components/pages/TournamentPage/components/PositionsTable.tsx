@@ -1,6 +1,6 @@
 import { StoredRoundDataInterface } from '@/typesDefs/constants/tournaments/types';
 import { Tab, Tabs, Typography } from '@mui/material';
-import React, { useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 import styles from '../styles/PositionsTable.module.scss';
 import {
   positionsTableByPairsColumns,
@@ -94,7 +94,7 @@ const PositionsTable: React.FC<PositionsTableProps> = ({
             }
 
             return <ReactTable key={name} columns={columns} data={data} />;
-          })}
+          }) as any}
         </SwipeableViews>
       </div>
     </div>

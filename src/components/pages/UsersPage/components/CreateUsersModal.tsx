@@ -88,7 +88,7 @@ const CreateUsersModal: React.FC<ModalProps> = ({
             email: values.email,
             phone: values.phone,
             image: values.image,
-            isAdmin: values.isAdmin
+            isAdmin: false
           })
         );
       }
@@ -150,7 +150,7 @@ const CreateUsersModal: React.FC<ModalProps> = ({
                             onChange={handleChange(key)}
                           />
                         )}
-                        {key === 'isAdmin' && (
+                        {/* {key === 'isAdmin' && (
                           <FormGroup
                             style={{ marginTop: '15px', marginLeft: '10px' }}
                           >
@@ -160,7 +160,7 @@ const CreateUsersModal: React.FC<ModalProps> = ({
                                   onChange={() => {
                                     setValues({
                                       ...values,
-                                      [key]: !values[key]
+                                      [key as keyof typeof values]: !values[key]
                                     });
                                   }}
                                   checked={values[key]}
@@ -169,7 +169,7 @@ const CreateUsersModal: React.FC<ModalProps> = ({
                               label="Es Admin"
                             />
                           </FormGroup>
-                        )}
+                        )} */}
                         {/* {key === "image" && (
                         <AvatarEditor
                           image="http://example.com/initialimage.jpg"
@@ -202,7 +202,7 @@ const CreateUsersModal: React.FC<ModalProps> = ({
                     variant="contained"
                     onClick={() => submitForm()}
                     className={styles.button}
-                    endIcon={editMode === 2 ? <CheckCircleOutline /> : <Send />}
+                    endIcon={<Send />}
                   >
                     {editMode
                       ? loadingUpdateUser

@@ -67,7 +67,7 @@ const UserCard = ({
         styles.userCard,
         selected ? styles.userCard__selected : ''
       ].join(' ')}
-      onClick={() => onClick(user)}
+      onClick={() => onClick ? onClick(user) : user}
     >
       <Avatar>
         {user.name.length
@@ -220,7 +220,7 @@ const CreateTournamentsModal: React.FC<ModalProps> = ({
         setSelectedUsers(
           selectedUsers.filter((user: UserInterface) => user.id !== itemId.id)
         );
-      } else {
+      } else if (itemId) {
         setSelectedUsers(selectedUsers.concat([itemId]));
       }
     },
@@ -564,7 +564,7 @@ const CreateTournamentsModal: React.FC<ModalProps> = ({
                           </Grid>
                         </div>
                       );
-                    })}
+                    }) as any}
                   </SwipeableViews>
                 </div>
 

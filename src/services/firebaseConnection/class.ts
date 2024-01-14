@@ -19,17 +19,12 @@ import {
   deleteDoc
 } from 'firebase/firestore';
 import initFirebaseFunction from './firebaseInitConfig';
-import { UserReducerInitialState } from '@/redux/reducers/user/actions';
 import {
-  IndividualTableInterface,
   PairsTableInterface,
-  TableInterface,
-  TablePlayers,
   TournamentFormat,
   TournamentInterface
 } from '@/typesDefs/constants/tournaments/types';
 import { UserInterface } from '@/typesDefs/constants/users/types';
-import { TournamentReducerInitialState } from '@/redux/reducers/tournament/actions';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 class Firebase {

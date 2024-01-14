@@ -10,15 +10,15 @@ import { uuid as uuidv4 } from 'uuidv4';
 import { generateHexColor } from './generate-hex-color';
 
 export function organizeTournamentsPlayersWithSimilarPerformanceArray(
-  results: ResultsInterface,
+  results: any,
   playedTables: string[]
 ): PairsTableInterface | { error: string } {
-  const playersByPerformance: Record<number, string[]> = {};
+  const playersByPerformance: any = {};
 
   // Organizar jugadores por rendimiento
   Object.keys(results).forEach(tableId => {
-    const roundResults = results[tableId].resultsByRound;
-    roundResults.forEach(roundResult => {
+    const roundResults = results[tableId as keyof typeof results]?.resultsByRound;
+    roundResults.forEach((roundResult: any) => {
       const roundNumber = roundResult.currentTableRound;
       const players = results[tableId].players;
 
@@ -28,9 +28,9 @@ export function organizeTournamentsPlayersWithSimilarPerformanceArray(
 
       // Ordenar jugadores por rendimiento y evitar repeticiones
       const sortedPlayers = players
-        .filter(player => !playedTables.includes(player))
+        .filter((player: any) => !playedTables.includes(player))
         .sort(
-          (a, b) =>
+          (a: any, b: any) =>
             roundResult.effectivenessByPlayer[b] -
             roundResult.effectivenessByPlayer[a]
         );
@@ -41,11 +41,11 @@ export function organizeTournamentsPlayersWithSimilarPerformanceArray(
   });
 
   // Organizar mesas y parejas
-  const tables = [];
-  const pairs = [];
+  const tables: any[] = [];
+  const pairs: any[] = [];
 
   Object.keys(playersByPerformance).forEach(roundNumber => {
-    const roundPlayers = playersByPerformance[roundNumber];
+    const roundPlayers = playersByPerformance[roundNumber as string];
 
     for (let i = 0; i < roundPlayers.length; i += 4) {
       const table = {

@@ -16,7 +16,7 @@ import { collection, doc, getDoc, onSnapshot } from 'firebase/firestore';
 import { useCallback, useEffect, useState } from 'react';
 
 const useTournamentData = (tournamentId: string) => {
-  const [tournament, setTournament] = useState<TournamentInterface | null>(
+  const [tournament, setTournament] = useState<any | null>(
     null
   );
   const [tournamentData, setTournamentData] =
@@ -35,13 +35,13 @@ const useTournamentData = (tournamentId: string) => {
         if (accumulator[tableId]) {
           accumulator[tableId].push(
             currentItem.pair.map((userId: string) => {
-              return usersData.find(({ id }) => userId === id);
+              return usersData.find(({ id }: { id: string }) => userId === id);
             })
           );
         } else {
           accumulator[tableId] = [
             currentItem.pair.map((userId: string) => {
-              return usersData.find(({ id }) => userId === id);
+              return usersData.find(({ id }: { id: string }) => userId === id);
             })
           ];
         }
@@ -58,13 +58,13 @@ const useTournamentData = (tournamentId: string) => {
         tables: {
           ...tournament.tables,
 
-          tables: tournament.tables.tables.map(tab => {
+          tables: tournament.tables.tables.map((tab: any) => {
             return {
               ...tab,
               thisTablePairs: groupedByTable(tournament.tables.pairs)[
                 tab.tableId
               ],
-              table: tab.table.map(userId => {
+              table: tab.table.map((userId: string) => {
                 return usersData.find(({ id }) => userId === id);
               })
             };
@@ -83,7 +83,7 @@ const useTournamentData = (tournamentId: string) => {
 
       const coleccionRef = collection(fContext.db, 'users');
 
-      Promise.all(usersIds.map(id => getDoc(doc(coleccionRef, id))))
+      Promise.all(usersIds.map((id: string) => getDoc(doc(coleccionRef, id))))
         .then(docs => {
           const data = docs.map(docSnapshot => ({
             ...docSnapshot.data(),
@@ -177,7 +177,7 @@ const useTournamentData = (tournamentId: string) => {
           const currentTableWithRoundUpdated: any = {
             ...(tournament
               ? tournament.tables.tables.find(
-                  ({ tableId: tId }) => tId === tableId
+                  ({ tableId: tId }: { tableId: string}) => tId === tableId
                 ) ?? {}
               : {}),
             currentTableRound: (tableRound ?? 0) + 1
@@ -215,7 +215,7 @@ const useTournamentData = (tournamentId: string) => {
                 players: tournament
                   ? (
                       tournament.tables.tables.find(
-                        ({ tableId: tId }) => tId === tableId
+                        ({ tableId: tId }: { tableId: string}) => tId === tableId
                       ) ?? {}
                     ).table ?? []
                   : []
@@ -248,7 +248,7 @@ const useTournamentData = (tournamentId: string) => {
       const newPlayersLayout: any =
         organizeTournamentsPlayersWithSimilarPerformanceArray(
           tournament.results as ResultsInterface,
-          tournament.tables.tables.map(({ tableId }) => tableId)
+          tournament.tables.tables.map(({ tableId }: { tableId: string}) => tableId)
         );
 
       if (!newPlayersLayout.error) {
@@ -331,7 +331,7 @@ const useTournamentData = (tournamentId: string) => {
 
               currentTable?.tablePlayers.forEach(
                 (pair: any, pairIdx: number) => {
-                  pair.forEach((player, pIdx: number) => {
+                  pair.forEach((player: any, pIdx: number) => {
                     let currentPlayer = '';
 
                     let currentPlayerPoints = 0;
@@ -358,12 +358,12 @@ const useTournamentData = (tournamentId: string) => {
                         break;
                     }
 
-                    resultsToCalculate.results[key].resultsByRound.forEach(
+                    (resultsToCalculate.results[key as keyof typeof resultsToCalculate.results] as any).resultsByRound.forEach(
                       ({
                         pointsPerPlayer,
                         effectivenessByPlayer,
                         roundWinner
-                      }) => {
+                      }: any) => {
                         currentPlayerPoints += pointsPerPlayer[currentPlayer];
                         currentPlayerEffect +=
                           effectivenessByPlayer[currentPlayer];
@@ -412,8 +412,8 @@ const useTournamentData = (tournamentId: string) => {
                   let currentPlayerWins = 0;
                   let currentPlayerDefeats = 0;
 
-                  resultsToCalculate?.results[key].resultsByRound.forEach(
-                    ({ pointsPerPair, effectivenessByPair, roundWinner }) => {
+                  (resultsToCalculate.results[key as keyof typeof resultsToCalculate.results] as any).resultsByRound.forEach(
+                    ({ pointsPerPair, effectivenessByPair, roundWinner }: any) => {
                       currentPairPoints += pointsPerPair[`pair${pairIdx + 1}`];
                       currentPairEffect +=
                         effectivenessByPair[`pair${pairIdx + 1}`];
@@ -461,7 +461,7 @@ const useTournamentData = (tournamentId: string) => {
               let pair1Points = 0;
               let pair2Points = 0;
 
-              resultsToCalculate.results[key].resultsByRound.forEach(
+              (resultsToCalculate.results[key as keyof typeof resultsToCalculate.results] as any).resultsByRound.forEach(
                 (roundResults: any) => {
                   pair1Points += roundResults.pointsPerPair.pair1;
                   pair2Points += roundResults.pointsPerPair.pair2;
@@ -469,8 +469,8 @@ const useTournamentData = (tournamentId: string) => {
               );
 
               const lastRound =
-                resultsToCalculate.results[key].resultsByRound[
-                  resultsToCalculate.results[key].resultsByRound.length - 1
+                (resultsToCalculate.results[key as keyof typeof resultsToCalculate.results] as any).resultsByRound[
+                  (resultsToCalculate.results[key as keyof typeof resultsToCalculate.results] as any).resultsByRound.length - 1
                 ];
 
               const payload = {
@@ -519,7 +519,7 @@ const useTournamentData = (tournamentId: string) => {
             );
 
             currentTable?.tablePlayers.forEach((pair: any, pairIdx: number) => {
-              pair.forEach((player, pIdx: number) => {
+              pair.forEach((player: any, pIdx: number) => {
                 let currentPlayer = '';
 
                 let currentPlayerPoints = 0;
@@ -547,7 +547,7 @@ const useTournamentData = (tournamentId: string) => {
                 }
 
                 tournament.results[key].resultsByRound.forEach(
-                  ({ pointsPerPlayer, effectivenessByPlayer, roundWinner }) => {
+                  ({ pointsPerPlayer, effectivenessByPlayer, roundWinner }: any) => {
                     currentPlayerPoints += pointsPerPlayer[currentPlayer];
                     currentPlayerEffect += effectivenessByPlayer[currentPlayer];
                     currentPlayerWins += roundWinner === pairIdx ? 1 : 0;
@@ -594,7 +594,7 @@ const useTournamentData = (tournamentId: string) => {
               let currentPlayerDefeats = 0;
 
               tournament?.results[key].resultsByRound.forEach(
-                ({ pointsPerPair, effectivenessByPair, roundWinner }) => {
+                ({ pointsPerPair, effectivenessByPair, roundWinner }: any) => {
                   currentPairPoints += pointsPerPair[`pair${pairIdx + 1}`];
                   currentPairEffect +=
                     effectivenessByPair[`pair${pairIdx + 1}`];
@@ -680,20 +680,21 @@ const useTournamentData = (tournamentId: string) => {
   );
 
   const calculateFinalResults = useCallback(
-    (format?: TournamentFormat) => {
+    (format?: 'individual' | 'pairs' | 'tables') => {
       if (
         tournament &&
         tournamentData &&
         tournament?.storedRounds &&
         tournament?.storedRounds?.length > 0 &&
-        tournament.status === 'finished'
+        tournament.status === 'finished' &&
+        format
       ) {
         const { storedRounds } = tournament;
         const concatenation: any = [];
         const participants: any = [];
         const finalParticipantResults: any = [];
 
-        storedRounds?.forEach(gRound => {
+        storedRounds?.forEach((gRound: any) => {
           const resultInFormat = calculateTablePositions(format, gRound);
 
           concatenation.push(resultInFormat);
@@ -708,7 +709,7 @@ const useTournamentData = (tournamentId: string) => {
 
           if (participants.length > 0) {
             participants.forEach((part: any) => {
-              const resultsOfCurrentParticipant = [];
+              const resultsOfCurrentParticipant: any[] = [];
               const payload = {
                 points: 0,
                 effectiveness: 0,
@@ -719,7 +720,7 @@ const useTournamentData = (tournamentId: string) => {
 
               concatenation.forEach((concat: any) => {
                 const currentParticipantRoundResults = concat.find(
-                  ({ name }) => name === part.name
+                  ({ name }: any) => name === part.name
                 );
                 resultsOfCurrentParticipant.push(
                   currentParticipantRoundResults
@@ -738,7 +739,7 @@ const useTournamentData = (tournamentId: string) => {
           }
         }
 
-        finalParticipantResults.sort((a, b) => {
+        finalParticipantResults.sort((a: any, b: any) => {
           return b.points - a.points;
         });
 

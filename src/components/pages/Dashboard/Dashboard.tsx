@@ -1,5 +1,4 @@
 'use client';
-import UserList from '@/components/pages/Dashboard/components/UserList/UserList';
 import styles from './Dashboard.module.scss';
 import { useAppDispatch, useAppSelector } from '@/redux/store';
 import useFirebaseContext from '@/contexts/firebaseConnection/hook';

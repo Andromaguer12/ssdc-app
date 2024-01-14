@@ -47,7 +47,7 @@ import { clearUpdateTournamentState } from '@/redux/reducers/tournaments/actions
 
 interface ModalProps {
   open: string;
-  tournament: TournamentInterface;
+  tournament: any;
   handleClose: () => any;
 }
 
@@ -96,7 +96,7 @@ const UpdateTournamentModal: React.FC<ModalProps> = ({
   };
 
   const currentTableData = tournament.tables.tables.find(
-    ({ tableId }) => open === tableId
+    ({ tableId }: { tableId: string }) => open === tableId
   ) as any;
 
   const handleCleanClose = (resetForm?: any) => {

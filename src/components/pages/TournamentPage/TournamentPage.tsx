@@ -81,26 +81,31 @@ const TournamentPage: React.FC<TournamentPageProps> = ({ tournamentId }) => {
   }, []);
 
   const isPossibleChangeRound = () => {
-    if (
-      tournamentData.results &&
-      Object.keys(tournamentData.results).length > 0
-    ) {
-      const tableKeys = Object.keys(tournamentData.results);
-      const finishedTables = [];
+    if(tournamentData) {
+      if (
+        tournamentData.results &&
+        Object.keys(tournamentData.results).length > 0
+      ) {
+        const tableKeys = Object.keys(tournamentData.results);
+        const finishedTables = [];
+  
+        if (tournamentData && tournamentData?.results) {
+          tableKeys.forEach(key => {
+            if(tournamentData?.results) {
+              const thereIsFinalWinner = (tournamentData?.results[
+                key as keyof typeof tournamentData.results
+              ] as any).resultsByRound.find((p: any) => typeof p?.finalWinner === 'number')
+                ?.finalWinner;
+    
+              if (typeof thereIsFinalWinner === 'number' && thereIsFinalWinner > -1)
+                finishedTables.push(thereIsFinalWinner);
+            }
 
-      if (tournamentData && tournamentData?.results) {
-        tableKeys.forEach(key => {
-          const thereIsFinalWinner = tournamentData?.results[
-            key
-          ].resultsByRound.find(p => typeof p?.finalWinner === 'number')
-            ?.finalWinner;
-
-          if (typeof thereIsFinalWinner === 'number' && thereIsFinalWinner > -1)
-            finishedTables.push(thereIsFinalWinner);
-        });
-
-        if (finishedTables.length === tournamentData?.tables.tables.length) {
-          return true;
+          });
+  
+          if (finishedTables.length === tournamentData?.tables.tables.length) {
+            return true;
+          }
         }
       }
     }
@@ -116,7 +121,11 @@ const TournamentPage: React.FC<TournamentPageProps> = ({ tournamentId }) => {
     }
   };
 
-  const finalPositionsTable = (format: TournamentFormat) => {
+  const finalPositionsTable = (format: TournamentFormat): {
+    columns: any[],
+    data: any[],
+    name: TournamentFormat
+  } => {
     if (format === 'individual') {
       return {
         columns: finalPositionsTableIndividualColumns,
@@ -135,11 +144,15 @@ const TournamentPage: React.FC<TournamentPageProps> = ({ tournamentId }) => {
         name: 'pairs'
       };
     }
-    return null;
+    return {
+      columns: [],
+      data: [],
+      name: 'individual'
+    };
   };
 
   const finalWinnerResults: any = (data: TournamentInterface) =>
-    tournamentAPI.calculateFinalResults(data?.format).winnerInfo;
+    tournamentAPI.calculateFinalResults(data?.format as 'individual' | 'pairs' | 'tables').winnerInfo;
 
   return (
     <section className={styles.pageContainer}>
@@ -590,7 +603,7 @@ const TournamentPage: React.FC<TournamentPageProps> = ({ tournamentId }) => {
         <UpdateResultsModal
           open={openUpdateResults}
           tournament={tournamentData as TournamentInterface}
-          handleClose={() => setOpenUpdateResults(null)}
+          handleClose={() => setOpenUpdateResults('')}
         />
       )}
       {tournamentData?.storedRounds &&
