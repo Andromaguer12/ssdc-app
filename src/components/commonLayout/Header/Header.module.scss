@@ -9,8 +9,7 @@
   color: $primary-color;
   box-sizing: border-box;
   position: absolute;
-  
-  
+
   .delimeter {
     width: 100%;
     display: flex;
@@ -19,22 +18,26 @@
     align-items: center;
     box-sizing: border-box;
     box-shadow: rgba(33, 35, 38, 0.1) 0px 10px 10px -10px;
-    background: #0000007a;
+    background: #ffffff7a;
     border-radius: 10px;
     padding: 5px 10px;
-    
 
     .logoAndMenu {
       display: flex;
       justify-content: space-between;
       align-items: center;
       width: 20%;
-     
+
       .image {
         width: 70px;
         height: 50px;
         background-color: $primary-color;
       }
+    }
+
+    .image {
+      height: 80px;
+      width: auto;
     }
 
     .buttons {
@@ -57,10 +60,10 @@
       .buttons {
         display: none;
       }
-      .logoAndMenu{
+      .logoAndMenu {
         padding: 0px 1rem;
         width: 100%;
       }
+    }
   }
-}
 }

@@ -1,14 +1,17 @@
-import Header from '@/components/commonLayout/Header/Header'
-import Dashboard from '@/components/pages/Dashboard/Dashboard'
-import React from 'react'
+import Header from '@/components/commonLayout/Header/Header';
+import Dashboard from '@/components/pages/Dashboard/Dashboard';
+import Head from 'next/head';
+import React from 'react';
 
 const DashboardAdminIndex = () => {
-    return (
-        <>
-            <Dashboard />
-        </>
+  return (
+    <>
+      <Head>
+        <title>DominoElite</title>
+      </Head>
+      <Dashboard />
+    </>
+  );
+};
 
-    )
-}
-
-export default DashboardAdminIndex
+export default DashboardAdminIndex;

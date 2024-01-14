@@ -1,25 +1,25 @@
 @import '../../../../constants/styling/theme/variables.scss';
 
-.pageContainer{
-    background-image: linear-gradient(to bottom right, #3794e0, #0035a7);
-    min-height: 100vh;
-    max-width: 100vw;
-    padding-bottom: 20px;
-    display: flex;
-    flex-direction: column;
+.pageContainer {
+  background-image: linear-gradient(to bottom right, #3794e0, #0035a7);
+  min-height: 100vh;
+  max-width: 100vw;
+  padding-bottom: 20px;
+  display: flex;
+  flex-direction: column;
 
-    .buttonGood {
-      padding: 10px;
-      color: #000000;
-      font-weight: bold;
-      margin-top: 10px;
-    }
-
-    & > h3 {
-      padding-top: 1.5rem;
-      margin-left: 1.5rem 
+  .buttonGood {
+    padding: 10px;
+    color: #000000;
+    font-weight: bold;
+    margin-top: 10px;
   }
-  
+
+  & > h3 {
+    padding-top: 1.5rem;
+    margin-left: 1.5rem;
+  }
+
   .loading {
     width: 100%;
     height: 100vh;
@@ -32,11 +32,11 @@
   }
 
   .dot {
-      width: 15px;
-      height: 15px;
-      border-radius: 50%;
-      margin-left: 7px;
-      border: 3px solid #fff;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    margin-left: 7px;
+    border: 3px solid #fff;
   }
 
   .header {
@@ -49,23 +49,33 @@
     justify-content: space-between;
 
     .title {
-        width: fit-content;
-        border-radius: 10px;
-        background-color: #fff;
-        padding: 10px 20px;
+      width: fit-content;
+      border-radius: 10px;
+      background-color: #fff;
+      padding: 10px 20px;
     }
 
-    
+    .logo {
+      width: 100px;
+      height: 100px;
+      background-color: #fff;
+      border-radius: 10px;
+
+      .image {
+        width: 100%;
+        height: auto;
+      }
+    }
   }
 
-  .controlPanel{
+  .controlPanel {
     width: 100%;
     display: flex;
     flex-direction: column;
     padding: 0 20px;
     box-sizing: border-box;
 
-    .panelTitle{
+    .panelTitle {
       margin-left: 15px;
       padding: 3.5px 10px;
       border-radius: 5px 5px 0 0;
@@ -115,8 +125,7 @@
     position: relative;
     min-height: 300px;
 
-
-    .shadow{
+    .shadow {
       width: 100%;
       height: 100%;
       backdrop-filter: blur(5px);
@@ -151,11 +160,9 @@
         font-size: 20px;
         margin-top: 10px;
       }
-
     }
-    
 
-    .tableComponentsContainer{
+    .tableComponentsContainer {
       width: 100%;
       box-sizing: border-box;
       display: flex;
@@ -165,7 +172,7 @@
       justify-content: space-around;
       transition: all 500ms ease-in-out;
 
-      &__asideActive{
+      &__asideActive {
         width: 65%;
         box-sizing: border-box;
         display: flex;
@@ -177,7 +184,7 @@
       }
     }
 
-    .asideContainer{
+    .asideContainer {
       width: 0%;
       box-sizing: border-box;
       display: flex;
@@ -187,7 +194,7 @@
       content-visibility: hidden;
       transition: opacity 1000ms ease-in-out;
 
-      &__active{
+      &__active {
         width: 35%;
         box-sizing: border-box;
         display: flex;
@@ -211,7 +218,7 @@
     flex-direction: column;
     align-items: center;
 
-    .title{
+    .title {
       width: 100%;
       font-weight: bold;
       margin-bottom: 20px;
@@ -223,7 +230,7 @@
       flex-direction: column;
       align-items: center;
 
-      .icon{
+      .icon {
         font-size: 80px;
         color: green;
         margin: 25px 0;
@@ -255,13 +262,13 @@
         .winnerTable {
           width: 320px;
 
-          .resultsWinner{
+          .resultsWinner {
             width: 100%;
             border-radius: 15px;
             overflow: hidden;
             padding-bottom: 5px;
-  
-            .listItem{
+
+            .listItem {
               width: 100%;
               display: flex;
               flex-direction: row;
@@ -270,7 +277,6 @@
             }
           }
         }
-
       }
     }
   }
@@ -289,6 +295,6 @@
       border-radius: 10px;
       background-color: #fff;
       padding: 10px 20px;
-  }
+    }
   }
 }

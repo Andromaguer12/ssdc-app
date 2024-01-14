@@ -1,15 +1,18 @@
-import Header from '@/components/commonLayout/Header/Header'
-import TournamentsPage from '@/components/pages/TournamentsPage/TournamentsPage'
-import React from 'react'
+import Header from '@/components/commonLayout/Header/Header';
+import TournamentsPage from '@/components/pages/TournamentsPage/TournamentsPage';
+import Head from 'next/head';
+import React from 'react';
 
 const Tournament = () => {
-    return (
-        <>
-            <Header />
-            <TournamentsPage />
-        </>
+  return (
+    <>
+      <Head>
+        <title>DominoElite</title>
+      </Head>
+      <Header />
+      <TournamentsPage />
+    </>
+  );
+};
 
-    )
-}
-
-export default Tournament
+export default Tournament;

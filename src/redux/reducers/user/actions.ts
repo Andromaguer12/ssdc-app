@@ -1,19 +1,19 @@
 import { userPassword } from '@/constants/users/user-constanst';
 import { UserInterface } from '@/typesDefs/constants/users/types';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import Cookies from 'js-cookie'
+import Cookies from 'js-cookie';
 
 export interface UserReducerInitialState {
-  userData: UserInterface | null,
+  userData: UserInterface | null;
   requestState: {
     loadingUser: boolean;
     success: boolean;
     error: null | any;
-  },
+  };
   registerRequestState: {
     loadingUser: boolean;
     error: null | any;
-  }
+  };
   signedOut: boolean;
   isAdmin: boolean;
 }
@@ -38,8 +38,8 @@ export const userLoginFunction = createAsyncThunk(
   async (params: { email: string; password: string; context: any }) => {
     const auth = await params.context.loginUser(params.email, params.password);
 
-    Cookies.set("auth", auth.user.uid);
-    Cookies.set("accessToken", auth.user.accessToken);
+    Cookies.set('auth', auth.user.uid);
+    Cookies.set('accessToken', auth.user.accessToken);
 
     return params.context.getUserFromId(auth.user.uid, auth.user.accessToken);
   }
@@ -50,10 +50,10 @@ export const userLogoutFunction = createAsyncThunk(
   async (params: { context: any }, { dispatch }) => {
     await params.context.logoutUser();
 
-    Cookies.remove("auth");
-    Cookies.remove("accessToken");
+    Cookies.remove('auth');
+    Cookies.remove('accessToken');
 
-    return true
+    return true;
   }
 );
 export const getUserByUserUid = createAsyncThunk(
@@ -66,11 +66,11 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    clearRequestUserState: (state) => {
-      state.requestState = initialState.requestState
+    clearRequestUserState: state => {
+      state.requestState = initialState.requestState;
     },
-    clearStateUser: (state) => {
-      state = initialState
+    clearStateUser: state => {
+      state = initialState;
     }
   },
   extraReducers: builder => {
@@ -84,8 +84,8 @@ const userSlice = createSlice({
       state.userData = {
         ...payload,
         accessToken: payload.accessToken,
-        uid: payload.uid,
-      }
+        uid: payload.uid
+      };
       state.isAdmin = payload.isAdmin;
       state.requestState.error = null;
     });
@@ -104,8 +104,8 @@ const userSlice = createSlice({
       state.userData = {
         ...payload,
         accessToken: payload.accessToken,
-        uid: payload.uid,
-      }
+        uid: payload.uid
+      };
       state.isAdmin = payload.isAdmin;
       state.requestState.error = null;
     });
@@ -115,11 +115,10 @@ const userSlice = createSlice({
     });
 
     builder.addCase(userLogoutFunction.fulfilled, (state, action) => {
-      state.signedOut = true
+      state.signedOut = true;
     });
   }
 });
-
 
 export const { clearRequestUserState, clearStateUser } = userSlice.actions;
 

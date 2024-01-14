@@ -1,9 +1,33 @@
 import { FirebaseApp } from 'firebase/app';
-import { createUserWithEmailAndPassword, signOut, deleteUser, getAuth, signInWithEmailAndPassword } from 'firebase/auth';
-import { collection, doc, getDoc, getDocs, getFirestore, query, where, setDoc, addDoc, deleteDoc } from 'firebase/firestore'
+import {
+  createUserWithEmailAndPassword,
+  signOut,
+  deleteUser,
+  getAuth,
+  signInWithEmailAndPassword
+} from 'firebase/auth';
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  getFirestore,
+  query,
+  where,
+  setDoc,
+  addDoc,
+  deleteDoc
+} from 'firebase/firestore';
 import initFirebaseFunction from './firebaseInitConfig';
 import { UserReducerInitialState } from '@/redux/reducers/user/actions';
-import { IndividualTableInterface, PairsTableInterface, TableInterface, TablePlayers, TournamentFormat, TournamentInterface } from '@/typesDefs/constants/tournaments/types';
+import {
+  IndividualTableInterface,
+  PairsTableInterface,
+  TableInterface,
+  TablePlayers,
+  TournamentFormat,
+  TournamentInterface
+} from '@/typesDefs/constants/tournaments/types';
 import { UserInterface } from '@/typesDefs/constants/users/types';
 import { TournamentReducerInitialState } from '@/redux/reducers/tournament/actions';
 
@@ -18,7 +42,7 @@ class Firebase {
     initFirebaseFunction().then(res => {
       this.firebaseApp = res;
       this.auth = getAuth();
-      this.db = getFirestore(res)
+      this.db = getFirestore(res);
     });
   }
 
@@ -34,67 +58,64 @@ class Firebase {
   }
 
   async getUserFromId(uid: string, accessToken: string) {
-    const userRef = query(collection(this.db, "users"), where("uid", "==", uid));
+    const userRef = query(
+      collection(this.db, 'users'),
+      where('uid', '==', uid)
+    );
     const docs = await getDocs(userRef);
-    const data: any[] = []
+    const data: any[] = [];
 
-    docs.forEach((doc) => {
+    docs.forEach(doc => {
       data.push({
         ...doc.data()
-      })
+      });
     });
 
-    return data.length > 0 ? { ...data[0], uid, accessToken } : undefined
+    return data.length > 0 ? { ...data[0], uid, accessToken } : undefined;
   }
 
   async getAllUsers() {
-    const tournamentsRef = query(collection(this.db, "users"));
+    const tournamentsRef = query(collection(this.db, 'users'));
     const docs = await getDocs(tournamentsRef);
-    const data: any[] = []
+    const data: any[] = [];
 
-    docs.forEach((doc) => {
+    docs.forEach(doc => {
       data.push({
         ...doc.data(),
-        id: doc.id,
-      })
+        id: doc.id
+      });
     });
 
-    return data
+    return data;
   }
 
-
-  async createUser(
-    name: string,
-    email: string,
-    phone: string,
-    image: string,
-  ) {
+  async createUser(name: string, email: string, phone: string, image: string) {
     const dataToSend: UserInterface = {
       name,
       email,
       phone,
-      image,
-    }
+      image
+    };
 
-    const newUserRef = collection(this.db, "users");
-  
+    const newUserRef = collection(this.db, 'users');
+
     try {
-      const doc = await addDoc(newUserRef, dataToSend)
+      const doc = await addDoc(newUserRef, dataToSend);
 
-      return doc
+      return doc;
     } catch (error) {
-      return error      
+      return error;
     }
   }
 
   async updateUser(tournamentId: string, body: Partial<UserInterface>) {
-    return await setDoc(doc(this.db, "users", tournamentId ?? ''), {
+    return await setDoc(doc(this.db, 'users', tournamentId ?? ''), {
       ...body
     });
   }
 
   async deleteUser(tournamentId: string) {
-    return await setDoc(doc(this.db, "user", tournamentId ?? ''), {
+    return await setDoc(doc(this.db, 'user', tournamentId ?? ''), {
       softDeleted: true
     });
   }
@@ -108,24 +129,27 @@ class Firebase {
    */
 
   async getAllTournaments() {
-    const tournamentsRef = query(collection(this.db, "tournaments"), where("softDeleted", "!=", true));
+    const tournamentsRef = query(
+      collection(this.db, 'tournaments'),
+      where('softDeleted', '!=', true)
+    );
     const docs = await getDocs(tournamentsRef);
-    const data: any[] = []
+    const data: any[] = [];
 
-    docs.forEach((doc) => {
+    docs.forEach(doc => {
       data.push({
         ...doc.data(),
-        id: doc.id,
-      })
+        id: doc.id
+      });
     });
 
-    return data
+    return data;
   }
 
   async getTournamentById(id: string) {
-    const docRef = doc(this.db, "tournaments", id);
+    const docRef = doc(this.db, 'tournaments', id);
     return (await getDoc(docRef)).data();
-  };
+  }
 
   async createTournament(
     name: string,
@@ -141,32 +165,35 @@ class Firebase {
       currentGlobalRound: 1,
       allPlayers: players,
       winner: null,
-      game: "domino",
+      game: 'domino',
       softDeleted: false,
       customRounds,
-      status: "inactive",
+      status: 'inactive',
       tables
-    }
+    };
 
-    const newTournamentRef = collection(this.db, "tournaments");
-  
+    const newTournamentRef = collection(this.db, 'tournaments');
+
     try {
-      const doc = await addDoc(newTournamentRef, dataToSend)
+      const doc = await addDoc(newTournamentRef, dataToSend);
 
-      return doc
+      return doc;
     } catch (error) {
-      return error      
+      return error;
     }
   }
 
-  async updateTournament(tournamentId: string, body: Partial<TournamentInterface>) {
-    return await setDoc(doc(this.db, "tournaments", tournamentId ?? ''), {
+  async updateTournament(
+    tournamentId: string,
+    body: Partial<TournamentInterface>
+  ) {
+    return await setDoc(doc(this.db, 'tournaments', tournamentId ?? ''), {
       ...body
     });
   }
 
   async deleteTournament(tournamentId: string) {
-    return await setDoc(doc(this.db, "tournaments", tournamentId ?? ''), {
+    return await setDoc(doc(this.db, 'tournaments', tournamentId ?? ''), {
       softDeleted: true
     });
   }
@@ -174,10 +201,10 @@ class Firebase {
   async finishTournament(tournamentId: string, winner: string) {
     return await setDoc(doc(this.db, 'tournaments', tournamentId), {
       winner
-    })
+    });
   }
 
-  /** 
+  /**
    * End Tournament Api
    */
 }

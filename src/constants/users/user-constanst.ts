@@ -1,1 +1,1 @@
-export const userPassword = "123456";
+export const userPassword = '123456';

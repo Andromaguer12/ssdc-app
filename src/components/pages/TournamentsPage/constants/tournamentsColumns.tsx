@@ -1,35 +1,34 @@
 export const tournamentsColumns = [
   {
-    header: "Nombre del torneo",
-    accessor: "name",
+    header: 'Nombre del torneo',
+    accessor: 'name'
   },
   {
-    header: "Formato",
-    accessor: "format",
+    header: 'Formato',
+    accessor: 'format'
   },
   {
-    header: "Fecha de inicio",
-    accessor: "startDate",
+    header: 'Fecha de inicio',
+    accessor: 'startDate'
   },
   {
-    header: "Fecha de finalizacion",
-    accessor: "endDate",
+    header: 'Fecha de finalizacion',
+    accessor: 'endDate'
   },
   {
-    header: "Ronda actual",
-    accessor: "currentGlobalRound",
-    textAlign: "center"
+    header: 'Ronda actual',
+    accessor: 'currentGlobalRound',
+    textAlign: 'center'
   },
   {
-    header: "Maximo de rondas",
-    accessor: "customRounds",
-    textAlign: "center"
+    header: 'Maximo de rondas',
+    accessor: 'customRounds',
+    textAlign: 'center'
   },
   {
-    header: "Cantidad de jugadores",
-    accessor: "allPlayers",
-    textAlign: "center"
-
+    header: 'Cantidad de jugadores',
+    accessor: 'allPlayers',
+    textAlign: 'center'
   },
   // {
   //   header: "Ganador",
@@ -37,24 +36,21 @@ export const tournamentsColumns = [
   //   textAlign: "center"
   // },
   {
-    header: "Juego",
-    accessor: "game",
+    header: 'Juego',
+    accessor: 'game'
   },
   {
-    header: "Estado",
-    accessor: "state",
+    header: 'Estado',
+    accessor: 'state'
   },
   {
-    header: "Mesas",
-    accessor: "tables",
-    textAlign: "center"
+    header: 'Mesas',
+    accessor: 'tables',
+    textAlign: 'center'
   },
   {
-    header: "Acciones",
-    accessor: "actions",
-    textAlign: "center"
-  },
-]
-
-
-
+    header: 'Acciones',
+    accessor: 'actions',
+    textAlign: 'center'
+  }
+];

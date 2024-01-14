@@ -13,13 +13,13 @@ export const DefaultColumnFilter = ({
   column: {
     filterValue,
     setFilter,
-    preFilteredRows: { length },
-  },
+    preFilteredRows: { length }
+  }
 }) => {
   return (
     <Input
       value={filterValue || ''}
-      onChange={(e) => {
+      onChange={e => {
         setFilter(e.target.value || undefined);
       }}
       placeholder={`search (${length}) ...`}
@@ -28,11 +28,11 @@ export const DefaultColumnFilter = ({
 };
 
 export const SelectColumnFilter = ({
-  column: { filterValue, setFilter, preFilteredRows, id },
+  column: { filterValue, setFilter, preFilteredRows, id }
 }) => {
   const options = React.useMemo(() => {
     const options = new Set();
-    preFilteredRows.forEach((row) => {
+    preFilteredRows.forEach(row => {
       options.add(row.values[id]);
     });
     return [...options.values()];
@@ -40,15 +40,15 @@ export const SelectColumnFilter = ({
 
   return (
     <select
-      id='custom-select'
+      id="custom-select"
       className="form-select"
       value={filterValue}
-      onChange={(e) => {
+      onChange={e => {
         setFilter(e.target.value || undefined);
       }}
     >
-      <option value=''>All</option>
-      {options.map((option) => (
+      <option value="">All</option>
+      {options.map(option => (
         <option key={option} value={option}>
           {option}
         </option>

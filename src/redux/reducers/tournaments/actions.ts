@@ -4,32 +4,32 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 export interface TournamentsInitialState {
   getTournaments: {
-    loadingGetTournaments: boolean,
-    successGetTournaments: boolean,
-    tournamentsList: TournamentInterface[],
-    errorGetTournaments: any | null
-  }
+    loadingGetTournaments: boolean;
+    successGetTournaments: boolean;
+    tournamentsList: TournamentInterface[];
+    errorGetTournaments: any | null;
+  };
   getTournamentById: {
-    loadingGetTournamentById: boolean,
-    successGetTournamentById: boolean,
-    tournament: TournamentInterface | null,
-    errorGetTournamentById: any | null
-  },
+    loadingGetTournamentById: boolean;
+    successGetTournamentById: boolean;
+    tournament: TournamentInterface | null;
+    errorGetTournamentById: any | null;
+  };
   createTournament: {
-    loadingCreateTournament: boolean,
-    successCreateTournament: boolean,
-    errorCreateTournament: any | null
-  },
+    loadingCreateTournament: boolean;
+    successCreateTournament: boolean;
+    errorCreateTournament: any | null;
+  };
   updateTournament: {
-    loadingUpdateTournament: boolean,
-    successUpdateTournament: boolean,
-    errorUpdateTournament: any | null
-  },
+    loadingUpdateTournament: boolean;
+    successUpdateTournament: boolean;
+    errorUpdateTournament: any | null;
+  };
   deleteTournament: {
-    loadingDeleteTournament: boolean,
-    successDeleteTournament: boolean,
-    errorDeleteTournament: any | null
-  }
+    loadingDeleteTournament: boolean;
+    successDeleteTournament: boolean;
+    errorDeleteTournament: any | null;
+  };
 }
 
 const initialState: TournamentsInitialState = {
@@ -64,89 +64,88 @@ const initialState: TournamentsInitialState = {
 
 export const getAllTournaments = createAsyncThunk(
   'tournaments/getAllTournaments',
-   async (params:any, { rejectWithValue }) => {
+  async (params: any, { rejectWithValue }) => {
     try {
-      const response = await params.context.getAllTournaments()
+      const response = await params.context.getAllTournaments();
 
-      return response
+      return response;
     } catch (error) {
-      rejectWithValue(error)
+      rejectWithValue(error);
     }
   }
 );
 
 export const getTournamentById = createAsyncThunk(
   'tournaments/getTournamentById',
-   async (params:any, { rejectWithValue }) => {
+  async (params: any, { rejectWithValue }) => {
     try {
-      const response = await params.context.getTournamentById(params.id)
+      const response = await params.context.getTournamentById(params.id);
 
-      return response
+      return response;
     } catch (error) {
-      rejectWithValue(error)
+      rejectWithValue(error);
     }
   }
 );
 
 export const createTournament = createAsyncThunk(
   'tournaments/createTournament',
-   async (params:any, { rejectWithValue }) => {
-      const tables:any = organizeTournamentsPlayersArray(
-        params.players 
-      )
+  async (params: any, { rejectWithValue }) => {
+    const tables: any = organizeTournamentsPlayersArray(params.players);
 
-      if(tables?.error) {
-        return rejectWithValue(tables?.error)
-      }
+    if (tables?.error) {
+      return rejectWithValue(tables?.error);
+    }
 
-      const response = await params.context.createTournament(
-        params.name, 
-        params.players, 
-        tables, 
-        params.format,
-        params.customRounds
-      )
-      
-      if(response.toString().includes("FirebaseError")) {
-        return rejectWithValue(JSON.stringify(response))
-      }
+    const response = await params.context.createTournament(
+      params.name,
+      params.players,
+      tables,
+      params.format,
+      params.customRounds
+    );
 
-      return response
+    if (response.toString().includes('FirebaseError')) {
+      return rejectWithValue(JSON.stringify(response));
+    }
+
+    return response;
   }
 );
 
 export const updateTournament = createAsyncThunk(
   'tournaments/updateTournament',
-   async (params:any, { rejectWithValue }) => {
-      const response = await params.context.updateTournament(params.id, params.body)
-      
-      return response
+  async (params: any, { rejectWithValue }) => {
+    const response = await params.context.updateTournament(
+      params.id,
+      params.body
+    );
+
+    return response;
   }
 );
 
 export const deleteTournament = createAsyncThunk(
   'tournaments/deleteTournament',
-   async (params:any, { rejectWithValue }) => {
-      const response = await params.context.deleteTournament(params.id)
+  async (params: any, { rejectWithValue }) => {
+    const response = await params.context.deleteTournament(params.id);
 
-
-      return response
+    return response;
   }
 );
-
 
 const tournamentsSlice = createSlice({
   name: 'tournaments',
   initialState,
   reducers: {
-    clearGetTournaments: (state) => {
-      state.getTournaments = initialState.getTournaments
+    clearGetTournaments: state => {
+      state.getTournaments = initialState.getTournaments;
     },
-    clearCreateTournamentState: (state) => {
-      state.createTournament = initialState.createTournament
+    clearCreateTournamentState: state => {
+      state.createTournament = initialState.createTournament;
     },
-    clearUpdateTournamentState: (state) => {
-      state.updateTournament = initialState.updateTournament
+    clearUpdateTournamentState: state => {
+      state.updateTournament = initialState.updateTournament;
     }
   },
   extraReducers: builder => {
@@ -221,7 +220,10 @@ const tournamentsSlice = createSlice({
   }
 });
 
-
-export const { clearGetTournaments, clearCreateTournamentState, clearUpdateTournamentState } = tournamentsSlice.actions;
+export const {
+  clearGetTournaments,
+  clearCreateTournamentState,
+  clearUpdateTournamentState
+} = tournamentsSlice.actions;
 
 export default tournamentsSlice.reducer;

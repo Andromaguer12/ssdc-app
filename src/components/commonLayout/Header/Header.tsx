@@ -5,28 +5,16 @@ import React from 'react';
 import styles from './Header.module.scss';
 import { HeaderButtons } from '../../../constants/components/commonLayout/Header/header';
 import { Menu } from '@/components/commonLayout/Menu/Menu';
+import Image from 'next/image';
+import logo3 from '../../../assets/pages/home/logo3.png';
 
 export default function Header() {
   return (
     <div className={styles.headerContainer}>
       <div className={styles.delimeter}>
         <Menu />
-        <div className={styles.buttons}>
-          {HeaderButtons.map(button => {
-            return (
-              <Link
-                key={button.id}
-                className={styles.headerButton}
-                href={"button.link"}
-              >
-                Buttons
-              </Link>
-            );
-          })}
-          {/* <IconButton className={styles.iconButtons}>
-            <Language sx={{ color: '#ffffff' }} />
-          </IconButton> */}
-        </div>
+        <Image src={logo3} alt="logoHorizontal" className={styles.image} />
+        <div className={styles.buttons}></div>
       </div>
     </div>
   );

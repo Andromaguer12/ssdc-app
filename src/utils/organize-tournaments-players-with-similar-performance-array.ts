@@ -1,15 +1,24 @@
-import { IndividualTableInterface, PairsTableInterface, ResultsInterface, TableObjectInterface, TournamentFormat } from "@/typesDefs/constants/tournaments/types";
-import shuffleArray from "./shuffle-array";
-import { uuid as uuidv4 } from 'uuidv4'
-import { generateHexColor } from "./generate-hex-color";
+import {
+  IndividualTableInterface,
+  PairsTableInterface,
+  ResultsInterface,
+  TableObjectInterface,
+  TournamentFormat
+} from '@/typesDefs/constants/tournaments/types';
+import shuffleArray from './shuffle-array';
+import { uuid as uuidv4 } from 'uuidv4';
+import { generateHexColor } from './generate-hex-color';
 
-export function organizeTournamentsPlayersWithSimilarPerformanceArray(results: ResultsInterface, playedTables: string[]): PairsTableInterface | { error: string } {
+export function organizeTournamentsPlayersWithSimilarPerformanceArray(
+  results: ResultsInterface,
+  playedTables: string[]
+): PairsTableInterface | { error: string } {
   const playersByPerformance: Record<number, string[]> = {};
 
   // Organizar jugadores por rendimiento
-  Object.keys(results).forEach((tableId) => {
+  Object.keys(results).forEach(tableId => {
     const roundResults = results[tableId].resultsByRound;
-    roundResults.forEach((roundResult) => {
+    roundResults.forEach(roundResult => {
       const roundNumber = roundResult.currentTableRound;
       const players = results[tableId].players;
 
@@ -19,10 +28,15 @@ export function organizeTournamentsPlayersWithSimilarPerformanceArray(results: R
 
       // Ordenar jugadores por rendimiento y evitar repeticiones
       const sortedPlayers = players
-        .filter((player) => !playedTables.includes(player))
-        .sort((a, b) => roundResult.effectivenessByPlayer[b] - roundResult.effectivenessByPlayer[a]);
+        .filter(player => !playedTables.includes(player))
+        .sort(
+          (a, b) =>
+            roundResult.effectivenessByPlayer[b] -
+            roundResult.effectivenessByPlayer[a]
+        );
 
-      playersByPerformance[roundNumber] = playersByPerformance[roundNumber].concat(sortedPlayers);
+      playersByPerformance[roundNumber] =
+        playersByPerformance[roundNumber].concat(sortedPlayers);
     });
   });
 
@@ -30,7 +44,7 @@ export function organizeTournamentsPlayersWithSimilarPerformanceArray(results: R
   const tables = [];
   const pairs = [];
 
-  Object.keys(playersByPerformance).forEach((roundNumber) => {
+  Object.keys(playersByPerformance).forEach(roundNumber => {
     const roundPlayers = playersByPerformance[roundNumber];
 
     for (let i = 0; i < roundPlayers.length; i += 4) {
@@ -39,7 +53,7 @@ export function organizeTournamentsPlayersWithSimilarPerformanceArray(results: R
         tableId: uuidv4(),
         currentTableRound: parseInt(roundNumber),
         pair1Color: generateHexColor(),
-        pair2Color: generateHexColor(),
+        pair2Color: generateHexColor()
       };
 
       // Asegurar que p1 y p2, p3 y p4 estén emparejados
@@ -47,7 +61,11 @@ export function organizeTournamentsPlayersWithSimilarPerformanceArray(results: R
       const pair2 = [table.table[2], table.table[3]];
 
       // Evitar repeticiones de parejas
-      if (!pairs.some((p) => arraysEqual(p.pair, pair1) || arraysEqual(p.pair, pair2))) {
+      if (
+        !pairs.some(
+          p => arraysEqual(p.pair, pair1) || arraysEqual(p.pair, pair2)
+        )
+      ) {
         tables.push(table);
         pairs.push({ pair: pair1, table: table.tableId });
         pairs.push({ pair: pair2, table: table.tableId });
@@ -57,7 +75,7 @@ export function organizeTournamentsPlayersWithSimilarPerformanceArray(results: R
 
   const tablePrev: PairsTableInterface = {
     tables,
-    pairs,
+    pairs
   };
 
   return tablePrev;

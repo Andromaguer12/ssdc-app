@@ -5,38 +5,96 @@ import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import styles from '../styles/CreateTournamentsModal.module.scss'
-import { ArrowBack, CheckCircle, CheckCircleOutline, CheckOutlined, Close, Search, Send } from '@mui/icons-material';
-import { Avatar, Card, CircularProgress, FormControl, FormControlLabel, FormLabel, Grid, InputAdornment, InputLabel, OutlinedInput, Radio, RadioGroup, Step, StepButton, Stepper, TextField } from '@mui/material';
+import styles from '../styles/CreateTournamentsModal.module.scss';
+import {
+  ArrowBack,
+  CheckCircle,
+  CheckCircleOutline,
+  CheckOutlined,
+  Close,
+  Search,
+  Send
+} from '@mui/icons-material';
+import {
+  Avatar,
+  Card,
+  CircularProgress,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Grid,
+  InputAdornment,
+  InputLabel,
+  OutlinedInput,
+  Radio,
+  RadioGroup,
+  Step,
+  StepButton,
+  Stepper,
+  TextField
+} from '@mui/material';
 import SwipeableViews from 'react-swipeable-views';
-import { Formik } from "formik";
+import { Formik } from 'formik';
 import { act } from 'react-dom/test-utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearGetUsers, getAllUsers } from '@/redux/reducers/usersList/actions';
 import { useAppDispatch, useAppSelector } from '@/redux/store';
 import useFetchingContext from '@/contexts/backendConection/hook';
 import { UserInterface } from '@/typesDefs/constants/users/types';
-import { clearCreateTournamentState, createTournament } from '@/redux/reducers/tournaments/actions';
+import {
+  clearCreateTournamentState,
+  createTournament
+} from '@/redux/reducers/tournaments/actions';
 import { TournamentFormat } from '@/typesDefs/constants/tournaments/types';
 
 interface ModalProps {
-  open: boolean,
-  handleClose: () => any
+  open: boolean;
+  handleClose: () => any;
 }
 
-const UserCard = ({user, selected, onClick}: { user: UserInterface, selected?: boolean, onClick?: (itemId?: UserInterface) => any }) => {
+const UserCard = ({
+  user,
+  selected,
+  onClick
+}: {
+  user: UserInterface;
+  selected?: boolean;
+  onClick?: (itemId?: UserInterface) => any;
+}) => {
   return (
-    <div className={[styles.userCard, selected ? styles.userCard__selected : ""].join(" ")} onClick={() => onClick(user)}>
-      <Avatar>{user.name.length ? `${user.name[0]}${user.name.split(" ")[1] ?? ""}` : ""}</Avatar>
-      <Typography fontWeight={"700"} style={{ marginLeft: "10px"}} variant="h6" component="h2">
+    <div
+      className={[
+        styles.userCard,
+        selected ? styles.userCard__selected : ''
+      ].join(' ')}
+      onClick={() => onClick(user)}
+    >
+      <Avatar>
+        {user.name.length
+          ? `${user.name[0]}${user.name.split(' ')[1] ?? ''}`
+          : ''}
+      </Avatar>
+      <Typography
+        fontWeight={'700'}
+        style={{ marginLeft: '10px' }}
+        variant="h6"
+        component="h2"
+      >
         {user.name}
       </Typography>
     </div>
-  )
-}
+  );
+};
 
-const CreateTournamentsModal: React.FC<ModalProps> = ({ open, handleClose }) => {
-  const steps = ['Configuracion del torneo', 'Selecciona los jugadores', 'Creando torneo'];
+const CreateTournamentsModal: React.FC<ModalProps> = ({
+  open,
+  handleClose
+}) => {
+  const steps = [
+    'Configuracion del torneo',
+    'Selecciona los jugadores',
+    'Creando torneo'
+  ];
   const style = {
     position: 'absolute' as 'absolute',
     top: '50%',
@@ -46,26 +104,26 @@ const CreateTournamentsModal: React.FC<ModalProps> = ({ open, handleClose }) => 
     bgcolor: 'background.paper',
     boxShadow: 24,
     borderRadius: '7px'
-  };  
+  };
 
-  const dispatch = useAppDispatch()
-  const fContext = useFetchingContext()
+  const dispatch = useAppDispatch();
+  const fContext = useFetchingContext();
 
-  const { 
+  const {
     getUsers: {
-      loadingGetUsers:loadingUsersList,
+      loadingGetUsers: loadingUsersList,
       usersList,
-      errorGetUsers:errorUsersList,
+      errorGetUsers: errorUsersList
     }
-  } = useAppSelector(({usersList}) => usersList)
+  } = useAppSelector(({ usersList }) => usersList);
 
-  const { 
+  const {
     createTournament: {
       loadingCreateTournament,
       successCreateTournament,
       errorCreateTournament
     }
-  } = useSelector(({tournaments}) => tournaments)
+  } = useSelector(({ tournaments }) => tournaments);
 
   interface formState {
     name: string;
@@ -75,115 +133,125 @@ const CreateTournamentsModal: React.FC<ModalProps> = ({ open, handleClose }) => 
   }
 
   const formInitialFormState: formState = {
-    name: "",
-    format: "individual",
+    name: '',
+    format: 'individual',
     customRounds: 7,
     players: []
-  }
+  };
 
-  const [activeStep, setActiveStep] = React.useState(0)
+  const [activeStep, setActiveStep] = React.useState(0);
 
-  const [searchUsers, setSearchUsers] = React.useState<UserInterface[]>([])
+  const [searchUsers, setSearchUsers] = React.useState<UserInterface[]>([]);
 
-  const [selectedUsers, setSelectedUsers] = React.useState<UserInterface[]>([])
+  const [selectedUsers, setSelectedUsers] = React.useState<UserInterface[]>([]);
 
   const handleCleanClose = (resetForm?: any) => {
-    setActiveStep(0)
-    dispatch(clearCreateTournamentState())
-    dispatch(clearGetUsers())
-    handleClose()
-    if(resetForm) resetForm()
-  }
+    setActiveStep(0);
+    dispatch(clearCreateTournamentState());
+    dispatch(clearGetUsers());
+    handleClose();
+    if (resetForm) resetForm();
+  };
 
   const handleNextStep = React.useCallback(
-    (values: formState, { resetForm }: { resetForm:any}) => {
-      if(activeStep === 0) {
-        if(values.name) {
-          setActiveStep(activeStep + 1)
+    (values: formState, { resetForm }: { resetForm: any }) => {
+      if (activeStep === 0) {
+        if (values.name) {
+          setActiveStep(activeStep + 1);
         }
       }
-      if(activeStep == 1) {
-        if(selectedUsers.length > 0 && selectedUsers.length % 4 === 0 && selectedUsers.length / 4 > 1){
-          setActiveStep(activeStep + 1)
-          dispatch(createTournament({
-            context: fContext,
-            name: values.name,
-            players: selectedUsers.map((user: UserInterface) => user.id),
-            format: values.format,
-            customRounds: values.customRounds
-          }))
+      if (activeStep == 1) {
+        if (
+          selectedUsers.length > 0 &&
+          selectedUsers.length % 4 === 0 &&
+          selectedUsers.length / 4 > 1
+        ) {
+          setActiveStep(activeStep + 1);
+          dispatch(
+            createTournament({
+              context: fContext,
+              name: values.name,
+              players: selectedUsers.map((user: UserInterface) => user.id),
+              format: values.format,
+              customRounds: values.customRounds
+            })
+          );
         }
       }
-      if(activeStep === 2) {
-        handleCleanClose(resetForm)
+      if (activeStep === 2) {
+        handleCleanClose(resetForm);
       }
     },
-    [activeStep, selectedUsers],
-  )
+    [activeStep, selectedUsers]
+  );
 
-  const handlePreviousStep = React.useCallback(
-    () => {
-      setActiveStep(activeStep - 1)
-      dispatch(clearGetUsers())
-      setSelectedUsers([])
-      setSearchUsers([])
-    },
-    [activeStep],
-  )
+  const handlePreviousStep = React.useCallback(() => {
+    setActiveStep(activeStep - 1);
+    dispatch(clearGetUsers());
+    setSelectedUsers([]);
+    setSearchUsers([]);
+  }, [activeStep]);
 
-  const selectAll = React.useCallback(
-    () => {
-      setSelectedUsers(searchUsers.length ? searchUsers : usersList)
-    },
-    [searchUsers, usersList],
-  )
-  
+  const selectAll = React.useCallback(() => {
+    setSelectedUsers(searchUsers.length ? searchUsers : usersList);
+  }, [searchUsers, usersList]);
 
   React.useEffect(() => {
-    if(activeStep === 1) {
-      dispatch(getAllUsers({
-        context: fContext
-      }))
+    if (activeStep === 1) {
+      dispatch(
+        getAllUsers({
+          context: fContext
+        })
+      );
     }
-    if(activeStep !== 1) {
-      dispatch(clearGetUsers())
+    if (activeStep !== 1) {
+      dispatch(clearGetUsers());
     }
-  }, [activeStep])
+  }, [activeStep]);
 
   const handleClickUser = React.useCallback(
     (itemId?: UserInterface) => {
-      if(itemId && Boolean(selectedUsers.find((user: UserInterface) => user.id === itemId.id))) {
-        setSelectedUsers(selectedUsers.filter((user: UserInterface) => user.id !== itemId.id))
-      }
-      else {
-        setSelectedUsers(selectedUsers.concat([itemId]))
+      if (
+        itemId &&
+        Boolean(
+          selectedUsers.find((user: UserInterface) => user.id === itemId.id)
+        )
+      ) {
+        setSelectedUsers(
+          selectedUsers.filter((user: UserInterface) => user.id !== itemId.id)
+        );
+      } else {
+        setSelectedUsers(selectedUsers.concat([itemId]));
       }
     },
-    [selectedUsers, setSelectedUsers],
-  )
-  
-  
+    [selectedUsers, setSelectedUsers]
+  );
+
   return (
     <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
-        open={open}
-        onClose={() => handleCleanClose()}
-        closeAfterTransition
-        slots={{ backdrop: Backdrop }}
-        slotProps={{
-          backdrop: {
-            timeout: 500,
-          },
-        }}
-      >
-        <Formik onSubmit={handleNextStep} initialValues={formInitialFormState}>
-          {({ values, handleChange, submitForm, resetForm }) => {
-            return (
+      aria-labelledby="transition-modal-title"
+      aria-describedby="transition-modal-description"
+      open={open}
+      onClose={() => handleCleanClose()}
+      closeAfterTransition
+      slots={{ backdrop: Backdrop }}
+      slotProps={{
+        backdrop: {
+          timeout: 500
+        }
+      }}
+    >
+      <Formik onSubmit={handleNextStep} initialValues={formInitialFormState}>
+        {({ values, handleChange, submitForm, resetForm }) => {
+          return (
             <Fade in={open}>
               <Box sx={style}>
                 <div className={styles.header}>
-                  <Typography id="transition-modal-title" variant="h6" component="h2">
+                  <Typography
+                    id="transition-modal-title"
+                    variant="h6"
+                    component="h2"
+                  >
                     Crear un torneo
                   </Typography>
                 </div>
@@ -192,82 +260,104 @@ const CreateTournamentsModal: React.FC<ModalProps> = ({ open, handleClose }) => 
                     <Stepper nonLinear activeStep={activeStep}>
                       {steps.map((label, index) => (
                         <Step key={label} completed={activeStep > index}>
-                          <StepButton color="inherit">
-                            {label}
-                          </StepButton>
+                          <StepButton color="inherit">{label}</StepButton>
                         </Step>
                       ))}
                     </Stepper>
                   </div>
-                  <SwipeableViews index={activeStep} style={{ width: '100%', height: '100%'}}>
+                  <SwipeableViews
+                    index={activeStep}
+                    style={{ width: '100%', height: '100%' }}
+                  >
                     {steps.map((label, index) => {
                       return (
                         <div key={index} className={styles.subContainer}>
-                          {activeStep < 2 && <Typography fontWeight={"700"} className={styles.title} variant="h6" component="h2">
-                            {label}
-                          </Typography>}
+                          {activeStep < 2 && (
+                            <Typography
+                              fontWeight={'700'}
+                              className={styles.title}
+                              variant="h6"
+                              component="h2"
+                            >
+                              {label}
+                            </Typography>
+                          )}
                           <Grid container spacing={2}>
                             {index === 0 && (
-                                <>
-                                  <Grid item xs={12}>
-                                    <Grid item xs={8}>
-                                      <TextField 
-                                        label="Nombre del torneo"
+                              <>
+                                <Grid item xs={12}>
+                                  <Grid item xs={8}>
+                                    <TextField
+                                      label="Nombre del torneo"
+                                      fullWidth
+                                      value={values.name}
+                                      onChange={handleChange('name')}
+                                    />
+                                  </Grid>
+                                </Grid>
+                                <Grid item xs={12}>
+                                  <Grid item xs={4}>
+                                    <FormControl>
+                                      <FormLabel>Numero de rondas</FormLabel>
+                                      <TextField
+                                        label="Rondas"
                                         fullWidth
-                                        value={values.name}
-                                        onChange={handleChange("name")}
+                                        type="number"
+                                        size="small"
+                                        sx={{ marginTop: '15px' }}
+                                        value={values.customRounds}
+                                        onChange={handleChange('customRounds')}
                                       />
-                                    </Grid>
+                                    </FormControl>
                                   </Grid>
-                                  <Grid item xs={12}>
-                                    <Grid item xs={4}>
-                                      <FormControl>
-                                        <FormLabel>Numero de rondas</FormLabel>
-                                        <TextField 
-                                          label="Rondas"
-                                          fullWidth
-                                          type='number'
-                                          size='small'
-                                          sx={{marginTop: '15px'}}
-                                          value={values.customRounds}
-                                          onChange={handleChange("customRounds")}
+                                </Grid>
+                                <Grid item xs={12}>
+                                  <Grid item xs={4}>
+                                    <FormControl>
+                                      <FormLabel>Formato</FormLabel>
+                                      <RadioGroup
+                                        defaultValue="domino"
+                                        name="radio-buttons-group"
+                                        value={values.format}
+                                        onChange={handleChange('format')}
+                                        style={{
+                                          flexDirection: 'row',
+                                          alignItems: 'center'
+                                        }}
+                                      >
+                                        <FormControlLabel
+                                          value="individual"
+                                          control={<Radio />}
+                                          label="Individual"
                                         />
-                                      </FormControl>
-                                    </Grid>
+                                        <FormControlLabel
+                                          value="pairs"
+                                          control={<Radio />}
+                                          label="Parejas"
+                                        />
+                                        {/* <FormControlLabel value="groups" control={<Radio />} label="Grupos" /> */}
+                                      </RadioGroup>
+                                    </FormControl>
                                   </Grid>
-                                  <Grid item xs={12}>
-                                    <Grid item xs={4}>
-                                      <FormControl>
-                                        <FormLabel>Formato</FormLabel>
-                                        <RadioGroup
-                                          defaultValue="domino"
-                                          name="radio-buttons-group"
-                                          value={values.format}
-                                          onChange={handleChange("format")}
-
-                                          style={{ flexDirection: 'row', alignItems :'center'}}
-                                        >
-                                          <FormControlLabel value="individual" control={<Radio />} label="Individual" />
-                                          <FormControlLabel value="pairs" control={<Radio />} label="Parejas" />
-                                          {/* <FormControlLabel value="groups" control={<Radio />} label="Grupos" /> */}
-                                        </RadioGroup>
-                                      </FormControl>
-                                    </Grid>
+                                </Grid>
+                                <Grid item xs={12}>
+                                  <Grid item xs={4}>
+                                    <FormControl>
+                                      <FormLabel>Juego</FormLabel>
+                                      <RadioGroup
+                                        defaultValue="domino"
+                                        name="radio-buttons-group"
+                                      >
+                                        <FormControlLabel
+                                          value="domino"
+                                          control={<Radio />}
+                                          label="Domino"
+                                        />
+                                      </RadioGroup>
+                                    </FormControl>
                                   </Grid>
-                                  <Grid item xs={12}>
-                                    <Grid item xs={4}>
-                                      <FormControl>
-                                        <FormLabel>Juego</FormLabel>
-                                        <RadioGroup
-                                          defaultValue="domino"
-                                          name="radio-buttons-group"
-                                        >
-                                          <FormControlLabel value="domino" control={<Radio />} label="Domino" />
-                                        </RadioGroup>
-                                      </FormControl>
-                                    </Grid>
-                                  </Grid>
-                                  {/* <Grid item xs={12}>
+                                </Grid>
+                                {/* <Grid item xs={12}>
                                     <Grid item xs={4}>
                                       <FormControl>
                                         <FormLabel>Agrupacion de jugadores por mesa</FormLabel>
@@ -281,139 +371,257 @@ const CreateTournamentsModal: React.FC<ModalProps> = ({ open, handleClose }) => 
                                       </FormControl>
                                     </Grid>
                                   </Grid> */}
-                                </>
-                              )}
-                              {index === 1 && (
-                                <>
-                                  {loadingUsersList && (
-                                    <Grid alignItems={"center"} justifyItems={"center"} className={styles.loader} xs={12}>
-                                      <CircularProgress size={60} color="primary" />
-                                      <Typography fontWeight={"600"} style={{ marginTop: '10px'}} variant="h6" component="h2">
-                                        Cargando usuarios...
-                                      </Typography>
-                                    </Grid>
-                                  )}
-                                  {!loadingUsersList && activeStep === 1 && (
-                                    <>
-                                      <Grid item sm={12} md={6}>
-                                        <FormControl fullWidth>
-                                          <InputLabel htmlFor="outlined-adornment-amount">Buscar usuarios...</InputLabel>
-                                          <OutlinedInput
-                                            id="outlined-adornment-amount"
-                                            startAdornment={<InputAdornment position="start"><Search /></InputAdornment>}
-                                            label="Buscar usuarios..."
-                                          />
-                                        </FormControl>
-                                        <div className={styles.usersList}>
-                                        <Button disableElevation fullWidth style={{ marginBottom: '10px'}} variant="contained" onClick={selectAll} className={styles.button}>Seleccionar todos</Button>
+                              </>
+                            )}
+                            {index === 1 && (
+                              <>
+                                {loadingUsersList && (
+                                  <Grid
+                                    alignItems={'center'}
+                                    justifyItems={'center'}
+                                    className={styles.loader}
+                                    xs={12}
+                                  >
+                                    <CircularProgress
+                                      size={60}
+                                      color="primary"
+                                    />
+                                    <Typography
+                                      fontWeight={'600'}
+                                      style={{ marginTop: '10px' }}
+                                      variant="h6"
+                                      component="h2"
+                                    >
+                                      Cargando usuarios...
+                                    </Typography>
+                                  </Grid>
+                                )}
+                                {!loadingUsersList && activeStep === 1 && (
+                                  <>
+                                    <Grid item sm={12} md={6}>
+                                      <FormControl fullWidth>
+                                        <InputLabel htmlFor="outlined-adornment-amount">
+                                          Buscar usuarios...
+                                        </InputLabel>
+                                        <OutlinedInput
+                                          id="outlined-adornment-amount"
+                                          startAdornment={
+                                            <InputAdornment position="start">
+                                              <Search />
+                                            </InputAdornment>
+                                          }
+                                          label="Buscar usuarios..."
+                                        />
+                                      </FormControl>
+                                      <div className={styles.usersList}>
+                                        <Button
+                                          disableElevation
+                                          fullWidth
+                                          style={{ marginBottom: '10px' }}
+                                          variant="contained"
+                                          onClick={selectAll}
+                                          className={styles.button}
+                                        >
+                                          Seleccionar todos
+                                        </Button>
 
-                                          {(searchUsers.length ? searchUsers : usersList).map((user: UserInterface) => {
-                                            return (
-                                              <UserCard 
-                                                key={user.id}
-                                                user={user}
-                                                selected={Boolean(selectedUsers.find(u => u.id === user.id))}
-                                                onClick={handleClickUser}
-                                              />
-                                            )
-                                          })}
-                                        </div>
-                                      </Grid>
-                                      <Grid item sm={12} md={6}>
-                                        <Typography fontWeight={"700"} style={{ marginBottom: 0 }} className={styles.title} variant="h6" component="h2">
-                                          Jugadores Seleccionados: {selectedUsers.length}
-                                        </Typography>
-                                        <Typography className={styles.subtitle}>
-                                          Se generaran {selectedUsers.length / 4} mesas.
-                                        </Typography>
-                                        {selectedUsers.length % 4 !== 0 && <Typography style={{ color: "red" }} className={styles.subtitle}>
-                                          No es posible comenzar un torneo con mesas incompletas.
-                                        </Typography>}
-                                        <div className={styles.usersList}>
-                                          {selectedUsers.map((user: UserInterface) => {
-                                            return (
-                                              <UserCard 
-                                                key={user.id}
-                                                user={user}
-                                              />
-                                            )
-                                          })}
-                                        </div>
-                                      </Grid>
-                                    </>
-                                  )}
-                                </>
-                              )}
-                              {index === 2 && (
-                                <>
-                                  {loadingCreateTournament && (
-                                    <Grid alignItems={"center"} justifyItems={"center"} className={styles.loader} xs={12}>
-                                      <CircularProgress size={60} color="primary" />
-                                      <Typography fontWeight={"600"} style={{ marginTop: '10px'}} variant="h6" component="h2">
-                                        Creando torneo...
-                                      </Typography>
+                                        {(searchUsers.length
+                                          ? searchUsers
+                                          : usersList
+                                        ).map((user: UserInterface) => {
+                                          return (
+                                            <UserCard
+                                              key={user.id}
+                                              user={user}
+                                              selected={Boolean(
+                                                selectedUsers.find(
+                                                  u => u.id === user.id
+                                                )
+                                              )}
+                                              onClick={handleClickUser}
+                                            />
+                                          );
+                                        })}
+                                      </div>
                                     </Grid>
-                                  )}
-                                  {!loadingCreateTournament && successCreateTournament && (
-                                    <Grid alignItems={"center"} justifyItems={"center"} className={styles.loader} xs={12}>
-                                      <CheckCircle style={{ color: "green", fontSize: "60px" }} />
-                                      <Typography fontWeight={"600"} style={{ marginTop: '10px'}} variant="h6" component="h2">
+                                    <Grid item sm={12} md={6}>
+                                      <Typography
+                                        fontWeight={'700'}
+                                        style={{ marginBottom: 0 }}
+                                        className={styles.title}
+                                        variant="h6"
+                                        component="h2"
+                                      >
+                                        Jugadores Seleccionados:{' '}
+                                        {selectedUsers.length}
+                                      </Typography>
+                                      <Typography className={styles.subtitle}>
+                                        Se generaran {selectedUsers.length / 4}{' '}
+                                        mesas.
+                                      </Typography>
+                                      {selectedUsers.length % 4 !== 0 && (
+                                        <Typography
+                                          style={{ color: 'red' }}
+                                          className={styles.subtitle}
+                                        >
+                                          No es posible comenzar un torneo con
+                                          mesas incompletas.
+                                        </Typography>
+                                      )}
+                                      <div className={styles.usersList}>
+                                        {selectedUsers.map(
+                                          (user: UserInterface) => {
+                                            return (
+                                              <UserCard
+                                                key={user.id}
+                                                user={user}
+                                              />
+                                            );
+                                          }
+                                        )}
+                                      </div>
+                                    </Grid>
+                                  </>
+                                )}
+                              </>
+                            )}
+                            {index === 2 && (
+                              <>
+                                {loadingCreateTournament && (
+                                  <Grid
+                                    alignItems={'center'}
+                                    justifyItems={'center'}
+                                    className={styles.loader}
+                                    xs={12}
+                                  >
+                                    <CircularProgress
+                                      size={60}
+                                      color="primary"
+                                    />
+                                    <Typography
+                                      fontWeight={'600'}
+                                      style={{ marginTop: '10px' }}
+                                      variant="h6"
+                                      component="h2"
+                                    >
+                                      Creando torneo...
+                                    </Typography>
+                                  </Grid>
+                                )}
+                                {!loadingCreateTournament &&
+                                  successCreateTournament && (
+                                    <Grid
+                                      alignItems={'center'}
+                                      justifyItems={'center'}
+                                      className={styles.loader}
+                                      xs={12}
+                                    >
+                                      <CheckCircle
+                                        style={{
+                                          color: 'green',
+                                          fontSize: '60px'
+                                        }}
+                                      />
+                                      <Typography
+                                        fontWeight={'600'}
+                                        style={{ marginTop: '10px' }}
+                                        variant="h6"
+                                        component="h2"
+                                      >
                                         Torneo creado existosamente!
                                       </Typography>
                                     </Grid>
                                   )}
-                                  {!loadingCreateTournament && errorCreateTournament && (
-                                    <Grid alignItems={"center"} justifyItems={"center"} className={styles.loader} xs={12}>
-                                      <Close style={{ color: "red", fontSize: "60px" }} />
-                                      <Typography fontWeight={"600"} style={{ marginTop: '10px', color: 'red'}} variant="h6" component="h2">
+                                {!loadingCreateTournament &&
+                                  errorCreateTournament && (
+                                    <Grid
+                                      alignItems={'center'}
+                                      justifyItems={'center'}
+                                      className={styles.loader}
+                                      xs={12}
+                                    >
+                                      <Close
+                                        style={{
+                                          color: 'red',
+                                          fontSize: '60px'
+                                        }}
+                                      />
+                                      <Typography
+                                        fontWeight={'600'}
+                                        style={{
+                                          marginTop: '10px',
+                                          color: 'red'
+                                        }}
+                                        variant="h6"
+                                        component="h2"
+                                      >
                                         {errorCreateTournament}
                                       </Typography>
                                     </Grid>
                                   )}
-                                </>
-                              )}
+                              </>
+                            )}
                           </Grid>
                         </div>
-                      )
+                      );
                     })}
                   </SwipeableViews>
                 </div>
 
                 <div className={styles.buttons}>
-                  {activeStep === 0 && <Button disableElevation variant="contained" onClick={() => handleCleanClose(resetForm)} className={styles.cancelButton} endIcon={<Close />}>Cancelar</Button>}
-                  {activeStep === 1 && <Button 
-                    disableElevation 
-                    variant="contained" 
-                    onClick={handlePreviousStep} 
-                    className={styles.cancelButton} 
-                    startIcon={<ArrowBack />}>
+                  {activeStep === 0 && (
+                    <Button
+                      disableElevation
+                      variant="contained"
+                      onClick={() => handleCleanClose(resetForm)}
+                      className={styles.cancelButton}
+                      endIcon={<Close />}
+                    >
+                      Cancelar
+                    </Button>
+                  )}
+                  {activeStep === 1 && (
+                    <Button
+                      disableElevation
+                      variant="contained"
+                      onClick={handlePreviousStep}
+                      className={styles.cancelButton}
+                      startIcon={<ArrowBack />}
+                    >
                       Atras
-                    </Button>}
-                  {activeStep === 2 && errorCreateTournament && <Button 
-                    disableElevation 
-                    variant="contained" 
-                    onClick={handlePreviousStep} 
-                    className={styles.cancelButton} 
-                    startIcon={<ArrowBack />}>
+                    </Button>
+                  )}
+                  {activeStep === 2 && errorCreateTournament && (
+                    <Button
+                      disableElevation
+                      variant="contained"
+                      onClick={handlePreviousStep}
+                      className={styles.cancelButton}
+                      startIcon={<ArrowBack />}
+                    >
                       Atras
-                    </Button>}
-                  <Button 
-                    disableElevation 
-                    disabled={loadingCreateTournament || loadingUsersList} 
-                    variant="contained" 
-                    onClick={() => submitForm()} 
-                    className={styles.button} 
-                    endIcon={activeStep === 2 ? <CheckCircleOutline /> : <Send />}>{activeStep === 2 ? "Continuar" : "Siguiente"}</Button>
+                    </Button>
+                  )}
+                  <Button
+                    disableElevation
+                    disabled={loadingCreateTournament || loadingUsersList}
+                    variant="contained"
+                    onClick={() => submitForm()}
+                    className={styles.button}
+                    endIcon={
+                      activeStep === 2 ? <CheckCircleOutline /> : <Send />
+                    }
+                  >
+                    {activeStep === 2 ? 'Continuar' : 'Siguiente'}
+                  </Button>
                 </div>
               </Box>
             </Fade>
+          );
+        }}
+      </Formik>
+    </Modal>
+  );
+};
 
-            )
-          }}
-
-        </Formik>
-      </Modal>
-  )
-}
-
-export default CreateTournamentsModal
+export default CreateTournamentsModal;

@@ -25,7 +25,7 @@ const theme = createTheme({
     info: {
       main: '#FFFFFF',
       light: '#B8B8B8'
-    },
+    }
   },
   breakpoints: {
     values: {

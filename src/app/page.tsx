@@ -1,23 +1,21 @@
-"use client"
+'use client';
 import React, { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import Head from 'next/head';
 import { AllRoutes } from '@/constants/routes/routes';
+import { useRouter } from 'next/navigation';
 
 export default function HomeIndex() {
   const router = useRouter();
 
   useEffect(() => {
-    router.push(AllRoutes.ADMIN_LOGIN);
+    router.replace(AllRoutes.ADMIN_LOGIN);
   }, []);
 
   return (
     <>
       <Head>
-        <title>SSDC App</title>
+        <title>DominoElite</title>
       </Head>
-
-      {/*body */}
     </>
   );
 }

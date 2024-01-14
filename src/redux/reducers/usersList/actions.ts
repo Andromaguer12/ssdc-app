@@ -3,32 +3,32 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 export interface UsersInitialState {
   getUsers: {
-    loadingGetUsers: boolean,
-    successGetUsers: boolean,
-    usersList: UserInterface[],
-    errorGetUsers: any | null
-  }
+    loadingGetUsers: boolean;
+    successGetUsers: boolean;
+    usersList: UserInterface[];
+    errorGetUsers: any | null;
+  };
   getUserById: {
-    loadingGetUserById: boolean,
-    successGetUserById: boolean,
-    user: UserInterface | null,
-    errorGetUserById: any | null
-  },
+    loadingGetUserById: boolean;
+    successGetUserById: boolean;
+    user: UserInterface | null;
+    errorGetUserById: any | null;
+  };
   createUser: {
-    loadingCreateUser: boolean,
-    successCreateUser: boolean,
-    errorCreateUser: any | null
-  },
+    loadingCreateUser: boolean;
+    successCreateUser: boolean;
+    errorCreateUser: any | null;
+  };
   updateUser: {
-    loadingUpdateUser: boolean,
-    successUpdateUser: boolean,
-    errorUpdateUser: any | null
-  },
+    loadingUpdateUser: boolean;
+    successUpdateUser: boolean;
+    errorUpdateUser: any | null;
+  };
   deleteUser: {
-    loadingDeleteUser: boolean,
-    successDeleteUser: boolean,
-    errorDeleteUser: any | null
-  }
+    loadingDeleteUser: boolean;
+    successDeleteUser: boolean;
+    errorDeleteUser: any | null;
+  };
 }
 
 const initialState: UsersInitialState = {
@@ -63,80 +63,78 @@ const initialState: UsersInitialState = {
 
 export const getAllUsers = createAsyncThunk(
   'users/getAllUsers',
-   async (params:any, { rejectWithValue }) => {
+  async (params: any, { rejectWithValue }) => {
     try {
-      const response = await params.context.getAllUsers()
+      const response = await params.context.getAllUsers();
 
-      return response
+      return response;
     } catch (error) {
-      rejectWithValue(error)
+      rejectWithValue(error);
     }
   }
 );
 
 export const getUserById = createAsyncThunk(
   'users/getUserById',
-   async (params:any, { rejectWithValue }) => {
+  async (params: any, { rejectWithValue }) => {
     try {
-      const response = await params.context.getUserById(params.id)
+      const response = await params.context.getUserById(params.id);
 
-      return response
+      return response;
     } catch (error) {
-      rejectWithValue(error)
+      rejectWithValue(error);
     }
   }
 );
 
 export const createUser = createAsyncThunk(
   'users/createUser',
-   async (params:any, { rejectWithValue }) => {
-      const response = await params.context.createUser(
-        params.name,
-        params.email,
-        params.phone,
-        params.image,
-      )
-      
-      if(response?.toString().includes("FirebaseError")) {
-        return rejectWithValue(JSON.stringify(response))
-      }
+  async (params: any, { rejectWithValue }) => {
+    const response = await params.context.createUser(
+      params.name,
+      params.email,
+      params.phone,
+      params.image
+    );
 
-      return response
+    if (response?.toString().includes('FirebaseError')) {
+      return rejectWithValue(JSON.stringify(response));
+    }
+
+    return response;
   }
 );
 
 export const updateUser = createAsyncThunk(
   'users/updateUser',
-   async (params:any, { rejectWithValue }) => {
-      const response = await params.context.updateUser(params.id, params.body)
-      
-      return response
+  async (params: any, { rejectWithValue }) => {
+    const response = await params.context.updateUser(params.id, params.body);
+
+    return response;
   }
 );
 
 export const deleteUser = createAsyncThunk(
   'users/deleteUser',
-   async (params:any, { rejectWithValue }) => {
-      const response = await params.context.deleteUser(params.id)
+  async (params: any, { rejectWithValue }) => {
+    const response = await params.context.deleteUser(params.id);
 
-
-      return response
+    return response;
   }
 );
-
 
 const usersSlice = createSlice({
   name: 'usersList',
   initialState,
   reducers: {
-    clearGetUsers: (state) => {
-      state.getUsers = initialState.getUsers
+    clearGetUsers: state => {
+      state.getUsers = initialState.getUsers;
     },
-    clearCreateUserState: (state) => {
-      state.createUser = initialState.createUser
+    clearCreateUserState: state => {
+      state.createUser = initialState.createUser;
     },
-    clearUpdateUserState: (state) => {
-      state.updateUser = initialState.updateUser
+    clearUpdateUserState: state => {
+      state.updateUser = initialState.updateUser;
     }
   },
   extraReducers: builder => {
@@ -211,7 +209,7 @@ const usersSlice = createSlice({
   }
 });
 
-
-export const { clearGetUsers, clearCreateUserState, clearUpdateUserState } = usersSlice.actions;
+export const { clearGetUsers, clearCreateUserState, clearUpdateUserState } =
+  usersSlice.actions;
 
 export default usersSlice.reducer;

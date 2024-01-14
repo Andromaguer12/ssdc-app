@@ -6,9 +6,9 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import styles from "./styles/ReactTable.module.scss";
+import styles from './styles/ReactTable.module.scss';
 
-interface ReactTableProps { 
+interface ReactTableProps {
   columns: any[];
   data: any[];
   customPageSize?: number;
@@ -35,54 +35,56 @@ const ReactTable: React.FC<ReactTableProps> = ({
   renderCustomHeader,
   filters,
   RowCollapseComponent,
-  unCollapsedRows,
+  unCollapsedRows
 }) => {
-  
-
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ width: "100%" }} style={{ boxSizing: "border-box"}} size="small" aria-label="a dense table">
+      <Table
+        sx={{ width: '100%' }}
+        style={{ boxSizing: 'border-box' }}
+        size="small"
+        aria-label="a dense table"
+      >
         <TableHead>
-          <TableRow style={{ background: "#003994"}}>
-            {
-              columns.map((column, index) => {
-                return (
-                  <TableCell 
-                    sx={{ width: column?.width ?? "fit-content" }}
-                    align={column.align ?? "left"}  
-                    className={styles.headerCell}
-                    style={{ textAlign: column.textAlign, padding: column?.padding ?? "20px" }}
-                    >
-                    {column?.header}
-                  </TableCell>
-                )
-              })
-            }
+          <TableRow style={{ background: '#003994' }}>
+            {columns.map((column, index) => {
+              return (
+                <TableCell
+                  sx={{ width: column?.width ?? 'fit-content' }}
+                  align={column.align ?? 'left'}
+                  className={styles.headerCell}
+                  style={{
+                    textAlign: column.textAlign,
+                    padding: column?.padding ?? '20px'
+                  }}
+                >
+                  {column?.header}
+                </TableCell>
+              );
+            })}
           </TableRow>
         </TableHead>
         <TableBody>
           {data.map((row: any, index) => (
             <TableRow
-              key={"row-"+index}
-              sx={{ 
-                '&:last-child td, &:last-child th': { border: 0 }, 
-                background:  index % 2 !== 0 ? "#e7e7e7": "#ffffff"
+              key={'row-' + index}
+              sx={{
+                '&:last-child td, &:last-child th': { border: 0 },
+                background: index % 2 !== 0 ? '#e7e7e7' : '#ffffff'
               }}
             >
-              {
-                columns.map(({ accessor, textAlign, align }, index) => {
-                  return (
-                    <TableCell 
-                      key={"row-cell-"+index}
-                      className={styles.commonCell}
-                      align={align ?? "left"} 
-                      style={{ textAlign }}
-                    >
-                      {row?.[accessor] ?? ""}
-                    </TableCell>
-                  )
-                })
-              }
+              {columns.map(({ accessor, textAlign, align }, index) => {
+                return (
+                  <TableCell
+                    key={'row-cell-' + index}
+                    className={styles.commonCell}
+                    align={align ?? 'left'}
+                    style={{ textAlign }}
+                  >
+                    {row?.[accessor] ?? ''}
+                  </TableCell>
+                );
+              })}
             </TableRow>
           ))}
         </TableBody>

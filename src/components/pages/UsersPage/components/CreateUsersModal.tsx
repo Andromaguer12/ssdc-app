@@ -5,9 +5,9 @@ import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import styles from '../styles/CreateUsersModal.module.scss'
+import styles from '../styles/CreateUsersModal.module.scss';
 import { CheckCircleOutline, Close, Send } from '@mui/icons-material';
-import { Formik } from "formik";
+import { Formik } from 'formik';
 import { useAppDispatch, useAppSelector } from '@/redux/store';
 import useFetchingContext from '@/contexts/backendConection/hook';
 import { createUser, updateUser } from '@/redux/reducers/usersList/actions';
@@ -16,12 +16,16 @@ import { FormControlLabel, FormGroup, Switch, TextField } from '@mui/material';
 // import AvatarEditor from 'react-avatar-editor'
 
 interface ModalProps {
-  open: boolean,
-  editMode?: Partial<UserInterface>,
-  handleClose: () => any
+  open: boolean;
+  editMode?: Partial<UserInterface>;
+  handleClose: () => any;
 }
 
-const CreateUsersModal: React.FC<ModalProps> = ({ open, editMode, handleClose }) => {
+const CreateUsersModal: React.FC<ModalProps> = ({
+  open,
+  editMode,
+  handleClose
+}) => {
   const style = {
     position: 'absolute' as 'absolute',
     top: '50%',
@@ -31,24 +35,16 @@ const CreateUsersModal: React.FC<ModalProps> = ({ open, editMode, handleClose })
     bgcolor: 'background.paper',
     boxShadow: 24,
     borderRadius: '7px'
-  };  
+  };
 
-  const dispatch = useAppDispatch()
-  const fContext = useFetchingContext()
-  const formikRef = React.useRef<any>()
+  const dispatch = useAppDispatch();
+  const fContext = useFetchingContext();
+  const formikRef = React.useRef<any>();
 
-  const { 
-    createUser: {
-      loadingCreateUser,
-      successCreateUser,
-      errorCreateUser
-    },
-    updateUser: {
-      loadingUpdateUser,
-      successUpdateUser,
-      errorUpdateUser
-    }
-  } = useAppSelector(({ usersList }) => usersList)
+  const {
+    createUser: { loadingCreateUser, successCreateUser, errorCreateUser },
+    updateUser: { loadingUpdateUser, successUpdateUser, errorUpdateUser }
+  } = useAppSelector(({ usersList }) => usersList);
 
   interface formState {
     name?: string;
@@ -57,35 +53,34 @@ const CreateUsersModal: React.FC<ModalProps> = ({ open, editMode, handleClose })
     image?: string;
     // isAdmin?: boolean;
   }
-    
+
   const formInitialFormState: formState = {
-    name: editMode ? editMode?.name : "",
-    email: editMode ? editMode?.email : "",
-    phone: editMode ? editMode?.phone : "",
-    image: editMode ? editMode?.image : "",
+    name: editMode ? editMode?.name : '',
+    email: editMode ? editMode?.email : '',
+    phone: editMode ? editMode?.phone : '',
+    image: editMode ? editMode?.image : ''
     // isAdmin: editMode ? editMode?.isAdmin : false
-  }
+  };
 
   React.useEffect(() => {
-    if(successCreateUser || successUpdateUser) {
+    if (successCreateUser || successUpdateUser) {
       handleClose();
-      if(formikRef.current) formikRef.current?.resetForm()
+      if (formikRef.current) formikRef.current?.resetForm();
     }
-  }, [successCreateUser, successUpdateUser])
-  
+  }, [successCreateUser, successUpdateUser]);
 
   const handleSubmit = React.useCallback(
-    (values: formState, { resetForm }: { resetForm:any}) => {
-      if(editMode) {
+    (values: formState, { resetForm }: { resetForm: any }) => {
+      if (editMode) {
         dispatch(
           updateUser({
             context: fContext,
             id: editMode.id,
-            body: {...values}
+            body: { ...values }
           })
-        )
+        );
       }
-      if(!editMode) {
+      if (!editMode) {
         dispatch(
           createUser({
             context: fContext,
@@ -93,20 +88,20 @@ const CreateUsersModal: React.FC<ModalProps> = ({ open, editMode, handleClose })
             email: values.email,
             phone: values.phone,
             image: values.image,
-            isAdmin: values.isAdmin,
+            isAdmin: values.isAdmin
           })
-        )
+        );
       }
     },
-    [editMode],
-  )
+    [editMode]
+  );
 
   const labels = {
-    name: "Nombre completo",
-    email: "Correo",
-    phone: "Telefono",
-    image: "Foto de perfil",
-  }
+    name: 'Nombre completo',
+    email: 'Correo',
+    phone: 'Telefono',
+    image: 'Foto de perfil'
+  };
 
   return (
     <Modal
@@ -118,49 +113,64 @@ const CreateUsersModal: React.FC<ModalProps> = ({ open, editMode, handleClose })
       slots={{ backdrop: Backdrop }}
       slotProps={{
         backdrop: {
-          timeout: 500,
-        },
+          timeout: 500
+        }
       }}
     >
-      <Formik innerRef={formikRef} onSubmit={handleSubmit} initialValues={formInitialFormState}>
+      <Formik
+        innerRef={formikRef}
+        onSubmit={handleSubmit}
+        initialValues={formInitialFormState}
+      >
         {({ values, handleChange, submitForm, setValues, resetForm }) => {
           return (
-          <Fade in={open}>
-            <Box sx={style}>
-              <div className={styles.header}>
-                <Typography id="transition-modal-title" variant="h6" component="h2">
-                  {editMode ? "Editar Usuario" : "Crear un Usuario"}
-                </Typography>
-              </div>
-              <div className={styles.body}>
-                {Object.keys(formInitialFormState).map((key) => {
-                  return (
-                    <>
-                      {key !== "image" && key !== "isAdmin" && (
-                        <TextField 
-                          key={key} 
-                          id={key} 
-                          label={labels[key as keyof typeof labels]} 
-                          variant="outlined"
-                          value={values[key as keyof typeof values] ?? ""}
-                          className={styles.inputs}
-                          onChange={handleChange(key)} 
-                        />
-                      )}
-                      {key === "isAdmin" && (
-                        <FormGroup style={{ marginTop: "15px", marginLeft: "10px" }}>
-                          <FormControlLabel 
-                            control={<Switch onChange={() => {
-                              setValues({
-                                ...values,
-                                [key]: !values[key]
-                              })
-                            }} checked={values[key]} />} 
-                            label="Es Admin" 
+            <Fade in={open}>
+              <Box sx={style}>
+                <div className={styles.header}>
+                  <Typography
+                    id="transition-modal-title"
+                    variant="h6"
+                    component="h2"
+                  >
+                    {editMode ? 'Editar Usuario' : 'Crear un Usuario'}
+                  </Typography>
+                </div>
+                <div className={styles.body}>
+                  {Object.keys(formInitialFormState).map(key => {
+                    return (
+                      <>
+                        {key !== 'image' && key !== 'isAdmin' && (
+                          <TextField
+                            key={key}
+                            id={key}
+                            label={labels[key as keyof typeof labels]}
+                            variant="outlined"
+                            value={values[key as keyof typeof values] ?? ''}
+                            className={styles.inputs}
+                            onChange={handleChange(key)}
                           />
-                        </FormGroup>
-                      )}
-                      {/* {key === "image" && (
+                        )}
+                        {key === 'isAdmin' && (
+                          <FormGroup
+                            style={{ marginTop: '15px', marginLeft: '10px' }}
+                          >
+                            <FormControlLabel
+                              control={
+                                <Switch
+                                  onChange={() => {
+                                    setValues({
+                                      ...values,
+                                      [key]: !values[key]
+                                    });
+                                  }}
+                                  checked={values[key]}
+                                />
+                              }
+                              label="Es Admin"
+                            />
+                          </FormGroup>
+                        )}
+                        {/* {key === "image" && (
                         <AvatarEditor
                           image="http://example.com/initialimage.jpg"
                           width={250}
@@ -171,52 +181,49 @@ const CreateUsersModal: React.FC<ModalProps> = ({ open, editMode, handleClose })
                           rotate={0}
                         />
                       )} */}
-                    </>
-                  )
-                })}
-                
-              </div>
+                      </>
+                    );
+                  })}
+                </div>
 
-              <div className={styles.buttons}>
-                <Button 
-                  disableElevation 
-                  variant="contained" 
-                  onClick={() => handleClose()} 
-                  className={styles.cancelButton} 
-                  endIcon={<Close />}
-                >
-                  Cancelar
-                </Button>
-                <Button 
-                  disableElevation 
-                  disabled={loadingCreateUser || loadingUpdateUser} 
-                  variant="contained" 
-                  onClick={() => submitForm()} 
-                  className={styles.button} 
-                  endIcon={editMode === 2 ? <CheckCircleOutline /> : <Send />}
-                >
-                  {editMode 
-                    ? loadingUpdateUser 
-                      ? "Actualizando"
-                      : errorUpdateUser 
-                        ? "Error Actualizando"
-                        : "Actualizar Usuario"
-                    : loadingCreateUser
-                      ? "Creando" 
-                      : errorCreateUser
-                        ? "Error creando"
-                        : "Crear Usuario"}
-                </Button>
-              </div>
-            </Box>
-          </Fade>
-
-          )
+                <div className={styles.buttons}>
+                  <Button
+                    disableElevation
+                    variant="contained"
+                    onClick={() => handleClose()}
+                    className={styles.cancelButton}
+                    endIcon={<Close />}
+                  >
+                    Cancelar
+                  </Button>
+                  <Button
+                    disableElevation
+                    disabled={loadingCreateUser || loadingUpdateUser}
+                    variant="contained"
+                    onClick={() => submitForm()}
+                    className={styles.button}
+                    endIcon={editMode === 2 ? <CheckCircleOutline /> : <Send />}
+                  >
+                    {editMode
+                      ? loadingUpdateUser
+                        ? 'Actualizando'
+                        : errorUpdateUser
+                          ? 'Error Actualizando'
+                          : 'Actualizar Usuario'
+                      : loadingCreateUser
+                        ? 'Creando'
+                        : errorCreateUser
+                          ? 'Error creando'
+                          : 'Crear Usuario'}
+                  </Button>
+                </div>
+              </Box>
+            </Fade>
+          );
         }}
-
       </Formik>
     </Modal>
-  )
-}
+  );
+};
 
-export default CreateUsersModal
+export default CreateUsersModal;

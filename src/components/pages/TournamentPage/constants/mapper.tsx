@@ -1,323 +1,384 @@
-import { Typography } from "@mui/material"
+import { Typography } from '@mui/material';
 
 export const positionsTableIndividualMapper = (data: any) => {
   return data.map((row: any) => {
     return {
-      name: 
-        <>
-          {row.name}
-        </>,
-      pair: 
-        <>
-          {row.pair}
-        </>,
-      table: 
-        <>
-          {row.table}
-        </>,
-      points: 
+      name: <>{row.name}</>,
+      pair: <>{row.pair}</>,
+      table: <>{row.table}</>,
+      points: (
         <>
           <Typography
-            style={{ color: row.points > 75 ? "green" : row.points > 50 ? "orange" : "red" }}
-            fontWeight={"bold"}
+            style={{
+              color:
+                row.points > 75 ? 'green' : row.points > 50 ? 'orange' : 'red'
+            }}
+            fontWeight={'bold'}
           >
             {row.points}
-          </Typography>        
-        </>,
-      wins: 
+          </Typography>
+        </>
+      ),
+      wins: (
         <>
           <Typography
-            style={{ color: row.wins === 0 ? "red" : row.wins >= 3 ? "green" : "orange" }}
-            fontWeight={"bold"}
+            style={{
+              color: row.wins === 0 ? 'red' : row.wins >= 3 ? 'green' : 'orange'
+            }}
+            fontWeight={'bold'}
           >
             {row.wins}
-          </Typography>        
-        </>,
-      defeats: 
+          </Typography>
+        </>
+      ),
+      defeats: (
         <>
           <Typography
-            style={{ color: row.defeats === 0 ? "green" : row.defeats >= 3 ? "red" : "orange" }}
-            fontWeight={"bold"}
+            style={{
+              color:
+                row.defeats === 0
+                  ? 'green'
+                  : row.defeats >= 3
+                    ? 'red'
+                    : 'orange'
+            }}
+            fontWeight={'bold'}
           >
             {row.defeats}
-          </Typography>        
-        </>,
-      effectiveness: 
+          </Typography>
+        </>
+      ),
+      effectiveness: (
         <>
           <Typography
-            style={{ color: row.effectiveness > 0 ? "green" : "red" }}
-            fontWeight={"bold"}
+            style={{ color: row.effectiveness > 0 ? 'green' : 'red' }}
+            fontWeight={'bold'}
           >
-            {row.effectiveness > 0 ? "+" : ""}{row.effectiveness}
+            {row.effectiveness > 0 ? '+' : ''}
+            {row.effectiveness}
           </Typography>
-        </>,
-    }
-  })
-}
+        </>
+      )
+    };
+  });
+};
 
 export const finalPositionsTableIndividualMapper = (data: any) => {
   return data.map((row: any, index: number) => {
     return {
-      position: 
+      position: (
         <>
           <Typography
-            style={{ color: index+1 < 3 ? "green" : index+1 < 6 ? "orange" : "red" }}
-            fontWeight={"bold"}
+            style={{
+              color: index + 1 < 3 ? 'green' : index + 1 < 6 ? 'orange' : 'red'
+            }}
+            fontWeight={'bold'}
           >
-            {index+1}
-          </Typography>     
-        </>,
-      name: 
-        <>
-          {row.name}
-        </>,
-      points: 
+            {index + 1}
+          </Typography>
+        </>
+      ),
+      name: <>{row.name}</>,
+      points: (
         <>
           <Typography
-            style={{ color: row.points > 75 ? "green" : row.points > 50 ? "orange" : "red" }}
-            fontWeight={"bold"}
+            style={{
+              color:
+                row.points > 75 ? 'green' : row.points > 50 ? 'orange' : 'red'
+            }}
+            fontWeight={'bold'}
           >
             {row.points}
-          </Typography>        
-        </>,
-      wins: 
+          </Typography>
+        </>
+      ),
+      wins: (
         <>
           <Typography
-            style={{ color: row.wins === 0 ? "red" : row.wins >= 3 ? "green" : "orange" }}
-            fontWeight={"bold"}
+            style={{
+              color: row.wins === 0 ? 'red' : row.wins >= 3 ? 'green' : 'orange'
+            }}
+            fontWeight={'bold'}
           >
             {row.wins}
-          </Typography>        
-        </>,
-      defeats: 
+          </Typography>
+        </>
+      ),
+      defeats: (
         <>
           <Typography
-            style={{ color: row.defeats === 0 ? "green" : row.defeats >= 3 ? "red" : "orange" }}
-            fontWeight={"bold"}
+            style={{
+              color:
+                row.defeats === 0
+                  ? 'green'
+                  : row.defeats >= 3
+                    ? 'red'
+                    : 'orange'
+            }}
+            fontWeight={'bold'}
           >
             {row.defeats}
-          </Typography>        
-        </>,
-      effectiveness: 
+          </Typography>
+        </>
+      ),
+      effectiveness: (
         <>
           <Typography
-            style={{ color: row.effectiveness > 0 ? "green" : "red" }}
-            fontWeight={"bold"}
+            style={{ color: row.effectiveness > 0 ? 'green' : 'red' }}
+            fontWeight={'bold'}
           >
-            {row.effectiveness > 0 ? "+" : ""}{row.effectiveness}
+            {row.effectiveness > 0 ? '+' : ''}
+            {row.effectiveness}
           </Typography>
-        </>,
-    }
-  })
-}
+        </>
+      )
+    };
+  });
+};
 
 export const positionsTableByPairsMapper = (data: any) => {
   return data.map((row: any) => {
     return {
-      name: 
+      name: (
         <>
-          <Typography
-            color="primary"
-            fontWeight={"bold"}
-          >
+          <Typography color="primary" fontWeight={'bold'}>
             {row.name}
           </Typography>
-        </>,
-      pair: 
-        <>
-          {row.pair}
-        </>,
-      table: 
-        <>
-          {row.table}
-        </>,
-      points: 
+        </>
+      ),
+      pair: <>{row.pair}</>,
+      table: <>{row.table}</>,
+      points: (
         <>
           <Typography
-            style={{ color: row.points > 75 ? "green" : row.points > 50 ? "orange" : "red" }}
-            fontWeight={"bold"}
+            style={{
+              color:
+                row.points > 75 ? 'green' : row.points > 50 ? 'orange' : 'red'
+            }}
+            fontWeight={'bold'}
           >
             {row.points}
           </Typography>
-        </>,
-      wins: 
+        </>
+      ),
+      wins: (
         <>
           <Typography
-            style={{ color: row.wins === 0 ? "red" : row.wins >= 3 ? "green" : "orange" }}
-            fontWeight={"bold"}
+            style={{
+              color: row.wins === 0 ? 'red' : row.wins >= 3 ? 'green' : 'orange'
+            }}
+            fontWeight={'bold'}
           >
             {row.wins}
-          </Typography>        
-        </>,
-      defeats: 
+          </Typography>
+        </>
+      ),
+      defeats: (
         <>
           <Typography
-            style={{ color: row.defeats === 0 ? "green" : row.defeats >= 3 ? "red" : "orange" }}
-            fontWeight={"bold"}
+            style={{
+              color:
+                row.defeats === 0
+                  ? 'green'
+                  : row.defeats >= 3
+                    ? 'red'
+                    : 'orange'
+            }}
+            fontWeight={'bold'}
           >
             {row.defeats}
-          </Typography>        
-        </>,
-      effectiveness: 
+          </Typography>
+        </>
+      ),
+      effectiveness: (
         <>
           <Typography
-            style={{ color: row.effectiveness > 0 ? "green" : "red" }}
-            fontWeight={"bold"}
+            style={{ color: row.effectiveness > 0 ? 'green' : 'red' }}
+            fontWeight={'bold'}
           >
-            {row.effectiveness > 0 ? "+" : ""}{row.effectiveness}
+            {row.effectiveness > 0 ? '+' : ''}
+            {row.effectiveness}
           </Typography>
-        </>,
-    }
-  })
-}
+        </>
+      )
+    };
+  });
+};
 
 export const finalPositionsTableByPairsMapper = (data: any) => {
   return data.map((row: any, index: number) => {
     return {
-      position: 
+      position: (
         <>
           <Typography
-            style={{ color: index+1 <= 3 ? "green" : index+1 <= 6 ? "orange" : "red" }}
-            fontWeight={"bold"}
+            style={{
+              color:
+                index + 1 <= 3 ? 'green' : index + 1 <= 6 ? 'orange' : 'red'
+            }}
+            fontWeight={'bold'}
           >
-            {index+1}
-          </Typography>     
-        </>,
-      name: 
-        <>
-          {row.name}
-        </>,
-      points: 
+            {index + 1}
+          </Typography>
+        </>
+      ),
+      name: <>{row.name}</>,
+      points: (
         <>
           <Typography
-            style={{ color: row.points > 75 ? "green" : row.points > 50 ? "orange" : "red" }}
-            fontWeight={"bold"}
+            style={{
+              color:
+                row.points > 75 ? 'green' : row.points > 50 ? 'orange' : 'red'
+            }}
+            fontWeight={'bold'}
           >
             {row.points}
-          </Typography>        
-        </>,
-      wins: 
+          </Typography>
+        </>
+      ),
+      wins: (
         <>
           <Typography
-            style={{ color: row.wins === 0 ? "red" : row.wins >= 3 ? "green" : "orange" }}
-            fontWeight={"bold"}
+            style={{
+              color: row.wins === 0 ? 'red' : row.wins >= 3 ? 'green' : 'orange'
+            }}
+            fontWeight={'bold'}
           >
             {row.wins}
-          </Typography>        
-        </>,
-      defeats: 
+          </Typography>
+        </>
+      ),
+      defeats: (
         <>
           <Typography
-            style={{ color: row.defeats === 0 ? "green" : row.defeats >= 3 ? "red" : "orange" }}
-            fontWeight={"bold"}
+            style={{
+              color:
+                row.defeats === 0
+                  ? 'green'
+                  : row.defeats >= 3
+                    ? 'red'
+                    : 'orange'
+            }}
+            fontWeight={'bold'}
           >
             {row.defeats}
-          </Typography>        
-        </>,
-      effectiveness: 
+          </Typography>
+        </>
+      ),
+      effectiveness: (
         <>
           <Typography
-            style={{ color: row.effectiveness > 0 ? "green" : "red" }}
-            fontWeight={"bold"}
+            style={{ color: row.effectiveness > 0 ? 'green' : 'red' }}
+            fontWeight={'bold'}
           >
-            {row.effectiveness > 0 ? "+" : ""}{row.effectiveness}
+            {row.effectiveness > 0 ? '+' : ''}
+            {row.effectiveness}
           </Typography>
-        </>,
-    }
-  })
-}
+        </>
+      )
+    };
+  });
+};
 
 export const positionsTableByTablesMapper = (data: any) => {
   return data.map((row: any) => {
     return {
-      currentTableRound: 
+      currentTableRound: (
+        <>
+          <Typography fontWeight={'bold'}>{row.currentTableRound}</Typography>
+        </>
+      ),
+      table: <>{row.table}</>,
+      pair1Points: (
         <>
           <Typography
-            fontWeight={"bold"}
-          >
-            {row.currentTableRound}
-          </Typography>
-        </>,
-      table: 
-        <>
-          {row.table}
-        </>,
-      pair1Points: 
-        <>
-          <Typography
-            style={{ color: row.pair1Points > 75 ? "green" : row.pair2Points > 50 ? "orange" : "red" }}
-            fontWeight={"bold"}
+            style={{
+              color:
+                row.pair1Points > 75
+                  ? 'green'
+                  : row.pair2Points > 50
+                    ? 'orange'
+                    : 'red'
+            }}
+            fontWeight={'bold'}
           >
             {row.pair1Points}
           </Typography>
-        </>,
-      pair2Points: 
+        </>
+      ),
+      pair2Points: (
         <>
           <Typography
-            style={{ color: row.pair2Points > 75 ? "green" : row.pair2Points > 50 ? "orange" : "red" }}
-            fontWeight={"bold"}
+            style={{
+              color:
+                row.pair2Points > 75
+                  ? 'green'
+                  : row.pair2Points > 50
+                    ? 'orange'
+                    : 'red'
+            }}
+            fontWeight={'bold'}
           >
             {row.pair2Points}
           </Typography>
-        </>,
-      lastWinner: 
+        </>
+      ),
+      lastWinner: (
         <>
-          <Typography
-            color="primary"
-            fontWeight={"bold"}
-          >
+          <Typography color="primary" fontWeight={'bold'}>
             Pareja {row.lastWinner + 1}
           </Typography>
-        </>,
-      finalWinner: 
-        <>
-          {row.finalWinner > -1 ? <Typography
-            color="primary"
-            fontWeight={"bold"}
-          >
-            Pareja {row.finalWinner + 1}
-          </Typography> : "--"}
         </>
-  }})
-}
+      ),
+      finalWinner: (
+        <>
+          {row.finalWinner > -1 ? (
+            <Typography color="primary" fontWeight={'bold'}>
+              Pareja {row.finalWinner + 1}
+            </Typography>
+          ) : (
+            '--'
+          )}
+        </>
+      )
+    };
+  });
+};
 
 export const roundsHistoryMapper = (data: any) => {
   return data.map((row: any) => {
     return {
-      currentTableRound: 
+      currentTableRound: (
+        <>
+          <Typography fontWeight={'bold'}>{row.currentTableRound}</Typography>
+        </>
+      ),
+      pair1Points: (
         <>
           <Typography
-            fontWeight={"bold"}
-          >
-            {row.currentTableRound}
-          </Typography>
-        </>,
-      pair1Points: 
-        <>
-          <Typography
-            style={{ color: row.pair1Points == 0 ? "red" : "green" }}
-            fontWeight={"bold"}
+            style={{ color: row.pair1Points == 0 ? 'red' : 'green' }}
+            fontWeight={'bold'}
           >
             {row.pair1Points}
           </Typography>
-        </>,
-      pair2Points: 
+        </>
+      ),
+      pair2Points: (
         <>
           <Typography
-            style={{ color: row.pair2Points == 0 ? "red" : "green" }}
-            fontWeight={"bold"}
+            style={{ color: row.pair2Points == 0 ? 'red' : 'green' }}
+            fontWeight={'bold'}
           >
             {row.pair2Points}
           </Typography>
-        </>,
-      winner: 
+        </>
+      ),
+      winner: (
         <>
-          <Typography
-            color="primary"
-            fontWeight={"bold"}
-          >
+          <Typography color="primary" fontWeight={'bold'}>
             Pareja {row.winner + 1}
           </Typography>
-        </>,
-    }})
-}
+        </>
+      )
+    };
+  });
+};

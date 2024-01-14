@@ -1,12 +1,23 @@
-"use client"
+'use client';
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/redux/store';
-import { Button, CircularProgress, Grid, TextField, Typography } from '@mui/material';
+import {
+  Button,
+  CircularProgress,
+  Grid,
+  TextField,
+  Typography
+} from '@mui/material';
 import CustomizedAlert from '@/components/CustomizedAlert/CustomizedAlert';
 import styles from './styles/Login.module.scss';
-import { clearStateUser, userLoginFunction } from '@/redux/reducers/user/actions';
+import {
+  clearStateUser,
+  userLoginFunction
+} from '@/redux/reducers/user/actions';
 import useFetchingContext from '@/contexts/backendConection/hook';
+import logo1 from '../../../assets/pages/home/logo1.png';
+import Image from 'next/image';
 
 type FormData = {
   email: string;
@@ -18,14 +29,16 @@ export default function Login() {
   const fbContext = useFetchingContext();
   const router = useRouter();
 
-  const { requestState: { loadingUser, success, error: errorLogin }, isAdmin } = useAppSelector(({ user }) => user)
+  const {
+    requestState: { loadingUser, success, error: errorLogin },
+    isAdmin
+  } = useAppSelector(({ user }) => user);
 
   // Estado para los datos del formulario
   const [formData, setFormData] = useState<FormData>({
     email: '',
     password: ''
   });
-
 
   const [error, setError] = useState<string>('');
 
@@ -52,27 +65,25 @@ export default function Login() {
           email: formData.email,
           password: formData.password
         })
-      )
+      );
     }
   };
 
   useEffect(() => {
-    if(errorLogin) {
-      setError(errorLogin?.message)
+    if (errorLogin) {
+      setError(errorLogin?.message);
     }
-  }, [errorLogin])
-  
+  }, [errorLogin]);
 
   useEffect(() => {
-    if(success && isAdmin){
-      router.push("/admin/dashboard")
+    if (success && isAdmin) {
+      router.push('/admin/dashboard');
     }
-    if(success && !isAdmin) {
-      setError('El usuario no tiene permisos')
-      dispatch(clearStateUser())
+    if (success && !isAdmin) {
+      setError('El usuario no tiene permisos');
+      dispatch(clearStateUser());
     }
-  }, [success, isAdmin])
-  
+  }, [success, isAdmin]);
 
   return (
     <section className={styles.Login}>
@@ -91,11 +102,11 @@ export default function Login() {
           alignItems={'center'}
           className={styles.loginForm}
         >
-          <Typography variant="h4" align="center">
-            DominoElite
-          </Typography>
+          <Image src={logo1} className={styles.logo} alt="logo" />
           <form className={styles.form} onSubmit={handleSubmit}>
-            <Typography className={styles.title}>Sistema suizo de domino competitivo</Typography>
+            <Typography className={styles.title}>
+              Sistema suizo de domino competitivo
+            </Typography>
             <TextField
               className={styles.input}
               label="Email"
@@ -115,7 +126,7 @@ export default function Login() {
               color="primary"
               value={formData.password}
               onChange={handleChange}
-              style={{ marginBottom: "10px" }}
+              style={{ marginBottom: '10px' }}
             />
             {error && (
               <CustomizedAlert noElevation type="error" message={error} />
@@ -129,23 +140,25 @@ export default function Login() {
               type="submit"
             >
               {loadingUser ? (
-                <CircularProgress size={'15px'} sx={{ color: "#fff", margin: '8px 0'}} />
+                <CircularProgress
+                  size={'15px'}
+                  sx={{ color: '#fff', margin: '8px 0' }}
+                />
               ) : (
-                "Iniciar sesion"
+                'Iniciar sesion'
               )}
             </Button>
           </form>
         </Grid>
         <div className={styles.texts}>
-          <Typography color="secondary" variant='h3'>
+          <Typography color="secondary" variant="h3">
             Juega y administra tus partidas de domino
           </Typography>
-          <Typography color="secondary" variant='h5'>
+          <Typography color="secondary" variant="h5">
             basandose en el sistema suizo de domino
           </Typography>
         </div>
       </Grid>
     </section>
-    
   );
 }

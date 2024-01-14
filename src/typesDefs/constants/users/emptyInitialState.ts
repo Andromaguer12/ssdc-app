@@ -1,9 +1,9 @@
-import { UserInterface } from "./types";
+import { UserInterface } from './types';
 
 export const emptyUserInitialState: UserInterface = {
-    name: '',
-    email: '',
-    rank: 'C',
-    phone: '',
-    uid: '',
-}
+  name: '',
+  email: '',
+  rank: 'C',
+  phone: '',
+  uid: ''
+};

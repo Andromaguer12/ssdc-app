@@ -1,9 +1,16 @@
-import { IndividualTableInterface, PairsTableInterface, TableObjectInterface, TournamentFormat } from "@/typesDefs/constants/tournaments/types";
-import shuffleArray from "./shuffle-array";
-import { uuid as uuidv4 } from 'uuidv4'
-import { generateHexColor } from "./generate-hex-color";
+import {
+  IndividualTableInterface,
+  PairsTableInterface,
+  TableObjectInterface,
+  TournamentFormat
+} from '@/typesDefs/constants/tournaments/types';
+import shuffleArray from './shuffle-array';
+import { uuid as uuidv4 } from 'uuidv4';
+import { generateHexColor } from './generate-hex-color';
 
-function organizeTournamentsPlayersArray(players: string[]): IndividualTableInterface | PairsTableInterface | { error: string } {
+function organizeTournamentsPlayersArray(
+  players: string[]
+): IndividualTableInterface | PairsTableInterface | { error: string } {
   if (players.length < 2) {
     return { error: 'inssuficient-players' };
   }
@@ -14,12 +21,12 @@ function organizeTournamentsPlayersArray(players: string[]): IndividualTableInte
   const pairs = [];
 
   for (let i = 0; i < players.length; i += 4) {
-    const table = { 
-      table: players.slice(i, i + 4), 
+    const table = {
+      table: players.slice(i, i + 4),
       tableId: uuidv4(),
       currentTableRound: 1,
       pair1Color: generateHexColor(),
-      pair2Color: generateHexColor(),
+      pair2Color: generateHexColor()
     };
     tables.push(table);
   }
@@ -34,13 +41,12 @@ function organizeTournamentsPlayersArray(players: string[]): IndividualTableInte
     }
   }
 
-  const tablePrev: PairsTableInterface = { 
-    tables, 
-    pairs 
-  }
+  const tablePrev: PairsTableInterface = {
+    tables,
+    pairs
+  };
 
   return tablePrev;
 }
 
-
-export default organizeTournamentsPlayersArray
+export default organizeTournamentsPlayersArray;
