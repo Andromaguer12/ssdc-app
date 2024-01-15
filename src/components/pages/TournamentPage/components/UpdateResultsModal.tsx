@@ -73,13 +73,13 @@ const UpdateTournamentModal: React.FC<ModalProps> = ({
     boxShadow: 24,
     borderRadius: '7px',
     '@media screen and (max-width: 1300px)': {
-      width: "80vw"
+      width: '80vw'
     },
     '@media screen and (max-width: 1200px)': {
-      width: "90vw"
+      width: '90vw'
     },
     '@media screen and (max-width: 1060px)': {
-      width: "95vw"
+      width: '95vw'
     }
   };
 
@@ -194,7 +194,9 @@ const UpdateTournamentModal: React.FC<ModalProps> = ({
                   </Typography>
                 </div>
                 <div className={styles.body}>
-                  <div className={[styles.column, styles.tableContainer].join(" ")}>
+                  <div
+                    className={[styles.column, styles.tableContainer].join(' ')}
+                  >
                     <TableComponent
                       tableData={currentTableData}
                       thisTablePairs={currentTableData?.thisTablePairs}

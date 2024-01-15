@@ -69,8 +69,8 @@ const TournamentPage: React.FC<TournamentPageProps> = ({ tournamentId }) => {
   const [openUpdateResults, setOpenUpdateResults] = useState('');
   const [showPositionsPanel, setShowPositionsPanel] = useState(false);
   const [viewAnalytics, setViewAnalytics] = useState(false);
-  const [viewsResponsive, setViewsResponsive] = useState(0)
-  
+  const [viewsResponsive, setViewsResponsive] = useState(0);
+
   const {
     updateTournament: { loadingUpdateTournament }
   } = useAppSelector(({ tournaments }) => tournaments);
@@ -167,10 +167,13 @@ const TournamentPage: React.FC<TournamentPageProps> = ({ tournamentId }) => {
       data?.format as 'individual' | 'pairs' | 'tables'
     ).winnerInfo;
 
-  const handleChangeViewsResponsive = (event: React.SyntheticEvent, newValue: number) => {
+  const handleChangeViewsResponsive = (
+    event: React.SyntheticEvent,
+    newValue: number
+  ) => {
     setViewsResponsive(newValue);
   };
-  
+
   return (
     <section className={styles.pageContainer}>
       {!tournamentData ? (
@@ -206,7 +209,12 @@ const TournamentPage: React.FC<TournamentPageProps> = ({ tournamentId }) => {
                 {tournamentData.name}
               </Typography>
             </div>
-            <Typography className={styles.mainLabels} color="secondary" fontWeight={'bold'} variant="h6">
+            <Typography
+              className={styles.mainLabels}
+              color="secondary"
+              fontWeight={'bold'}
+              variant="h6"
+            >
               Estado:
               <Typography
                 color="secondary"
@@ -230,7 +238,12 @@ const TournamentPage: React.FC<TournamentPageProps> = ({ tournamentId }) => {
                 />
               </Typography>
             </Typography>
-            <Typography className={styles.mainLabels} color="secondary" fontWeight={'bold'} variant="h6">
+            <Typography
+              className={styles.mainLabels}
+              color="secondary"
+              fontWeight={'bold'}
+              variant="h6"
+            >
               Ronda:
               <Typography
                 color="secondary"
@@ -247,7 +260,12 @@ const TournamentPage: React.FC<TournamentPageProps> = ({ tournamentId }) => {
                 </Typography>
               </Typography>
             </Typography>
-            <Typography className={styles.mainLabels} color="secondary" fontWeight={'bold'} variant="h6">
+            <Typography
+              className={styles.mainLabels}
+              color="secondary"
+              fontWeight={'bold'}
+              variant="h6"
+            >
               Formato:
               <Typography color="secondary" fontWeight={'bold'} variant="h4">
                 {tournamentData.format.toLocaleUpperCase()}
@@ -325,7 +343,10 @@ const TournamentPage: React.FC<TournamentPageProps> = ({ tournamentId }) => {
                       </MenuItem>
                     </Select>
                   </FormControl>
-                  <FormGroup className={styles.switchPositions} style={{ marginLeft: '10px' }}>
+                  <FormGroup
+                    className={styles.switchPositions}
+                    style={{ marginLeft: '10px' }}
+                  >
                     <FormControlLabel
                       control={
                         <Switch
@@ -388,7 +409,10 @@ const TournamentPage: React.FC<TournamentPageProps> = ({ tournamentId }) => {
                     allowScrollButtonsMobile
                   >
                     <Tab style={{ fontWeight: 'bold' }} label="Juego" />
-                    <Tab style={{ fontWeight: 'bold' }} label="Tabla de posiciones" />
+                    <Tab
+                      style={{ fontWeight: 'bold' }}
+                      label="Tabla de posiciones"
+                    />
                   </Tabs>
                 </div>
               </div>
@@ -419,7 +443,9 @@ const TournamentPage: React.FC<TournamentPageProps> = ({ tournamentId }) => {
                       />
                     )}
                     {tournamentData.status === 'finished' && (
-                      <EmojiEvents sx={{ fontSize: '50px', color: '#ffffff' }} />
+                      <EmojiEvents
+                        sx={{ fontSize: '50px', color: '#ffffff' }}
+                      />
                     )}
                     {/* texts */}
                     {tournamentData.status === 'inactive' && (
@@ -490,95 +516,115 @@ const TournamentPage: React.FC<TournamentPageProps> = ({ tournamentId }) => {
                 )}
               </div>
               <div className={styles.tournamentSwipeableContainerResponsive}>
-                <SwipeableViews index={viewsResponsive} onChangeIndex={(index) => setViewsResponsive(index)}>
-                  {<div
-                    className={styles.tournamentTablesContainerResponsive}
-                    style={{ paddingLeft: showPositionsPanel ? '0' : '20px' }}
-                  >
-                    {tournamentData.status !== 'active' && (
+                <SwipeableViews
+                  index={viewsResponsive}
+                  onChangeIndex={index => setViewsResponsive(index)}
+                >
+                  {
+                    (
                       <div
+                        className={styles.tournamentTablesContainerResponsive}
                         style={{
-                          background:
-                            tournamentData.status === 'finished'
-                              ? 'transparent'
-                              : '#7A7A7A7A'
+                          paddingLeft: showPositionsPanel ? '0' : '20px'
                         }}
-                        className={styles.shadow}
                       >
-                        {tournamentData.status === 'paused' && (
-                          <CircularProgress color="secondary" size={50} />
-                        )}
-                        {tournamentData.status === 'inactive' && (
-                          <SignalWifiStatusbarConnectedNoInternet4
-                            sx={{ fontSize: '50px', color: '#ffffff' }}
-                          />
-                        )}
-                        {tournamentData.status === 'finished' && (
-                          <EmojiEvents sx={{ fontSize: '50px', color: '#ffffff' }} />
-                        )}
-                        {/* texts */}
-                        {tournamentData.status === 'inactive' && (
-                          <Typography color="secondary">
-                            El torneo esta inactivo, debe activarlo para poder
-                            continuar
-                          </Typography>
-                        )}
-                        {tournamentData.status === 'paused' && (
-                          <Typography color="secondary">Torneo en pausa</Typography>
-                        )}
-                        {tournamentData.status === 'finished' && (
-                          <Typography sx={{ mt: 2, mb: 2 }} color="secondary">
-                            El torneo ha finalizado
-                          </Typography>
-                        )}
-                        {tournamentData.status === 'finished' && (
-                          <Button
-                            variant="contained"
-                            color="secondary"
-                            className={styles.buttonGood}
-                            onClick={handleNavigateToHistory}
+                        {tournamentData.status !== 'active' && (
+                          <div
+                            style={{
+                              background:
+                                tournamentData.status === 'finished'
+                                  ? 'transparent'
+                                  : '#7A7A7A7A'
+                            }}
+                            className={styles.shadow}
                           >
-                            Ver estadisticas
-                          </Button>
+                            {tournamentData.status === 'paused' && (
+                              <CircularProgress color="secondary" size={50} />
+                            )}
+                            {tournamentData.status === 'inactive' && (
+                              <SignalWifiStatusbarConnectedNoInternet4
+                                sx={{ fontSize: '50px', color: '#ffffff' }}
+                              />
+                            )}
+                            {tournamentData.status === 'finished' && (
+                              <EmojiEvents
+                                sx={{ fontSize: '50px', color: '#ffffff' }}
+                              />
+                            )}
+                            {/* texts */}
+                            {tournamentData.status === 'inactive' && (
+                              <Typography color="secondary">
+                                El torneo esta inactivo, debe activarlo para
+                                poder continuar
+                              </Typography>
+                            )}
+                            {tournamentData.status === 'paused' && (
+                              <Typography color="secondary">
+                                Torneo en pausa
+                              </Typography>
+                            )}
+                            {tournamentData.status === 'finished' && (
+                              <Typography
+                                sx={{ mt: 2, mb: 2 }}
+                                color="secondary"
+                              >
+                                El torneo ha finalizado
+                              </Typography>
+                            )}
+                            {tournamentData.status === 'finished' && (
+                              <Button
+                                variant="contained"
+                                color="secondary"
+                                className={styles.buttonGood}
+                                onClick={handleNavigateToHistory}
+                              >
+                                Ver estadisticas
+                              </Button>
+                            )}
+                          </div>
+                        )}
+                        {tournamentData.status !== 'finished' && (
+                          <>
+                            <div className={styles.tableComponentsContainer}>
+                              {tournamentData.tables.tables.map(
+                                (table: any, index) => {
+                                  return (
+                                    <TableComponent
+                                      tournament={tournamentData}
+                                      key={table.tableId}
+                                      tableData={table}
+                                      thisTablePairs={table.thisTablePairs}
+                                      tableNumber={index + 1}
+                                      showHUD={true}
+                                      setOpenUpdateResults={() =>
+                                        setOpenUpdateResults(table.tableId)
+                                      }
+                                    />
+                                  );
+                                }
+                              )}
+                            </div>
+                          </>
                         )}
                       </div>
-                    )}
-                    {tournamentData.status !== 'finished' && (
-                      <>
-                        <div
-                          className={ styles.tableComponentsContainer
+                    ) as any
+                  }
+                  {
+                    (
+                      <div
+                        className={styles.tournamentPositionsTableResponsive}
+                      >
+                        <PositionsTable
+                          calculateTablePositions={
+                            tournamentAPI.calculateTablePositions
                           }
-                        >
-                          {tournamentData.tables.tables.map((table: any, index) => {
-                            return (
-                              <TableComponent
-                                tournament={tournamentData}
-                                key={table.tableId}
-                                tableData={table}
-                                thisTablePairs={table.thisTablePairs}
-                                tableNumber={index + 1}
-                                showHUD={true}
-                                setOpenUpdateResults={() =>
-                                  setOpenUpdateResults(table.tableId)
-                                }
-                              />
-                            );
-                          })}
-                        </div>
-                      </>
-                    )}
-                  </div> as any}
-                  {<div className={styles.tournamentPositionsTableResponsive}>
-                    <PositionsTable
-                      calculateTablePositions={
-                        tournamentAPI.calculateTablePositions
-                      }
-                    />
-                  </div> as any}
+                        />
+                      </div>
+                    ) as any
+                  }
                 </SwipeableViews>
               </div>
             </>
-            
           )}
           {viewAnalytics && (
             <div className={styles.tournamentFinalInfo}>

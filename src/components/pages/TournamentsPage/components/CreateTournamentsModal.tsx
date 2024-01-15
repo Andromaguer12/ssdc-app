@@ -106,7 +106,7 @@ const CreateTournamentsModal: React.FC<ModalProps> = ({
     boxShadow: 24,
     borderRadius: '7px',
     '@media screen and (max-width: 600px)': {
-      width: '90vw',
+      width: '90vw'
     }
   };
 
@@ -214,21 +214,20 @@ const CreateTournamentsModal: React.FC<ModalProps> = ({
   }, [activeStep]);
 
   const handleSearchUsersFromList = (e: any) => {
-    const { value } = e.target
+    const { value } = e.target;
 
-    if(value.length > 0) {
+    if (value.length > 0) {
       const filtration = [...usersList].filter(({ name, email }) => {
-        const valueRegex = new RegExp(diacriticSensitiveRegex(value), 'i')
+        const valueRegex = new RegExp(diacriticSensitiveRegex(value), 'i');
 
-        return valueRegex.test(name) || valueRegex.test(email)
-      })
+        return valueRegex.test(name) || valueRegex.test(email);
+      });
 
-      setSearchUsers(filtration)
-    }
-    else if(value.length === 0) {
+      setSearchUsers(filtration);
+    } else if (value.length === 0) {
       setSearchUsers(usersList);
     }
-  }
+  };
 
   const handleClickUser = React.useCallback(
     (itemId?: UserInterface) => {
@@ -422,7 +421,14 @@ const CreateTournamentsModal: React.FC<ModalProps> = ({
                                   )}
                                   {!loadingUsersList && activeStep === 1 && (
                                     <>
-                                      <Grid className={styles.selectedUsersResponsive} item sm={12} md={6}>
+                                      <Grid
+                                        className={
+                                          styles.selectedUsersResponsive
+                                        }
+                                        item
+                                        sm={12}
+                                        md={6}
+                                      >
                                         <Typography
                                           fontWeight={'700'}
                                           style={{ marginBottom: 0 }}
@@ -447,7 +453,12 @@ const CreateTournamentsModal: React.FC<ModalProps> = ({
                                           </Typography>
                                         )}
                                       </Grid>
-                                      <Grid className={styles.usersListInner} item sm={12} md={6}>
+                                      <Grid
+                                        className={styles.usersListInner}
+                                        item
+                                        sm={12}
+                                        md={6}
+                                      >
                                         <FormControl fullWidth>
                                           <InputLabel htmlFor="outlined-adornment-amount">
                                             Buscar usuarios...
@@ -494,7 +505,12 @@ const CreateTournamentsModal: React.FC<ModalProps> = ({
                                           })}
                                         </div>
                                       </Grid>
-                                      <Grid className={styles.selectedUsers} item sm={12} md={6}>
+                                      <Grid
+                                        className={styles.selectedUsers}
+                                        item
+                                        sm={12}
+                                        md={6}
+                                      >
                                         <Typography
                                           fontWeight={'700'}
                                           style={{ marginBottom: 0 }}

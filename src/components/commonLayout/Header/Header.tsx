@@ -14,7 +14,9 @@ export default function Header() {
       <div className={styles.delimeter}>
         <Menu />
         <Image src={logo3} alt="logoHorizontal" className={styles.image} />
-        <div><MenuBook style={{ color: "transparent"}} /></div>
+        <div>
+          <MenuBook style={{ color: 'transparent' }} />
+        </div>
       </div>
     </div>
   );

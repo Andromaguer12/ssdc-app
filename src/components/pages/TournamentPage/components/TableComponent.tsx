@@ -86,8 +86,13 @@ const PlayerCard = ({
             ? `${player.name[0]}${player.name.split(' ')[1] ?? ''}`
             : ''}
         </Avatar>
-        <Typography className={styles.label} fontWeight={'700'} variant="h6" component="h2">
-          {`${player.name.split(' ')[0].length < 10 ? player.name.split(' ')[0] : player.name.split(' ')[0].substring(0, 7) + "..."}`}
+        <Typography
+          className={styles.label}
+          fontWeight={'700'}
+          variant="h6"
+          component="h2"
+        >
+          {`${player.name.split(' ')[0].length < 10 ? player.name.split(' ')[0] : player.name.split(' ')[0].substring(0, 7) + '...'}`}
         </Typography>
       </div>
     </Tooltip>

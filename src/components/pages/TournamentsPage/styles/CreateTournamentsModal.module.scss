@@ -33,7 +33,7 @@
       max-height: 500px;
     }
 
-    .slides{
+    .slides {
       @media screen and (max-width: 600px) {
         flex-direction: column-reverse;
       }

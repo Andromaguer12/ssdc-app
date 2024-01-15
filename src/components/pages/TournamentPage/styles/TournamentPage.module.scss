@@ -133,7 +133,7 @@
         align-items: center;
         flex-wrap: wrap;
 
-        .switchPositions{
+        .switchPositions {
           @media screen and (max-width: 880px) {
             display: none;
           }
@@ -282,7 +282,7 @@
     }
   }
 
-  .tournamentSwipeableContainerResponsive{
+  .tournamentSwipeableContainerResponsive {
     display: none;
     width: 100%;
 
@@ -290,7 +290,7 @@
       display: block;
     }
 
-    .tournamentPositionsTableResponsive{
+    .tournamentPositionsTableResponsive {
       width: 100%;
       padding: 20px;
       box-sizing: border-box;
