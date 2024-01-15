@@ -41,19 +41,7 @@ export const userLoginFunction = createAsyncThunk(
     Cookies.set('auth', auth.user.uid);
     Cookies.set('accessToken', auth.user.accessToken);
 
-    const user = await params.context.getUserFromId(auth.user.uid, auth.user.accessToken);
-
-    console.log(user)
-    
-    console.log({
-      ...user,
-      accessToken: auth.user.accessToken,
-    })
-
-    return {
-      ...user,
-      accessToken: auth.user.accessToken,
-    }
+    return params.context.getUserFromId(auth.user.uid, auth.user.accessToken);
   }
 );
 
