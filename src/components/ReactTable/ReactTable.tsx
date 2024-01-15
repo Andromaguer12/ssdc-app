@@ -57,10 +57,12 @@ const ReactTable: React.FC<ReactTableProps> = ({
                   style={{
                     textAlign: column.textAlign,
                     padding: column?.padding ?? '20px',
-                    color: "#ffffff !important"
+                    color: '#ffffff !important'
                   }}
                 >
-                  <Typography style={{ color: "#ffffff"}} fontWeight={"bold"}>{column?.header}</Typography>
+                  <Typography style={{ color: '#ffffff' }} fontWeight={'bold'}>
+                    {column?.header}
+                  </Typography>
                 </TableCell>
               );
             })}

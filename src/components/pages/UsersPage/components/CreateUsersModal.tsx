@@ -60,7 +60,7 @@ const CreateUsersModal: React.FC<ModalProps> = ({
   const formInitialFormState: formState = {
     name: editMode ? editMode?.name : '',
     email: editMode ? editMode?.email : '',
-    phone: editMode ? editMode?.phone : '',
+    phone: editMode ? editMode?.phone : ''
     // image: editMode ? editMode?.image : ''
     // isAdmin: editMode ? editMode?.isAdmin : false
   };
@@ -75,7 +75,7 @@ const CreateUsersModal: React.FC<ModalProps> = ({
   const handleSubmit = React.useCallback(
     (values: formState, { resetForm }: { resetForm: any }) => {
       if (editMode) {
-        console.log(values)
+        console.log(values);
         dispatch(
           updateUser({
             context: fContext,
@@ -91,7 +91,7 @@ const CreateUsersModal: React.FC<ModalProps> = ({
             name: values.name,
             email: values.email,
             phone: values.phone,
-            image: "",
+            image: '',
             isAdmin: false
           })
         );
