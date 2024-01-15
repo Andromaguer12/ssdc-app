@@ -59,12 +59,7 @@ export const userLogoutFunction = createAsyncThunk(
 export const getUserByUserUid = createAsyncThunk(
   'users/getUserByUserUid',
   async (params: { uid: string; accessToken: string; context: any }) => {
-    const user = await params.context.getUserFromId(params.uid, params.accessToken);
-
-    return {
-      ...user,
-      accessToken,
-    }
+    return await params.context.getUserFromId(params.uid, params.accessToken);
   }
 );
 const userSlice = createSlice({
