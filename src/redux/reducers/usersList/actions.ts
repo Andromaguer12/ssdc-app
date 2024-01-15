@@ -196,6 +196,8 @@ const usersSlice = createSlice({
 
     builder.addCase(deleteUser.pending, (state, action: any) => {
       state.deleteUser.loadingDeleteUser = true;
+      state.deleteUser.successDeleteUser = false;
+      state.deleteUser.errorDeleteUser = null;
     });
     builder.addCase(deleteUser.fulfilled, (state, action) => {
       state.deleteUser.loadingDeleteUser = false;
