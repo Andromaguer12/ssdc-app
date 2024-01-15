@@ -52,7 +52,7 @@ class Firebase {
     return signOut(this.auth);
   }
 
-  async getUserFromId(uid: string, accessToken: string) {
+  async getUserFromId(uid: string) {
     const userRef = query(
       collection(this.db, 'users'),
       where('uid', '==', uid)
@@ -66,7 +66,7 @@ class Firebase {
       });
     });
 
-    return data.length > 0 ? { ...data[0], uid, accessToken } : undefined;
+    return data.length > 0 ? { ...data[0], uid } : undefined;
   }
 
   async getAllUsers() {
@@ -103,16 +103,14 @@ class Firebase {
     }
   }
 
-  async updateUser(tournamentId: string, body: Partial<UserInterface>) {
-    return await setDoc(doc(this.db, 'users', tournamentId ?? ''), {
+  async updateUser(userId: string, body: Partial<UserInterface>) {
+    return await setDoc(doc(this.db, 'users', userId ?? ''), {
       ...body
     });
   }
 
-  async deleteUser(tournamentId: string) {
-    return await setDoc(doc(this.db, 'user', tournamentId ?? ''), {
-      softDeleted: true
-    });
+  async deleteUser(userId: string) {
+    return await deleteDoc(doc(this.db, 'users', userId ?? ''));
   }
 
   /**
