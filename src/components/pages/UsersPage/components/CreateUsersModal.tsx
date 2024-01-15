@@ -34,7 +34,10 @@ const CreateUsersModal: React.FC<ModalProps> = ({
     width: '70vw',
     bgcolor: 'background.paper',
     boxShadow: 24,
-    borderRadius: '7px'
+    borderRadius: '7px',
+    '@media screen and (max-width: 600px)': {
+      width: '90vw'
+    }
   };
 
   const dispatch = useAppDispatch();
@@ -58,7 +61,7 @@ const CreateUsersModal: React.FC<ModalProps> = ({
     name: editMode ? editMode?.name : '',
     email: editMode ? editMode?.email : '',
     phone: editMode ? editMode?.phone : '',
-    image: editMode ? editMode?.image : ''
+    // image: editMode ? editMode?.image : ''
     // isAdmin: editMode ? editMode?.isAdmin : false
   };
 
@@ -72,6 +75,7 @@ const CreateUsersModal: React.FC<ModalProps> = ({
   const handleSubmit = React.useCallback(
     (values: formState, { resetForm }: { resetForm: any }) => {
       if (editMode) {
+        console.log(values)
         dispatch(
           updateUser({
             context: fContext,
@@ -87,7 +91,7 @@ const CreateUsersModal: React.FC<ModalProps> = ({
             name: values.name,
             email: values.email,
             phone: values.phone,
-            image: values.image,
+            image: "",
             isAdmin: false
           })
         );

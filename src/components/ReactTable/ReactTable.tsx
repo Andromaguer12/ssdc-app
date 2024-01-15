@@ -7,6 +7,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import styles from './styles/ReactTable.module.scss';
+import { Typography } from '@mui/material';
 
 interface ReactTableProps {
   columns: any[];
@@ -55,10 +56,11 @@ const ReactTable: React.FC<ReactTableProps> = ({
                   className={styles.headerCell}
                   style={{
                     textAlign: column.textAlign,
-                    padding: column?.padding ?? '20px'
+                    padding: column?.padding ?? '20px',
+                    color: "#ffffff !important"
                   }}
                 >
-                  {column?.header}
+                  <Typography style={{ color: "#ffffff"}} fontWeight={"bold"}>{column?.header}</Typography>
                 </TableCell>
               );
             })}
