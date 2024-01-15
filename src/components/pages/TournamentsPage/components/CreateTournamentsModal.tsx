@@ -46,6 +46,7 @@ import {
   createTournament
 } from '@/redux/reducers/tournaments/actions';
 import { TournamentFormat } from '@/typesDefs/constants/tournaments/types';
+import diacriticSensitiveRegex from '@/utils/diacritic-sensitive-regex';
 
 interface ModalProps {
   open: boolean;
@@ -208,6 +209,23 @@ const CreateTournamentsModal: React.FC<ModalProps> = ({
       dispatch(clearGetUsers());
     }
   }, [activeStep]);
+
+  const handleSearchUsersFromList = (e: any) => {
+    const { value } = e.target
+
+    if(value.length > 0) {
+      const filtration = [...usersList].filter(({ name, email }) => {
+        const valueRegex = new RegExp(diacriticSensitiveRegex(value), 'i')
+
+        return valueRegex.test(name) || valueRegex.test(email)
+      })
+
+      setSearchUsers(filtration)
+    }
+    else if(value.length === 0) {
+      setSearchUsers(usersList);
+    }
+  }
 
   const handleClickUser = React.useCallback(
     (itemId?: UserInterface) => {
@@ -414,6 +432,7 @@ const CreateTournamentsModal: React.FC<ModalProps> = ({
                                               </InputAdornment>
                                             }
                                             label="Buscar usuarios..."
+                                            onChange={handleSearchUsersFromList}
                                           />
                                         </FormControl>
                                         <div className={styles.usersList}>
