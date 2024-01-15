@@ -52,7 +52,7 @@ class Firebase {
     return signOut(this.auth);
   }
 
-  async getUserFromId(uid: string) {
+  async getUserFromId(uid: string, accessToken: string) {
     const userRef = query(
       collection(this.db, 'users'),
       where('uid', '==', uid)
@@ -66,7 +66,7 @@ class Firebase {
       });
     });
 
-    return data.length > 0 ? { ...data[0], uid } : undefined;
+    return data.length > 0 ? { ...data[0], uid, accessToken } : undefined;
   }
 
   async getAllUsers() {
