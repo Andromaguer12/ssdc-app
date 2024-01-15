@@ -87,19 +87,10 @@ export default function Login() {
 
   return (
     <section className={styles.Login}>
-      <Grid
-        container
+      <div
         className={styles.loginContainer}
-        display={'flex'}
-        flexDirection={'column'}
-        alignItems={'center'}
-        justifyContent={'center'}
       >
-        <Grid
-          item
-          display={'flex'}
-          flexDirection={'column'}
-          alignItems={'center'}
+        <div
           className={styles.loginForm}
         >
           <Image src={logo1} className={styles.logo} alt="logo" />
@@ -149,7 +140,7 @@ export default function Login() {
               )}
             </Button>
           </form>
-        </Grid>
+        </div>
         <div className={styles.texts}>
           <Typography color="secondary" variant="h3">
             Juega y administra tus partidas de domino
@@ -158,7 +149,7 @@ export default function Login() {
             basandose en el sistema suizo de domino
           </Typography>
         </div>
-      </Grid>
+      </div>
     </section>
   );
 }

@@ -1,4 +1,4 @@
-import { Language } from '@mui/icons-material';
+import { Language, MenuBook } from '@mui/icons-material';
 import { IconButton } from '@mui/material';
 import Link from 'next/link';
 import React from 'react';
@@ -14,7 +14,7 @@ export default function Header() {
       <div className={styles.delimeter}>
         <Menu />
         <Image src={logo3} alt="logoHorizontal" className={styles.image} />
-        <div className={styles.buttons}></div>
+        <div><MenuBook style={{ color: "transparent"}} /></div>
       </div>
     </div>
   );

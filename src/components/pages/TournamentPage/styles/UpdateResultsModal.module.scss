@@ -14,10 +14,20 @@
   justify-content: space-between;
   box-sizing: border-box;
 
+  @media screen and (max-width: 1000px) {
+    justify-content: center;
+  }
+
   .stepperContainer {
     width: 100%;
     padding: 20px 50px;
     box-sizing: border-box;
+  }
+
+  .tableContainer {
+    @media screen and (max-width: 1000px) {
+      display: none !important;
+    }
   }
 
   .column {
@@ -30,6 +40,16 @@
     align-items: center;
     justify-content: space-between;
     box-sizing: border-box;
+
+    @media screen and (max-width: 900px) {
+      width: 100%;
+    }
+
+    .title{
+      @media screen and (max-width: 600px) {
+        font-size: 25px;
+      }
+    }
 
     .pair {
       box-sizing: border-box;

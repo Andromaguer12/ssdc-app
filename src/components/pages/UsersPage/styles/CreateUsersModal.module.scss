@@ -19,6 +19,10 @@
     width: 49%;
     margin-top: 20px;
     margin-right: 11px;
+
+    @media screen and (max-width: 900px) {
+      width: 100%;
+    }
   }
 }
 
@@ -30,6 +34,9 @@
   flex-direction: row;
   display: flex;
   justify-content: flex-end;
+  @media screen and (max-width: 1000px) {
+    flex-direction: column-reverse;
+  }
 
   .cancelButton {
     padding: 10px 20px;
@@ -38,12 +45,21 @@
     background-color: #e7e7e7;
     margin-right: 15px;
     font-weight: bold;
+
+    @media screen and (max-width: 1000px) {
+      width: 100%;
+    }
   }
 
   .button {
     padding: 10px 20px;
     margin: 0;
     font-weight: bold;
+
+    @media screen and (max-width: 1000px) {
+      width: 100%;
+      margin-bottom: 10px;
+    }
   }
 }
 

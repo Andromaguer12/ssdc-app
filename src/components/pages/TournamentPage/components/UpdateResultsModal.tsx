@@ -71,7 +71,16 @@ const UpdateTournamentModal: React.FC<ModalProps> = ({
     width: '70vw',
     bgcolor: 'background.paper',
     boxShadow: 24,
-    borderRadius: '7px'
+    borderRadius: '7px',
+    '@media screen and (max-width: 1300px)': {
+      width: "80vw"
+    },
+    '@media screen and (max-width: 1200px)': {
+      width: "90vw"
+    },
+    '@media screen and (max-width: 1060px)': {
+      width: "95vw"
+    }
   };
 
   const {
@@ -185,7 +194,7 @@ const UpdateTournamentModal: React.FC<ModalProps> = ({
                   </Typography>
                 </div>
                 <div className={styles.body}>
-                  <div className={styles.column}>
+                  <div className={[styles.column, styles.tableContainer].join(" ")}>
                     <TableComponent
                       tableData={currentTableData}
                       thisTablePairs={currentTableData?.thisTablePairs}
@@ -194,6 +203,7 @@ const UpdateTournamentModal: React.FC<ModalProps> = ({
                   </div>
                   <div className={styles.column}>
                     <Typography
+                      className={styles.title}
                       style={{ width: '100%' }}
                       variant="h4"
                       fontWeight={'bold'}

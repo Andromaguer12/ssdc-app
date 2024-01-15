@@ -47,12 +47,23 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap;
 
     .title {
       width: fit-content;
       border-radius: 10px;
       background-color: #fff;
       padding: 10px 20px;
+
+      @media screen and (max-width: 600px) {
+        margin: 0 auto;
+      }
+    }
+
+    @media screen and (max-width: 600px) {
+      .mainLabels {
+        transform: scale(0.85);
+      }
     }
 
     .logo {
@@ -60,6 +71,10 @@
       height: 100px;
       background-color: #fff;
       border-radius: 10px;
+
+      @media screen and (max-width: 600px) {
+        margin: 10px auto;
+      }
 
       .image {
         width: 100%;
@@ -92,18 +107,50 @@
       width: 50%;
       display: flex;
       flex-direction: row;
+      flex-wrap: wrap;
       align-items: flex-start;
       justify-content: space-between;
 
+      @media screen and (max-width: 1200px) {
+        width: 70%;
+        box-sizing: border-box;
+      }
+
+      @media screen and (max-width: 1000px) {
+        width: 80%;
+        box-sizing: border-box;
+      }
+
+      @media screen and (max-width: 800px) {
+        width: 100%;
+        box-sizing: border-box;
+      }
+
       .controls {
-        width: 95%;
+        width: 90%;
         display: flex;
         flex-direction: row;
         align-items: center;
         flex-wrap: wrap;
 
+        .switchPositions{
+          @media screen and (max-width: 880px) {
+            display: none;
+          }
+        }
+
         .button {
           margin-right: 10px;
+        }
+      }
+
+      .controlsResponsive {
+        width: 100%;
+        margin-top: 10px;
+        display: none;
+
+        @media screen and (max-width: 880px) {
+          display: block;
         }
       }
 
@@ -124,6 +171,147 @@
     justify-content: space-between;
     position: relative;
     min-height: 300px;
+
+    @media screen and (max-width: 880px) {
+      display: none;
+    }
+
+    .shadow {
+      width: 100%;
+      height: 100%;
+      backdrop-filter: blur(5px);
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 100;
+      background-color: #7a7a7a7a;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      -webkit-mask: linear-gradient(
+        180deg,
+        transparent,
+        white 2.5%,
+        white 97.5%,
+        transparent
+      );
+
+      mask: linear-gradient(
+        180deg,
+        transparent,
+        white 2.5%,
+        white 97.5%,
+        transparent
+      );
+
+      & > p {
+        max-width: 350px !important;
+        text-align: center;
+        font-size: 20px;
+        margin-top: 10px;
+      }
+    }
+
+    .tableComponentsContainer {
+      width: 100%;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      transition: all 500ms ease-in-out;
+
+      @media screen and (max-width: 880px) {
+        display: none;
+      }
+
+      &__asideActive {
+        width: 65%;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        transition: all 500ms ease-in-out;
+
+        @media screen and (max-width: 880px) {
+          width: 100% !important;
+        }
+      }
+    }
+
+    .asideContainer {
+      width: 0%;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      opacity: 0;
+      content-visibility: hidden;
+      transition: opacity 1000ms ease-in-out;
+
+      @media screen and (max-width: 600px) {
+        display: none;
+      }
+
+      &__active {
+        width: 35%;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        opacity: 1;
+        content-visibility: visible;
+        transition: opacity 1000ms ease-in-out;
+
+        @media screen and (max-width: 1100px) {
+          width: 55%;
+        }
+
+        @media screen and (max-width: 950px) {
+          width: 40%;
+        }
+
+        @media screen and (max-width: 880px) {
+          display: none;
+        }
+      }
+    }
+  }
+
+  .tournamentSwipeableContainerResponsive{
+    display: none;
+    width: 100%;
+
+    @media screen and (max-width: 880px) {
+      display: block;
+    }
+
+    .tournamentPositionsTableResponsive{
+      width: 100%;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+  }
+
+  .tournamentTablesContainerResponsive {
+    width: 100%;
+    padding: 50px 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    position: relative;
+    min-height: 300px;
+    display: none;
+
+    @media screen and (max-width: 880px) {
+      display: flex;
+    }
 
     .shadow {
       width: 100%;

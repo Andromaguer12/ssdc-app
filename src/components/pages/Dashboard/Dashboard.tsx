@@ -29,6 +29,10 @@ const Dashboard = () => {
           <Typography color="secondary" className={styles.subtitle}>
             {'(Sistema Suizo de Domino Competitivo)'}
           </Typography>
+
+          <div className={styles.logoResponsive}>
+            <Image src={logo2} className={styles.image} alt="logo" />
+          </div>
         </div>
         <div className={styles.cards}>
           <div className={styles.card}>

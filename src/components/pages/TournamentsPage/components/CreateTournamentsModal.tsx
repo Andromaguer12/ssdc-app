@@ -104,7 +104,10 @@ const CreateTournamentsModal: React.FC<ModalProps> = ({
     width: '70vw',
     bgcolor: 'background.paper',
     boxShadow: 24,
-    borderRadius: '7px'
+    borderRadius: '7px',
+    '@media screen and (max-width: 600px)': {
+      width: '90vw',
+    }
   };
 
   const dispatch = useAppDispatch();
@@ -419,7 +422,32 @@ const CreateTournamentsModal: React.FC<ModalProps> = ({
                                   )}
                                   {!loadingUsersList && activeStep === 1 && (
                                     <>
-                                      <Grid item sm={12} md={6}>
+                                      <Grid className={styles.selectedUsersResponsive} item sm={12} md={6}>
+                                        <Typography
+                                          fontWeight={'700'}
+                                          style={{ marginBottom: 0 }}
+                                          className={styles.title}
+                                          variant="h6"
+                                          component="h2"
+                                        >
+                                          Jugadores Seleccionados:{' '}
+                                          {selectedUsers.length}
+                                        </Typography>
+                                        <Typography className={styles.subtitle}>
+                                          Se generaran{' '}
+                                          {selectedUsers.length / 4} mesas.
+                                        </Typography>
+                                        {selectedUsers.length % 4 !== 0 && (
+                                          <Typography
+                                            style={{ color: 'red' }}
+                                            className={styles.subtitle}
+                                          >
+                                            No es posible comenzar un torneo con
+                                            mesas incompletas.
+                                          </Typography>
+                                        )}
+                                      </Grid>
+                                      <Grid className={styles.usersListInner} item sm={12} md={6}>
                                         <FormControl fullWidth>
                                           <InputLabel htmlFor="outlined-adornment-amount">
                                             Buscar usuarios...
@@ -466,7 +494,7 @@ const CreateTournamentsModal: React.FC<ModalProps> = ({
                                           })}
                                         </div>
                                       </Grid>
-                                      <Grid item sm={12} md={6}>
+                                      <Grid className={styles.selectedUsers} item sm={12} md={6}>
                                         <Typography
                                           fontWeight={'700'}
                                           style={{ marginBottom: 0 }}

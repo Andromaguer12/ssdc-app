@@ -25,7 +25,6 @@ import {
   KeyboardArrowDown,
   TableRestaurant
 } from '@mui/icons-material';
-import { generateHexColor } from '@/utils/generate-hex-color';
 import ReactTable from '@/components/ReactTable/ReactTable';
 import { roundsHistoryColumns } from '../constants/positionsTableColumns';
 import { roundsHistoryMapper } from '../constants/mapper';
@@ -45,7 +44,7 @@ const PlayerCard = ({
     <Tooltip
       title={
         <div className={styles.tooltip}>
-          <Typography>{`${player.name.split(' ') ?? ''}`}</Typography>
+          <Typography>{`${player.name}`}</Typography>
           <Typography
             style={{
               background: '#fff',
@@ -87,8 +86,8 @@ const PlayerCard = ({
             ? `${player.name[0]}${player.name.split(' ')[1] ?? ''}`
             : ''}
         </Avatar>
-        <Typography fontWeight={'700'} variant="h6" component="h2">
-          {player.name}
+        <Typography className={styles.label} fontWeight={'700'} variant="h6" component="h2">
+          {`${player.name.split(' ')[0].length < 10 ? player.name.split(' ')[0] : player.name.split(' ')[0].substring(0, 7) + "..."}`}
         </Typography>
       </div>
     </Tooltip>
