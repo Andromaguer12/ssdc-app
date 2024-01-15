@@ -93,8 +93,8 @@ export default function Login() {
         <div
           className={styles.loginForm}
         >
-          <Image src={logo1} className={styles.logo} alt="logo" />
           <form className={styles.form} onSubmit={handleSubmit}>
+          <Image src={logo1} className={styles.logo} alt="logo" />
             <Typography className={styles.title}>
               Sistema suizo de domino competitivo
             </Typography>
@@ -140,13 +140,21 @@ export default function Login() {
               )}
             </Button>
           </form>
+          <div className={styles.textsResponsive}>
+            <Typography className={styles.title} color="secondary" variant="h3">
+              Juega y administra tus partidas de domino
+            </Typography>
+            <Typography className={styles.subtitle} color="secondary" variant="h5">
+              Bajo las reglas del sistema suizo!
+            </Typography>
+          </div>
         </div>
         <div className={styles.texts}>
-          <Typography color="secondary" variant="h3">
+          <Typography className={styles.title} color="secondary" variant="h3">
             Juega y administra tus partidas de domino
           </Typography>
-          <Typography color="secondary" variant="h5">
-            basandose en el sistema suizo de domino
+          <Typography className={styles.subtitle} color="secondary" variant="h5">
+            Bajo las reglas del sistema suizo!
           </Typography>
         </div>
       </div>
