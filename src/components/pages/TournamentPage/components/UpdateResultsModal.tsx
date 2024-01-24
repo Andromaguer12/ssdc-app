@@ -254,7 +254,7 @@ const UpdateTournamentModal: React.FC<ModalProps> = ({
                                 return (
                                   <div className={styles.inputs}>
                                     <Typography fontWeight={'bold'}>
-                                      {player.name.split(' ')}
+                                      {player.name}
                                     </Typography>
                                     <TextField
                                       fullWidth

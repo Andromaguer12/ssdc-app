@@ -11,7 +11,7 @@ import {
   TournamentInterface,
   TournamentState
 } from '@/typesDefs/constants/tournaments/types';
-import { organizeTournamentsPlayersWithSimilarPerformanceArray } from '@/utils/organize-tournaments-players-with-similar-performance-array';
+import organizeTournamentsPlayersWithSimilarPerformanceArray from '@/utils/organize-tournaments-players-with-similar-performance-array';
 import { collection, doc, getDoc, onSnapshot } from 'firebase/firestore';
 import { useCallback, useEffect, useState } from 'react';
 
@@ -153,14 +153,14 @@ const useTournamentData = (tournamentId: string) => {
               pair2: currentWinner === 1 ? pair2Results : 0
             },
             effectivenessByPlayer: {
-              p1: pair1Results - pair2Results,
-              p2: pair1Results - pair2Results,
-              p3: pair2Results - pair1Results,
-              p4: pair2Results - pair1Results
+              p1: 100 - p1,
+              p2: 100 - p2,
+              p3: 100 - p3,
+              p4: 100 - p4
             },
             effectivenessByPair: {
-              pair1: pair1Results - pair2Results,
-              pair2: pair2Results - pair1Results
+              pair1: 100 - pair1Results,
+              pair2: 100 - pair2Results
             },
             roundWinner: currentWinner,
             sanctions: [],
@@ -231,69 +231,6 @@ const useTournamentData = (tournamentId: string) => {
           );
         }
       }
-    },
-    [tournament]
-  );
-
-  const handleNextGlobalRound = useCallback(() => {
-    if (tournament && tournament.results) {
-      const storedRoundPayload: StoredRoundDataInterface = {
-        currentRoundId: tournament.currentGlobalRound,
-        tables: tournament.tables,
-        results: tournament.results,
-        storedDate: new Date().getTime()
-      };
-
-      const newPlayersLayout: any =
-        organizeTournamentsPlayersWithSimilarPerformanceArray(
-          tournament.results as ResultsInterface,
-          tournament.tables.tables.map(
-            ({ tableId }: { tableId: string }) => tableId
-          )
-        );
-
-      if (!newPlayersLayout.error) {
-        const tournamentPayload: TournamentInterface = {
-          ...tournament,
-          results: {},
-          tables: newPlayersLayout as PairsTableInterface,
-          currentGlobalRound:
-            tournament.currentGlobalRound +
-            (tournament.currentGlobalRound === tournament.customRounds ? 0 : 1),
-          status:
-            tournament.currentGlobalRound === tournament.customRounds
-              ? 'finished'
-              : tournament.status,
-          endDate:
-            tournament.currentGlobalRound === tournament.customRounds
-              ? new Date().getTime()
-              : null,
-          storedRounds: [...(tournament.storedRounds ?? []), storedRoundPayload]
-        };
-
-        dispatch(
-          updateTournament({
-            context: fContext,
-            id: tournament?.id,
-            body: tournamentPayload
-          })
-        );
-      }
-    }
-  }, [tournament]);
-
-  const updateTournamentStatus = useCallback(
-    (newStatus: TournamentState) => {
-      dispatch(
-        updateTournament({
-          context: fContext,
-          id: tournament?.id,
-          body: {
-            ...tournament,
-            status: newStatus
-          }
-        })
-      );
     },
     [tournament]
   );
@@ -378,6 +315,7 @@ const useTournamentData = (tournamentId: string) => {
                     );
 
                     const payload = {
+                      id: player.id,
                       name: player.name,
                       pair: pairIdx + 1,
                       table: tableIdx + 1,
@@ -394,8 +332,17 @@ const useTournamentData = (tournamentId: string) => {
             });
 
             logs.sort((a, b) => {
-              return a.points - b.points;
-            });
+              if(a.points !== b.points) {
+                return a.points - b.points;
+              }
+              else if(a.wins === b.wins) {
+                return a.wins - b.wins;
+              }else if(a.effectiveness === b.effectiveness) {
+                return a.effectiveness - b.effectiveness;
+              }   
+              
+              return 1
+          });
 
             logs.reverse();
 
@@ -436,6 +383,8 @@ const useTournamentData = (tournamentId: string) => {
                   );
 
                   const payload = {
+                    pairP1Id: pair[0].id,
+                    pairP2Id: pair[1].id,
                     name: pair[0]?.name + ' - ' + pair[1]?.name,
                     pair: pairIdx + 1,
                     table: tableIdx + 1,
@@ -451,8 +400,17 @@ const useTournamentData = (tournamentId: string) => {
             });
 
             logs.sort((a, b) => {
-              return a.points - b.points;
-            });
+              if(a.points !== b.points) {
+                return a.points - b.points;
+              }
+              else if(a.wins === b.wins) {
+                return a.wins - b.wins;
+              }else if(a.effectiveness === b.effectiveness) {
+                return a.effectiveness - b.effectiveness;
+              }   
+              
+              return 1
+          });
 
             logs.reverse();
 
@@ -582,6 +540,7 @@ const useTournamentData = (tournamentId: string) => {
                 );
 
                 const payload = {
+                  id: player.id,
                   name: player.name,
                   pair: pairIdx + 1,
                   table: tableIdx + 1,
@@ -597,7 +556,15 @@ const useTournamentData = (tournamentId: string) => {
           });
 
           logs.sort((a, b) => {
-            return a.points - b.points;
+            if(a.points !== b.points) {
+              return a.points - b.points;
+            }
+            else if(a.wins === b.wins) {
+              return a.wins - b.wins;
+            }else if(a.effectiveness === b.effectiveness) {
+              return a.effectiveness - b.effectiveness;
+            }
+            return 1
           });
 
           logs.reverse();
@@ -630,6 +597,8 @@ const useTournamentData = (tournamentId: string) => {
               );
 
               const payload = {
+                pairP1Id: pair[0].id,
+                pairP2Id: pair[1].id,
                 name: pair[0].name + ' - ' + pair[1].name,
                 pair: pairIdx + 1,
                 table: tableIdx + 1,
@@ -644,8 +613,17 @@ const useTournamentData = (tournamentId: string) => {
           });
 
           logs.sort((a, b) => {
-            return a.points - b.points;
-          });
+            if(a.points !== b.points) {
+              return a.points - b.points;
+            }
+            else if(a.wins === b.wins) {
+              return a.wins - b.wins;
+            }else if(a.effectiveness === b.effectiveness) {
+              return a.effectiveness - b.effectiveness;
+            }   
+            
+            return 1
+        });
 
           logs.reverse();
 
@@ -703,6 +681,68 @@ const useTournamentData = (tournamentId: string) => {
       return [];
     },
     [tournament, tournamentData, usersData]
+  );
+
+  const handleNextGlobalRound = useCallback(() => {
+    if (tournament && tournamentData && tournament.results) {
+      const storedRoundPayload: StoredRoundDataInterface = {
+        currentRoundId: tournament.currentGlobalRound,
+        tables: tournament.tables,
+        results: tournament.results,
+        storedDate: new Date().getTime()
+      };
+
+      const newPlayersLayout: any =
+        organizeTournamentsPlayersWithSimilarPerformanceArray(
+          calculateTablePositions(tournament.format, storedRoundPayload),
+          tournamentData.tables,
+          tournament.format,
+        );
+
+      if (!newPlayersLayout.error) {
+        const tournamentPayload: TournamentInterface = {
+          ...tournament,
+          results: {},
+          tables: newPlayersLayout as PairsTableInterface,
+          currentGlobalRound:
+            tournament.currentGlobalRound +
+            (tournament.currentGlobalRound === tournament.customRounds ? 0 : 1),
+          status:
+            tournament.currentGlobalRound === tournament.customRounds
+              ? 'finished'
+              : tournament.status,
+          endDate:
+            tournament.currentGlobalRound === tournament.customRounds
+              ? new Date().getTime()
+              : null,
+          storedRounds: [...(tournament.storedRounds ?? []), storedRoundPayload]
+        };
+
+        dispatch(
+          updateTournament({
+            context: fContext,
+            id: tournament?.id,
+            body: tournamentPayload
+          })
+        );
+      }
+    }
+  }, [tournament, tournamentData]);
+
+  const updateTournamentStatus = useCallback(
+    (newStatus: TournamentState) => {
+      dispatch(
+        updateTournament({
+          context: fContext,
+          id: tournament?.id,
+          body: {
+            ...tournament,
+            status: newStatus
+          }
+        })
+      );
+    },
+    [tournament]
   );
 
   const calculateFinalResults = useCallback(

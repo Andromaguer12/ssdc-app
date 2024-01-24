@@ -6,19 +6,6 @@ export const positionsTableIndividualMapper = (data: any) => {
       name: <>{row.name}</>,
       pair: <>{row.pair}</>,
       table: <>{row.table}</>,
-      points: (
-        <>
-          <Typography
-            style={{
-              color:
-                row.points > 75 ? 'green' : row.points > 50 ? 'orange' : 'red'
-            }}
-            fontWeight={'bold'}
-          >
-            {row.points}
-          </Typography>
-        </>
-      ),
       wins: (
         <>
           <Typography
@@ -58,7 +45,20 @@ export const positionsTableIndividualMapper = (data: any) => {
             {row.effectiveness}
           </Typography>
         </>
-      )
+      ),
+      points: (
+        <>
+          <Typography
+            style={{
+              color:
+                row.points > 75 ? 'green' : row.points > 50 ? 'orange' : 'red'
+            }}
+            fontWeight={'bold'}
+          >
+            {row.points}
+          </Typography>
+        </>
+      ),
     };
   });
 };
@@ -79,19 +79,6 @@ export const finalPositionsTableIndividualMapper = (data: any) => {
         </>
       ),
       name: <>{row.name}</>,
-      points: (
-        <>
-          <Typography
-            style={{
-              color:
-                row.points > 75 ? 'green' : row.points > 50 ? 'orange' : 'red'
-            }}
-            fontWeight={'bold'}
-          >
-            {row.points}
-          </Typography>
-        </>
-      ),
       wins: (
         <>
           <Typography
@@ -131,7 +118,20 @@ export const finalPositionsTableIndividualMapper = (data: any) => {
             {row.effectiveness}
           </Typography>
         </>
-      )
+      ),
+      points: (
+        <>
+          <Typography
+            style={{
+              color:
+                row.points > 75 ? 'green' : row.points > 50 ? 'orange' : 'red'
+            }}
+            fontWeight={'bold'}
+          >
+            {row.points}
+          </Typography>
+        </>
+      ),
     };
   });
 };
@@ -148,19 +148,6 @@ export const positionsTableByPairsMapper = (data: any) => {
       ),
       pair: <>{row.pair}</>,
       table: <>{row.table}</>,
-      points: (
-        <>
-          <Typography
-            style={{
-              color:
-                row.points > 75 ? 'green' : row.points > 50 ? 'orange' : 'red'
-            }}
-            fontWeight={'bold'}
-          >
-            {row.points}
-          </Typography>
-        </>
-      ),
       wins: (
         <>
           <Typography
@@ -200,7 +187,20 @@ export const positionsTableByPairsMapper = (data: any) => {
             {row.effectiveness}
           </Typography>
         </>
-      )
+      ),
+      points: (
+        <>
+          <Typography
+            style={{
+              color:
+                row.points > 75 ? 'green' : row.points > 50 ? 'orange' : 'red'
+            }}
+            fontWeight={'bold'}
+          >
+            {row.points}
+          </Typography>
+        </>
+      ),
     };
   });
 };
@@ -222,19 +222,6 @@ export const finalPositionsTableByPairsMapper = (data: any) => {
         </>
       ),
       name: <>{row.name}</>,
-      points: (
-        <>
-          <Typography
-            style={{
-              color:
-                row.points > 75 ? 'green' : row.points > 50 ? 'orange' : 'red'
-            }}
-            fontWeight={'bold'}
-          >
-            {row.points}
-          </Typography>
-        </>
-      ),
       wins: (
         <>
           <Typography
@@ -274,7 +261,20 @@ export const finalPositionsTableByPairsMapper = (data: any) => {
             {row.effectiveness}
           </Typography>
         </>
-      )
+      ),
+      points: (
+        <>
+          <Typography
+            style={{
+              color:
+                row.points > 75 ? 'green' : row.points > 50 ? 'orange' : 'red'
+            }}
+            fontWeight={'bold'}
+          >
+            {row.points}
+          </Typography>
+        </>
+      ),
     };
   });
 };

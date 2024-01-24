@@ -28,6 +28,7 @@ import {
 import ReactTable from '@/components/ReactTable/ReactTable';
 import { roundsHistoryColumns } from '../constants/positionsTableColumns';
 import { roundsHistoryMapper } from '../constants/mapper';
+import { ellipsisText } from '@/utils/ellipsis-text';
 
 const PlayerCard = ({
   player,
@@ -83,7 +84,7 @@ const PlayerCard = ({
       >
         <Avatar className={styles.avatar}>
           {player.name.length
-            ? `${player.name[0]}${player.name.split(' ')[1] ?? ''}`
+            ? `${player.name[0]}${player.name.split(' ')[1][0] ?? ''}`
             : ''}
         </Avatar>
         <Typography
@@ -270,12 +271,12 @@ const TableComponent: React.FC<TableComponentProps> = ({
                   style={{
                     background:
                       tableData[
-                        `pair${lastResultsLog?.finalWinner ?? 1}Color`
+                        `pair${lastResultsLog?.finalWinner + 1 ?? 1}Color`
                       ] + '1f',
                     borderColor:
-                      tableData[`pair${lastResultsLog?.finalWinner ?? 1}Color`],
+                      tableData[`pair${lastResultsLog?.finalWinner + 1 ?? 1}Color`],
                     color:
-                      tableData[`pair${lastResultsLog?.finalWinner ?? 1}Color`]
+                      tableData[`pair${lastResultsLog?.finalWinner + 1 ?? 1}Color`]
                   }}
                 >
                   {thisTablePairs[lastResultsLog?.finalWinner ?? 1].map(
@@ -284,7 +285,7 @@ const TableComponent: React.FC<TableComponentProps> = ({
                         <>
                           <div className={styles.inputs}>
                             <Typography fontSize={'20px'} fontWeight={'bold'}>
-                              {player.name.split(' ')}
+                              {ellipsisText(player.name, 10)}
                             </Typography>
                           </div>
                           {indexPlayer < 1 && (
@@ -293,7 +294,7 @@ const TableComponent: React.FC<TableComponentProps> = ({
                                 color:
                                   tableData[
                                     `pair${
-                                      lastResultsLog?.finalWinner ?? 1
+                                      (lastResultsLog?.finalWinner && lastResultsLog?.finalWinner + 1) ?? 1
                                     }Color`
                                   ]
                               }}

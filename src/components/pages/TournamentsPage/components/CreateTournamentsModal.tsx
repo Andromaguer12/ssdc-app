@@ -353,7 +353,7 @@ const CreateTournamentsModal: React.FC<ModalProps> = ({
                                             control={<Radio />}
                                             label="Individual"
                                           />
-                                          <FormControlLabel
+                                          {/*<FormControlLabel
                                             value="pairs"
                                             control={<Radio />}
                                             label="Parejas"
