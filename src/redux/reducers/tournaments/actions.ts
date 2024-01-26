@@ -207,6 +207,8 @@ const tournamentsSlice = createSlice({
 
     builder.addCase(deleteTournament.pending, (state, action: any) => {
       state.deleteTournament.loadingDeleteTournament = true;
+      state.deleteTournament.successDeleteTournament = false;
+      state.deleteTournament.errorDeleteTournament = null;
     });
     builder.addCase(deleteTournament.fulfilled, (state, action) => {
       state.deleteTournament.loadingDeleteTournament = false;
