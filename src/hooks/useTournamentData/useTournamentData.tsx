@@ -153,14 +153,14 @@ const useTournamentData = (tournamentId: string) => {
               pair2: currentWinner === 1 ? pair2Results : 0
             },
             effectivenessByPlayer: {
-              p1: 100 - p1,
-              p2: 100 - p2,
-              p3: 100 - p3,
-              p4: 100 - p4
+              p1: currentWinner === 0 ? 100 - pair2Results : (100 - pair2Results)*-1,
+              p2: currentWinner === 0 ? 100 - pair2Results : (100 - pair2Results)*-1,
+              p3: currentWinner === 1 ? 100 - pair1Results : (100 - pair1Results)*-1,
+              p4: currentWinner === 1 ? 100 - pair1Results : (100 - pair1Results)*-1
             },
             effectivenessByPair: {
-              pair1: 100 - pair1Results,
-              pair2: 100 - pair2Results
+              pair1: currentWinner === 0 ? 100 - pair2Results : (100 - pair2Results)*-1,
+              pair2: currentWinner === 1 ? 100 - pair1Results : (100 - pair1Results)*-1
             },
             roundWinner: currentWinner,
             sanctions: [],

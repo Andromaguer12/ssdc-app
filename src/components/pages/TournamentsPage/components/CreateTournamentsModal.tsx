@@ -72,7 +72,7 @@ const UserCard = ({
     >
       <Avatar>
         {user.name.length
-          ? `${user.name[0]}${user.name.split(' ')[1] ?? ''}`
+          ? `${user.name[0]}${user.name.split(' ')[1][0] ?? ''}`
           : ''}
       </Avatar>
       <Typography
