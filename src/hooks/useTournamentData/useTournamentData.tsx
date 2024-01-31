@@ -126,9 +126,13 @@ const useTournamentData = (tournamentId: string) => {
     ) => {
       if (tournament?.status === 'active') {
         if (p1 > -1 && p2 > -1 && p3 > -1 && p4 > -1) {
-          const pair1Results = p1 + p2;
-          const pair2Results = p3 + p4;
+          const pair1Results = p1;
+          const pair2Results = p3;
           const currentWinner = pair2Results > pair1Results ? 1 : 0;
+          const effectiveness = currentWinner === 0 ? 100 - pair2Results : 100 - pair1Results
+          const effectivenessPair1 = currentWinner === 0 ? effectiveness : effectiveness*-1
+          const effectivenessPair2 = currentWinner === 1 ? effectiveness : effectiveness*-1
+
           const isFinalWinner =
             currentPointsByPair.pair1 +
               (currentWinner === 1 ? 0 : pair1Results) >=
@@ -153,20 +157,23 @@ const useTournamentData = (tournamentId: string) => {
               pair2: currentWinner === 1 ? pair2Results : 0
             },
             effectivenessByPlayer: {
-              p1: currentWinner === 0 ? 100 - pair2Results : (100 - pair1Results)*-1,
-              p2: currentWinner === 0 ? 100 - pair2Results : (100 - pair1Results)*-1,
-              p3: currentWinner === 1 ? 100 - pair1Results : (100 - pair2Results)*-1,
-              p4: currentWinner === 1 ? 100 - pair1Results : (100 - pair2Results)*-1
+              p1: effectivenessPair1,
+              p2: effectivenessPair1,
+              p3: effectivenessPair2,
+              p4: effectivenessPair2
             },
             effectivenessByPair: {
-              pair1: currentWinner === 0 ? 100 - pair2Results : (100 - pair1Results)*-1,
-              pair2: currentWinner === 1 ? 100 - pair1Results : (100 - pair2Results)*-1
+              pair1: effectivenessPair1,
+              pair2: effectivenessPair2
             },
             roundWinner: currentWinner,
             sanctions: [],
             finalWinner: isFinalWinner,
             tableMatchEnded: typeof isFinalWinner === 'number'
           };
+
+
+          console.log(resultsPayload)
 
           const indexOfTable = tournament?.tables.tables.findIndex(
             ({ tableId: tId }: { tableId: string }) => tId === tableId

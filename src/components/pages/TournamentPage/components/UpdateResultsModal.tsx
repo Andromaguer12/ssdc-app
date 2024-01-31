@@ -133,15 +133,18 @@ const UpdateTournamentModal: React.FC<ModalProps> = ({
 
       if (
         values.p1 > -1 &&
-        values.p2 > -1 &&
         values.p3 > -1 &&
-        values.p4 > -1 &&
         !successUpdateTournament
       ) {
         tournamentAPI.registerResultsByTable(
           currentTableData.tableId,
           currentTableData.currentTableRound,
-          values,
+          {
+            p1: values.p1,
+            p2: values.p1,
+            p3: values.p3,
+            p4: values.p3,
+          },
           {
             pair1,
             pair2
@@ -214,6 +217,23 @@ const UpdateTournamentModal: React.FC<ModalProps> = ({
                     </Typography>
                     {currentTableData?.thisTablePairs.map(
                       (pair: any, index: number) => {
+                        let currentPlayer = '';
+
+                        switch (
+                          index.toString()
+                        ) {
+                          case '0':
+                            currentPlayer = 'p1';
+                            break;
+                          case '1':
+                            currentPlayer = 'p3';
+                            break;
+
+                          default:
+                            currentPlayer = 'p1';
+                            break;
+                        }
+
                         return (
                           <div
                             className={styles.pair}
@@ -226,51 +246,22 @@ const UpdateTournamentModal: React.FC<ModalProps> = ({
                               color: currentTableData[`pair${index + 1}Color`]
                             }}
                           >
-                            {pair.map(
-                              (player: UserInterface, indexPlayer: number) => {
-                                let currentPlayer = '';
-
-                                switch (
-                                  index.toString() + indexPlayer.toString()
-                                ) {
-                                  case '00':
-                                    currentPlayer = 'p1';
-                                    break;
-                                  case '01':
-                                    currentPlayer = 'p2';
-                                    break;
-                                  case '10':
-                                    currentPlayer = 'p3';
-                                    break;
-                                  case '11':
-                                    currentPlayer = 'p4';
-                                    break;
-
-                                  default:
-                                    currentPlayer = 'p1';
-                                    break;
+                            <div className={styles.inputs}>
+                              <Typography fontWeight={'bold'}>
+                                {pair.map((player: UserInterface) => player.name).join(" - ")}
+                              </Typography>
+                              <TextField
+                                fullWidth
+                                type="number"
+                                style={{ marginTop: '7px' }}
+                                value={
+                                  values[
+                                    currentPlayer as keyof typeof formInitialFormState
+                                  ]
                                 }
-
-                                return (
-                                  <div className={styles.inputs}>
-                                    <Typography fontWeight={'bold'}>
-                                      {player.name}
-                                    </Typography>
-                                    <TextField
-                                      fullWidth
-                                      type="number"
-                                      style={{ marginTop: '7px' }}
-                                      value={
-                                        values[
-                                          currentPlayer as keyof typeof formInitialFormState
-                                        ]
-                                      }
-                                      onChange={handleChange(currentPlayer)}
-                                    />
-                                  </div>
-                                );
-                              }
-                            )}
+                                onChange={handleChange(currentPlayer)}
+                              />
+                            </div>
                           </div>
                         );
                       }
