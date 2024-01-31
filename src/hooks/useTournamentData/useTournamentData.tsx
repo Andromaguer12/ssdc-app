@@ -153,8 +153,8 @@ const useTournamentData = (tournamentId: string) => {
               p4
             },
             pointsPerPair: {
-              pair1: currentWinner === 1 ? 0 : pair1Results,
-              pair2: currentWinner === 1 ? pair2Results : 0
+              pair1: pair1Results,
+              pair2: pair2Results
             },
             effectivenessByPlayer: {
               p1: effectivenessPair1,
@@ -172,8 +172,6 @@ const useTournamentData = (tournamentId: string) => {
             tableMatchEnded: typeof isFinalWinner === 'number'
           };
 
-
-          console.log(resultsPayload)
 
           const indexOfTable = tournament?.tables.tables.findIndex(
             ({ tableId: tId }: { tableId: string }) => tId === tableId
