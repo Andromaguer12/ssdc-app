@@ -337,14 +337,17 @@ const useTournamentData = (tournamentId: string) => {
             });
 
             logs.sort((a, b) => {
-              if(a.points !== b.points) {
-                return a.points - b.points;
-              }
-              else if(a.wins === b.wins) {
+              if(a.wins === b.wins) {
                 return a.wins - b.wins;
+              }else
+              if(a.defeats === b.defeats) {
+                return a.defeats - b.defeats;
               }else if(a.effectiveness === b.effectiveness) {
                 return a.effectiveness - b.effectiveness;
-              }   
+              } else if(a.points !== b.points) {
+                return a.points - b.points;
+              }
+              return 1  
               
               return 1
           });
@@ -405,14 +408,17 @@ const useTournamentData = (tournamentId: string) => {
             });
 
             logs.sort((a, b) => {
-              if(a.points !== b.points) {
-                return a.points - b.points;
-              }
-              else if(a.wins === b.wins) {
+              if(a.wins === b.wins) {
                 return a.wins - b.wins;
+              }else
+              if(a.defeats === b.defeats) {
+                return a.defeats - b.defeats;
               }else if(a.effectiveness === b.effectiveness) {
                 return a.effectiveness - b.effectiveness;
-              }   
+              } else if(a.points !== b.points) {
+                return a.points - b.points;
+              }
+              return 1  
               
               return 1
           });
@@ -561,13 +567,15 @@ const useTournamentData = (tournamentId: string) => {
           });
 
           logs.sort((a, b) => {
-            if(a.points !== b.points) {
-              return a.points - b.points;
-            }
-            else if(a.wins === b.wins) {
+            if(a.wins === b.wins) {
               return a.wins - b.wins;
+            }else
+            if(a.defeats === b.defeats) {
+              return a.defeats - b.defeats;
             }else if(a.effectiveness === b.effectiveness) {
               return a.effectiveness - b.effectiveness;
+            } else if(a.points !== b.points) {
+              return a.points - b.points;
             }
             return 1
           });
@@ -618,15 +626,16 @@ const useTournamentData = (tournamentId: string) => {
           });
 
           logs.sort((a, b) => {
-            if(a.points !== b.points) {
-              return a.points - b.points;
-            }
-            else if(a.wins === b.wins) {
+            if(a.wins === b.wins) {
               return a.wins - b.wins;
+            }else
+            if(a.defeats === b.defeats) {
+              return a.defeats - b.defeats;
             }else if(a.effectiveness === b.effectiveness) {
               return a.effectiveness - b.effectiveness;
-            }   
-            
+            } else if(a.points !== b.points) {
+              return a.points - b.points;
+            }            
             return 1
         });
 
