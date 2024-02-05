@@ -820,7 +820,18 @@ const useTournamentData = (tournamentId: string) => {
         }
 
         finalParticipantResults.sort((a: any, b: any) => {
-          return b.points - a.points;
+          if(b.wins === a.wins) {
+            return b.wins - a.wins;
+          }else
+          if(b.defeats === a.defeats) {
+            return b.defeats - a.defeats;
+          }else if(b.effectiveness === a.effectiveness) {
+            return b.effectiveness - a.effectiveness;
+          } else if(b.points !== a.points) {
+            return b.points - a.points;
+          }
+          return 1
+          // return b.points - a.points;
         });
 
         return {
