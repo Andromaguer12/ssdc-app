@@ -47,7 +47,7 @@ export const positionsTableIndividualColumns = [
     padding: '5px',
     width: '11.66%',
     align: 'center'
-  },
+  }
 ];
 
 export const finalPositionsTableIndividualColumns = [
@@ -65,7 +65,7 @@ export const finalPositionsTableIndividualColumns = [
     width: '20%',
     align: 'center'
   },
-  
+
   {
     header: 'Victorias',
     accessor: 'wins',
@@ -93,7 +93,7 @@ export const finalPositionsTableIndividualColumns = [
     padding: '5px',
     width: '20%',
     align: 'center'
-  },
+  }
 ];
 
 export const positionsTableByPairsColumns = [
@@ -138,7 +138,7 @@ export const positionsTableByPairsColumns = [
     padding: '5px',
     width: '10%',
     align: 'center'
-  },
+  }
 ];
 
 export const finalPositionsTableByPairsColumns = [
@@ -183,7 +183,7 @@ export const finalPositionsTableByPairsColumns = [
     padding: '5px',
     width: '20%',
     align: 'center'
-  },
+  }
 ];
 
 export const positionsTableByTablesColumns = [

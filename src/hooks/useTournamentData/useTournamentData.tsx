@@ -129,9 +129,12 @@ const useTournamentData = (tournamentId: string) => {
           const pair1Results = p1;
           const pair2Results = p3;
           const currentWinner = pair2Results > pair1Results ? 1 : 0;
-          const effectiveness = currentWinner === 0 ? 100 - pair2Results : 100 - pair1Results
-          const effectivenessPair1 = currentWinner === 0 ? effectiveness : effectiveness*-1
-          const effectivenessPair2 = currentWinner === 1 ? effectiveness : effectiveness*-1
+          const effectiveness =
+            currentWinner === 0 ? 100 - pair2Results : 100 - pair1Results;
+          const effectivenessPair1 =
+            currentWinner === 0 ? effectiveness : effectiveness * -1;
+          const effectivenessPair2 =
+            currentWinner === 1 ? effectiveness : effectiveness * -1;
 
           const isFinalWinner =
             currentPointsByPair.pair1 +
@@ -171,7 +174,6 @@ const useTournamentData = (tournamentId: string) => {
             finalWinner: isFinalWinner,
             tableMatchEnded: typeof isFinalWinner === 'number'
           };
-
 
           const indexOfTable = tournament?.tables.tables.findIndex(
             ({ tableId: tId }: { tableId: string }) => tId === tableId
@@ -319,11 +321,12 @@ const useTournamentData = (tournamentId: string) => {
                       }
                     );
 
+
                     const payload = {
                       id: player.id,
                       name: player.name,
                       pair: pairIdx + 1,
-                      table: tableIdx + 1,
+                      table: resultsToCalculate.tables.tables.findIndex(({tableId}) => tableId === key) + 1,
                       points: currentPlayerPoints,
                       wins: currentPlayerWins,
                       defeats: currentPlayerDefeats,
@@ -337,20 +340,17 @@ const useTournamentData = (tournamentId: string) => {
             });
 
             logs.sort((a, b) => {
-              if(a.wins === b.wins) {
+              if (a.wins !== b.wins) {
                 return a.wins - b.wins;
-              }else
-              if(a.defeats === b.defeats) {
+              } else if (a.defeats !== b.defeats) {
                 return a.defeats - b.defeats;
-              }else if(a.effectiveness === b.effectiveness) {
+              } else if (a.effectiveness !== b.effectiveness) {
                 return a.effectiveness - b.effectiveness;
-              } else if(a.points !== b.points) {
+              } else if (a.points !== b.points) {
                 return a.points - b.points;
               }
-              return 1  
-              
-              return 1
-          });
+              return 1;
+            });
 
             logs.reverse();
 
@@ -395,7 +395,7 @@ const useTournamentData = (tournamentId: string) => {
                     pairP2Id: pair[1].id,
                     name: pair[0]?.name + ' - ' + pair[1]?.name,
                     pair: pairIdx + 1,
-                    table: tableIdx + 1,
+                    table: resultsToCalculate.tables.tables.findIndex(({tableId}) => tableId === key) + 1,
                     points: currentPairPoints,
                     wins: currentPlayerWins,
                     defeats: currentPlayerDefeats,
@@ -408,20 +408,17 @@ const useTournamentData = (tournamentId: string) => {
             });
 
             logs.sort((a, b) => {
-              if(a.wins === b.wins) {
+              if (a.wins !== b.wins) {
                 return a.wins - b.wins;
-              }else
-              if(a.defeats === b.defeats) {
+              } else if (a.defeats !== b.defeats) {
                 return a.defeats - b.defeats;
-              }else if(a.effectiveness === b.effectiveness) {
+              } else if (a.effectiveness !== b.effectiveness) {
                 return a.effectiveness - b.effectiveness;
-              } else if(a.points !== b.points) {
+              } else if (a.points !== b.points) {
                 return a.points - b.points;
               }
-              return 1  
-              
-              return 1
-          });
+              return 1;
+            });
 
             logs.reverse();
 
@@ -431,7 +428,7 @@ const useTournamentData = (tournamentId: string) => {
           if (type === 'tables') {
             const logs: any[] = [];
 
-            tableKeys.forEach((key, tableIdx) => {
+            tableKeys.forEach((key) => {
               let currentTableIndex = 0;
               const currentTable = thisTablePairsMapped.find(
                 ({ tableId }, index) => {
@@ -550,11 +547,12 @@ const useTournamentData = (tournamentId: string) => {
                   }
                 );
 
+
                 const payload = {
                   id: player.id,
                   name: player.name,
                   pair: pairIdx + 1,
-                  table: tableIdx + 1,
+                  table: tournament.tables.tables.findIndex(({tableId}) => tableId === key) + 1,
                   points: currentPlayerPoints,
                   wins: currentPlayerWins,
                   defeats: currentPlayerDefeats,
@@ -567,17 +565,16 @@ const useTournamentData = (tournamentId: string) => {
           });
 
           logs.sort((a, b) => {
-            if(a.wins === b.wins) {
+            if (a.wins !== b.wins) {
               return a.wins - b.wins;
-            }else
-            if(a.defeats === b.defeats) {
+            } else if (a.defeats !== b.defeats) {
               return a.defeats - b.defeats;
-            }else if(a.effectiveness === b.effectiveness) {
+            } else if (a.effectiveness !== b.effectiveness) {
               return a.effectiveness - b.effectiveness;
-            } else if(a.points !== b.points) {
+            } else if (a.points !== b.points) {
               return a.points - b.points;
             }
-            return 1
+            return 1;
           });
 
           logs.reverse();
@@ -614,7 +611,7 @@ const useTournamentData = (tournamentId: string) => {
                 pairP2Id: pair[1].id,
                 name: pair[0].name + ' - ' + pair[1].name,
                 pair: pairIdx + 1,
-                table: tableIdx + 1,
+                table: tournament.tables.tables.findIndex(({tableId}) => tableId === key) + 1,
                 points: currentPairPoints,
                 wins: currentPlayerWins,
                 defeats: currentPlayerDefeats,
@@ -626,18 +623,17 @@ const useTournamentData = (tournamentId: string) => {
           });
 
           logs.sort((a, b) => {
-            if(a.wins === b.wins) {
+            if (a.wins !== b.wins) {
               return a.wins - b.wins;
-            }else
-            if(a.defeats === b.defeats) {
+            } else if (a.defeats !== b.defeats) {
               return a.defeats - b.defeats;
-            }else if(a.effectiveness === b.effectiveness) {
+            } else if (a.effectiveness !== b.effectiveness) {
               return a.effectiveness - b.effectiveness;
-            } else if(a.points !== b.points) {
+            } else if (a.points !== b.points) {
               return a.points - b.points;
-            }            
-            return 1
-        });
+            }
+            return 1;
+          });
 
           logs.reverse();
 
@@ -647,7 +643,7 @@ const useTournamentData = (tournamentId: string) => {
         if (type === 'tables') {
           const logs: any[] = [];
 
-          tableKeys.forEach((key, tableIdx) => {
+          tableKeys.forEach((key) => {
             let currentTableIndex = 0;
             const currentTable = thisTablePairsMapped.find(
               ({ tableId }, index) => {
@@ -710,7 +706,7 @@ const useTournamentData = (tournamentId: string) => {
         organizeTournamentsPlayersWithSimilarPerformanceArray(
           calculateTablePositions(tournament.format, storedRoundPayload),
           tournamentData.tables,
-          tournament.format,
+          tournament.format
         );
 
       if (!newPlayersLayout.error) {
@@ -820,17 +816,16 @@ const useTournamentData = (tournamentId: string) => {
         }
 
         finalParticipantResults.sort((a: any, b: any) => {
-          if(b.wins === a.wins) {
+          if (b.wins !== a.wins) {
             return b.wins - a.wins;
-          }else
-          if(b.defeats === a.defeats) {
+          } else if (b.defeats !== a.defeats) {
             return b.defeats - a.defeats;
-          }else if(b.effectiveness === a.effectiveness) {
+          } else if (b.effectiveness !== a.effectiveness) {
             return b.effectiveness - a.effectiveness;
-          } else if(b.points !== a.points) {
+          } else if (b.points !== a.points) {
             return b.points - a.points;
           }
-          return 1
+          return 1;
           // return b.points - a.points;
         });
 

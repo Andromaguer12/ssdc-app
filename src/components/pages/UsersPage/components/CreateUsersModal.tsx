@@ -75,7 +75,6 @@ const CreateUsersModal: React.FC<ModalProps> = ({
   const handleSubmit = React.useCallback(
     (values: formState, { resetForm }: { resetForm: any }) => {
       if (editMode) {
-        console.log(values);
         dispatch(
           updateUser({
             context: fContext,

@@ -58,7 +58,7 @@ export const positionsTableIndividualMapper = (data: any) => {
             {row.points}
           </Typography>
         </>
-      ),
+      )
     };
   });
 };
@@ -131,7 +131,7 @@ export const finalPositionsTableIndividualMapper = (data: any) => {
             {row.points}
           </Typography>
         </>
-      ),
+      )
     };
   });
 };
@@ -200,7 +200,7 @@ export const positionsTableByPairsMapper = (data: any) => {
             {row.points}
           </Typography>
         </>
-      ),
+      )
     };
   });
 };
@@ -274,7 +274,7 @@ export const finalPositionsTableByPairsMapper = (data: any) => {
             {row.points}
           </Typography>
         </>
-      ),
+      )
     };
   });
 };

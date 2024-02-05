@@ -274,9 +274,13 @@ const TableComponent: React.FC<TableComponentProps> = ({
                         `pair${lastResultsLog?.finalWinner + 1 ?? 1}Color`
                       ] + '1f',
                     borderColor:
-                      tableData[`pair${lastResultsLog?.finalWinner + 1 ?? 1}Color`],
+                      tableData[
+                        `pair${lastResultsLog?.finalWinner + 1 ?? 1}Color`
+                      ],
                     color:
-                      tableData[`pair${lastResultsLog?.finalWinner + 1 ?? 1}Color`]
+                      tableData[
+                        `pair${lastResultsLog?.finalWinner + 1 ?? 1}Color`
+                      ]
                   }}
                 >
                   {thisTablePairs[lastResultsLog?.finalWinner ?? 1].map(
@@ -294,7 +298,9 @@ const TableComponent: React.FC<TableComponentProps> = ({
                                 color:
                                   tableData[
                                     `pair${
-                                      (lastResultsLog?.finalWinner && lastResultsLog?.finalWinner + 1) ?? 1
+                                      (lastResultsLog?.finalWinner &&
+                                        lastResultsLog?.finalWinner + 1) ??
+                                      1
                                     }Color`
                                   ]
                               }}

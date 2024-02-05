@@ -131,11 +131,7 @@ const UpdateTournamentModal: React.FC<ModalProps> = ({
         );
       }
 
-      if (
-        values.p1 > -1 &&
-        values.p3 > -1 &&
-        !successUpdateTournament
-      ) {
+      if (values.p1 > -1 && values.p3 > -1 && !successUpdateTournament) {
         tournamentAPI.registerResultsByTable(
           currentTableData.tableId,
           currentTableData.currentTableRound,
@@ -143,7 +139,7 @@ const UpdateTournamentModal: React.FC<ModalProps> = ({
             p1: values.p1,
             p2: values.p1,
             p3: values.p3,
-            p4: values.p3,
+            p4: values.p3
           },
           {
             pair1,
@@ -219,9 +215,7 @@ const UpdateTournamentModal: React.FC<ModalProps> = ({
                       (pair: any, index: number) => {
                         let currentPlayer = '';
 
-                        switch (
-                          index.toString()
-                        ) {
+                        switch (index.toString()) {
                           case '0':
                             currentPlayer = 'p1';
                             break;
@@ -248,7 +242,9 @@ const UpdateTournamentModal: React.FC<ModalProps> = ({
                           >
                             <div className={styles.inputs}>
                               <Typography fontWeight={'bold'}>
-                                {pair.map((player: UserInterface) => player.name).join(" - ")}
+                                {pair
+                                  .map((player: UserInterface) => player.name)
+                                  .join(' - ')}
                               </Typography>
                               <TextField
                                 fullWidth
