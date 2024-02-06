@@ -1,5 +1,6 @@
 import {
   IndividualTableInterface,
+  PairInterface,
   PairsTableInterface,
   ResultsInterface,
   TableObjectInterface,
@@ -25,11 +26,11 @@ function generateRandomNumber(
 function organizeTournamentsPlayersWithSimilarPerformanceArray(
   calculatedResults: any[],
   playedTables: PairsTableInterface,
-  tournamentFormat: TournamentFormat
+  tournamentFormat: TournamentFormat,
 ): PairsTableInterface | { error: string } {
   if (tournamentFormat === 'individual') {
     const splittedResults = arraySplitter(calculatedResults, 4);
-
+    
     const tables: any[] = splittedResults.map((prevTable: any[]) => {
       return {
         tableId: uuidv4(),
@@ -48,13 +49,13 @@ function organizeTournamentsPlayersWithSimilarPerformanceArray(
           const pair = [table[j], table[j + 1]];
 
           if (tournamentFormat === 'individual') {
-            if (!arraysEqual(pair, playedTables.pairs[i].pair)) {
+            if (!existEqualPairInTables(pair, playedTables.pairs)) {
               pairs.push({ pair, table: tables[i].tableId });
             } else {
-              const randomNumber = generateRandomNumber(0, 3, [j, j + 1]);
+              const randomNumber = j == 2  ? 1 : j == 0 ? 3 : 1
               const pairReorganized = [table[j], table[randomNumber]];
 
-              pairs.push({ pairReorganized, table: tables[i].tableId });
+              pairs.push({ pair: pairReorganized, table: tables[i].tableId });
             }
           } else {
             pairs.push({ pair, table: tables[i].tableId });
@@ -77,15 +78,17 @@ function organizeTournamentsPlayersWithSimilarPerformanceArray(
   };
 }
 
-function arraysEqual(arr1: any[], arr2: any[]): boolean {
-  return (
-    arr1.length === arr2.length &&
-    arr1.every((value, index) => value === arr2[index])
-  );
+// function arraysEqual(arr1: any[], arr2: any[]): boolean {
+//   return (
+//     arr1.length === arr2.length &&
+//     arr1.every((value, index) => value === arr2[index])
+//   );
+// }
+
+const existEqualPairInTables = (pairToFind: string[], previousTables: any[]) => {
+  const samePairFound = previousTables.find((pair: any) => pair.pair.includes(pairToFind[0]) && pair.pair.includes(pairToFind[1]));
+  // console.log("pareja igual, a esta", pairToFind, "encontrada en", samePairFound)
+  return Boolean(samePairFound)
 }
-
-function getPairsForIndividual(roundPlayers: string[]) {}
-
-function getPairsForPairs(sortedPlayers: string[]) {}
 
 export default organizeTournamentsPlayersWithSimilarPerformanceArray;
