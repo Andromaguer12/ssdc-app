@@ -1,3 +1,5 @@
+import { positionsTableByPairsMapper, positionsTableByTablesMapper, positionsTableIndividualMapper } from '@/components/pages/TournamentPage/constants/mapper';
+import { positionsTableByPairsColumns, positionsTableByTablesColumns, positionsTableIndividualColumns } from '@/components/pages/TournamentPage/constants/positionsTableColumns';
 import useFetchingContext from '@/contexts/backendConection/hook';
 import { updateTournament } from '@/redux/reducers/tournaments/actions';
 import { useAppDispatch } from '@/redux/store';
@@ -245,7 +247,8 @@ const useTournamentData = (tournamentId: string) => {
   const calculateTablePositions = useCallback(
     (
       type: 'individual' | 'pairs' | 'tables',
-      resultsToCalculate?: StoredRoundDataInterface
+      resultsToCalculate?: StoredRoundDataInterface,
+      storedRounds?: StoredRoundDataInterface[]
     ) => {
       if (
         tournament &&
@@ -311,16 +314,26 @@ const useTournamentData = (tournamentId: string) => {
                       ({
                         pointsPerPlayer,
                         effectivenessByPlayer,
-                        roundWinner
-                      }: any) => {
+                        roundWinner,
+                        finalWinner
+                      }: any) => {                        
                         currentPlayerPoints += pointsPerPlayer[currentPlayer];
                         currentPlayerEffect +=
                           effectivenessByPlayer[currentPlayer];
-                        currentPlayerWins += roundWinner === pairIdx ? 1 : 0;
-                        currentPlayerDefeats += roundWinner !== pairIdx ? 1 : 0;
+                        currentPlayerWins += finalWinner === pairIdx ? 1 : 0;
+                        currentPlayerDefeats += finalWinner !== pairIdx ? 1 : 0;
                       }
                     );
 
+                    let historyWins = null;
+                    let historyDefeats = null;
+
+                    if (storedRounds) {
+                      const calculations = handleSumWinsAndDefeatsOfStoredResults(storedRounds, 'individual')?.find(({ currentRoundId }) => currentRoundId === resultsToCalculate.currentRoundId)
+
+                      historyWins = calculations?.resultsInIndividualFormat.find((p: any) => p.id === player.id).wins
+                      historyDefeats = calculations?.resultsInIndividualFormat.find((p: any) => p.id === player.id).defeats
+                    }
 
                     const payload = {
                       id: player.id,
@@ -328,8 +341,8 @@ const useTournamentData = (tournamentId: string) => {
                       pair: pairIdx + 1,
                       table: resultsToCalculate.tables.tables.findIndex(({tableId}) => tableId === key) + 1,
                       points: currentPlayerPoints,
-                      wins: currentPlayerWins,
-                      defeats: currentPlayerDefeats,
+                      wins: typeof historyWins === "number" ? historyWins : currentPlayerWins ,
+                      defeats: typeof historyDefeats === "number" ? historyDefeats : currentPlayerDefeats ,
                       effectiveness: currentPlayerEffect
                     };
 
@@ -704,7 +717,7 @@ const useTournamentData = (tournamentId: string) => {
 
       const newPlayersLayout: any =
         organizeTournamentsPlayersWithSimilarPerformanceArray(
-          calculateTablePositions(tournament.format, storedRoundPayload),
+          calculateTablePositions(tournament.format, storedRoundPayload, tournamentData.storedRounds),
           tournamentData.tables,
           tournament.format
         );
@@ -843,11 +856,50 @@ const useTournamentData = (tournamentId: string) => {
     [tournament, tournamentData]
   );
 
+  const handleSumWinsAndDefeatsOfStoredResults = useCallback((storedRounds: StoredRoundDataInterface[], calculationType: TournamentFormat) => {
+    if(calculationType === "individual") {
+      const mappedData = storedRounds.map((round) => ({
+        currentRoundId: round.currentRoundId,
+        resultsInIndividualFormat: calculateTablePositions(calculationType, round)
+      }))
+
+      const response = mappedData.map(({ resultsInIndividualFormat, currentRoundId }, index) => {
+        const resultsInIndividualFormatModified: any = resultsInIndividualFormat.map(({ id: playerId, ...player}) => {
+          let currentPlayerAccumulationOfWins = 0;
+          let currentPlayerAccumulationOfDefeats = 0;
+          
+          const previousRounds = index > 0 ? [...mappedData].splice(0, index) : [mappedData.map((s) => ({...s, resultsInIndividualFormat: s.resultsInIndividualFormat.map((w) => ({ ...w, wins: 0, defeats: 0}))}))[0]]
+
+          
+          previousRounds.forEach(({ resultsInIndividualFormat: p }) => {
+            currentPlayerAccumulationOfWins+=p.find(({id}) => id === playerId).wins+ player.wins
+            currentPlayerAccumulationOfDefeats+=p.find(({id}) => id === playerId).defeats+ player.defeats
+          })
+
+          return {
+            ...player,
+            id: playerId,
+            wins:currentPlayerAccumulationOfWins,
+            defeats:currentPlayerAccumulationOfDefeats
+          }
+        });
+
+        return {
+          currentRoundId,
+          resultsInIndividualFormat: resultsInIndividualFormatModified
+        }
+      })
+
+      return response
+    }
+  },[calculateTablePositions,positionsTableIndividualColumns,positionsTableIndividualMapper])
+
   return {
     tournamentData,
     errorDocument,
     tournamentAPI: {
       registerResultsByTable,
+      handleSumWinsAndDefeatsOfStoredResults,
       updateTournamentStatus,
       calculateTablePositions,
       handleNextGlobalRound,

@@ -510,6 +510,7 @@ const TournamentPage: React.FC<TournamentPageProps> = ({ tournamentId }) => {
                         calculateTablePositions={
                           tournamentAPI.calculateTablePositions
                         }
+                        storedRounds={tournamentData?.storedRounds}
                       />
                     </div>
                   </>
@@ -787,6 +788,7 @@ const TournamentPage: React.FC<TournamentPageProps> = ({ tournamentId }) => {
                         tournamentAPI.calculateTablePositions
                       }
                       resultsToCalculate={currentResults}
+                      storedRounds={tournamentData?.storedRounds}
                     />
                   </>
                 );

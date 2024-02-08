@@ -19,11 +19,13 @@ import { ErrorOutline } from '@mui/icons-material';
 interface PositionsTableProps {
   calculateTablePositions?: any;
   resultsToCalculate?: StoredRoundDataInterface;
+  storedRounds?: StoredRoundDataInterface[];
 }
 
 const PositionsTable: React.FC<PositionsTableProps> = ({
   calculateTablePositions,
-  resultsToCalculate
+  resultsToCalculate,
+  storedRounds
 }) => {
   const [performancesBy, setPerformancesBy] = useState<number>(0);
 
@@ -31,14 +33,14 @@ const PositionsTable: React.FC<PositionsTableProps> = ({
     {
       columns: positionsTableIndividualColumns,
       data: positionsTableIndividualMapper(
-        calculateTablePositions('individual', resultsToCalculate)
+        calculateTablePositions('individual', resultsToCalculate, storedRounds)
       ),
       name: 'individual'
     },
     {
       columns: positionsTableByPairsColumns,
       data: positionsTableByPairsMapper(
-        calculateTablePositions('pairs', resultsToCalculate)
+        calculateTablePositions('pairs', resultsToCalculate, storedRounds)
       ),
       name: 'pairs'
     },
