@@ -27,6 +27,7 @@ function organizeTournamentsPlayersWithSimilarPerformanceArray(
   calculatedResults: any[],
   playedTables: PairsTableInterface,
   tournamentFormat: TournamentFormat,
+  currentRound: number
 ): PairsTableInterface | { error: string } {
   if (tournamentFormat === 'individual') {
     const splittedResults = arraySplitter(calculatedResults, 4);
@@ -40,34 +41,26 @@ function organizeTournamentsPlayersWithSimilarPerformanceArray(
         currentTableRound: 1
       };
     });
-    const pairs: any[] = [];
 
-    for (let i = 0; i < tables.length; i++) {
-      const table = tables[i].table;
-      for (let j = 0; j < table.length; j += 2) {
-        if (table[j + 1]) {
-          const pair = [table[j], table[j + 1]];
-
-          if (tournamentFormat === 'individual') {
-            if (!existEqualPairInTables(pair, playedTables.pairs)) {
-              pairs.push({ pair, table: tables[i].tableId });
-            } else {
-              const randomNumber = j == 2  ? 1 : j == 0 ? 3 : 1
-              const pairReorganized = [table[j], table[randomNumber]];
-
-              pairs.push({ pair: pairReorganized, table: tables[i].tableId });
-            }
-          } else {
-            pairs.push({ pair, table: tables[i].tableId });
-          }
+    const pairs = splittedResults.map((table, index) => {
+      return [
+        {
+          pair: [table[0].id, table[2].id],
+          table: tables[index].tableId
+        },
+        {
+          pair: [table[1].id, table[3].id],
+          table: tables[index].tableId
         }
-      }
-    }
+      ]
+    }).flat()
 
     const tablePrev: PairsTableInterface = {
       tables,
       pairs
     };
+
+    // console.log(tablePrev)
 
     return tablePrev;
   }

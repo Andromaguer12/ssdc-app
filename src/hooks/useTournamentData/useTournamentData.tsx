@@ -327,12 +327,17 @@ const useTournamentData = (tournamentId: string) => {
 
                     let historyWins = null;
                     let historyDefeats = null;
+                    let historyEffectiveness = null;
+                    let historyPoints = null;
 
+                    
                     if (storedRounds) {
-                      const calculations = handleSumWinsAndDefeatsOfStoredResults(storedRounds, 'individual')?.find(({ currentRoundId }) => currentRoundId === resultsToCalculate.currentRoundId)
+                      const calculations = handleSumWinsAndDefeatsOfStoredResults(resultsToCalculate ? [...storedRounds, resultsToCalculate] : storedRounds, 'individual')?.find(({ currentRoundId }) => currentRoundId === resultsToCalculate.currentRoundId)
 
                       historyWins = calculations?.resultsInIndividualFormat.find((p: any) => p.id === player.id).wins
                       historyDefeats = calculations?.resultsInIndividualFormat.find((p: any) => p.id === player.id).defeats
+                      historyEffectiveness = calculations?.resultsInIndividualFormat.find((p: any) => p.id === player.id).effectiveness
+                      historyPoints = calculations?.resultsInIndividualFormat.find((p: any) => p.id === player.id).points
                     }
 
                     const payload = {
@@ -340,10 +345,10 @@ const useTournamentData = (tournamentId: string) => {
                       name: player.name,
                       pair: pairIdx + 1,
                       table: resultsToCalculate.tables.tables.findIndex(({tableId}) => tableId === key) + 1,
-                      points: currentPlayerPoints,
+                      points: typeof historyPoints === "number" ? historyPoints : currentPlayerPoints,
                       wins: typeof historyWins === "number" ? historyWins : currentPlayerWins ,
                       defeats: typeof historyDefeats === "number" ? historyDefeats : currentPlayerDefeats ,
-                      effectiveness: currentPlayerEffect
+                      effectiveness: typeof historyEffectiveness === "number" ? historyEffectiveness : currentPlayerEffect
                     };
 
                     logs.push(payload);
@@ -719,7 +724,8 @@ const useTournamentData = (tournamentId: string) => {
         organizeTournamentsPlayersWithSimilarPerformanceArray(
           calculateTablePositions(tournament.format, storedRoundPayload, tournamentData.storedRounds),
           tournamentData.tables,
-          tournament.format
+          tournament.format,
+          tournament.currentGlobalRound 
         );
 
       if (!newPlayersLayout.error) {
@@ -867,20 +873,26 @@ const useTournamentData = (tournamentId: string) => {
         const resultsInIndividualFormatModified: any = resultsInIndividualFormat.map(({ id: playerId, ...player}) => {
           let currentPlayerAccumulationOfWins = 0;
           let currentPlayerAccumulationOfDefeats = 0;
+          let currentPlayerAccumulationOfEffectiveness = 0;
+          let currentPlayerAccumulationOfPoints = 0;
           
-          const previousRounds = index > 0 ? [...mappedData].splice(0, index) : [mappedData.map((s) => ({...s, resultsInIndividualFormat: s.resultsInIndividualFormat.map((w) => ({ ...w, wins: 0, defeats: 0}))}))[0]]
+          const previousRounds = index > 0 ? [...mappedData].splice(0, index) : [mappedData.map((s) => ({...s, resultsInIndividualFormat: s.resultsInIndividualFormat.map((w) => ({ ...w, wins: 0, defeats: 0, effectiveness: 0, points: 0 }))}))[0]]
 
           
           previousRounds.forEach(({ resultsInIndividualFormat: p }) => {
             currentPlayerAccumulationOfWins+=p.find(({id}) => id === playerId).wins+ player.wins
             currentPlayerAccumulationOfDefeats+=p.find(({id}) => id === playerId).defeats+ player.defeats
+            currentPlayerAccumulationOfEffectiveness+=p.find(({id}) => id === playerId).effectiveness+ player.effectiveness
+            currentPlayerAccumulationOfPoints+=p.find(({id}) => id === playerId).points+ player.points
           })
 
           return {
             ...player,
             id: playerId,
             wins:currentPlayerAccumulationOfWins,
-            defeats:currentPlayerAccumulationOfDefeats
+            defeats:currentPlayerAccumulationOfDefeats,
+            effectiveness: currentPlayerAccumulationOfEffectiveness,
+            points: currentPlayerAccumulationOfPoints,
           }
         });
 
