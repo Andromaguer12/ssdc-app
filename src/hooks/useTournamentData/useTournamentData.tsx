@@ -1,5 +1,13 @@
-import { positionsTableByPairsMapper, positionsTableByTablesMapper, positionsTableIndividualMapper } from '@/components/pages/TournamentPage/constants/mapper';
-import { positionsTableByPairsColumns, positionsTableByTablesColumns, positionsTableIndividualColumns } from '@/components/pages/TournamentPage/constants/positionsTableColumns';
+import {
+  positionsTableByPairsMapper,
+  positionsTableByTablesMapper,
+  positionsTableIndividualMapper
+} from '@/components/pages/TournamentPage/constants/mapper';
+import {
+  positionsTableByPairsColumns,
+  positionsTableByTablesColumns,
+  positionsTableIndividualColumns
+} from '@/components/pages/TournamentPage/constants/positionsTableColumns';
 import useFetchingContext from '@/contexts/backendConection/hook';
 import { updateTournament } from '@/redux/reducers/tournaments/actions';
 import { useAppDispatch } from '@/redux/store';
@@ -316,7 +324,7 @@ const useTournamentData = (tournamentId: string) => {
                         effectivenessByPlayer,
                         roundWinner,
                         finalWinner
-                      }: any) => {                        
+                      }: any) => {
                         currentPlayerPoints += pointsPerPlayer[currentPlayer];
                         currentPlayerEffect +=
                           effectivenessByPlayer[currentPlayer];
@@ -330,25 +338,60 @@ const useTournamentData = (tournamentId: string) => {
                     let historyEffectiveness = null;
                     let historyPoints = null;
 
-                    
                     if (storedRounds) {
-                      const calculations = handleSumWinsAndDefeatsOfStoredResults(resultsToCalculate ? [...storedRounds, resultsToCalculate] : storedRounds, 'individual')?.find(({ currentRoundId }) => currentRoundId === resultsToCalculate.currentRoundId)
+                      const calculations =
+                        handleSumWinsAndDefeatsOfStoredResults(
+                          resultsToCalculate
+                            ? [...storedRounds, resultsToCalculate]
+                            : storedRounds,
+                          'individual'
+                        )?.find(
+                          ({ currentRoundId }) =>
+                            currentRoundId === resultsToCalculate.currentRoundId
+                        );
 
-                      historyWins = calculations?.resultsInIndividualFormat.find((p: any) => p.id === player.id).wins
-                      historyDefeats = calculations?.resultsInIndividualFormat.find((p: any) => p.id === player.id).defeats
-                      historyEffectiveness = calculations?.resultsInIndividualFormat.find((p: any) => p.id === player.id).effectiveness
-                      historyPoints = calculations?.resultsInIndividualFormat.find((p: any) => p.id === player.id).points
+                      historyWins =
+                        calculations?.resultsInIndividualFormat.find(
+                          (p: any) => p.id === player.id
+                        ).wins;
+                      historyDefeats =
+                        calculations?.resultsInIndividualFormat.find(
+                          (p: any) => p.id === player.id
+                        ).defeats;
+                      historyEffectiveness =
+                        calculations?.resultsInIndividualFormat.find(
+                          (p: any) => p.id === player.id
+                        ).effectiveness;
+                      historyPoints =
+                        calculations?.resultsInIndividualFormat.find(
+                          (p: any) => p.id === player.id
+                        ).points;
                     }
 
                     const payload = {
                       id: player.id,
                       name: player.name,
                       pair: pairIdx + 1,
-                      table: resultsToCalculate.tables.tables.findIndex(({tableId}) => tableId === key) + 1,
-                      points: typeof historyPoints === "number" ? historyPoints : currentPlayerPoints,
-                      wins: typeof historyWins === "number" ? historyWins : currentPlayerWins ,
-                      defeats: typeof historyDefeats === "number" ? historyDefeats : currentPlayerDefeats ,
-                      effectiveness: typeof historyEffectiveness === "number" ? historyEffectiveness : currentPlayerEffect
+                      table:
+                        resultsToCalculate.tables.tables.findIndex(
+                          ({ tableId }) => tableId === key
+                        ) + 1,
+                      points:
+                        typeof historyPoints === 'number'
+                          ? historyPoints
+                          : currentPlayerPoints,
+                      wins:
+                        typeof historyWins === 'number'
+                          ? historyWins
+                          : currentPlayerWins,
+                      defeats:
+                        typeof historyDefeats === 'number'
+                          ? historyDefeats
+                          : currentPlayerDefeats,
+                      effectiveness:
+                        typeof historyEffectiveness === 'number'
+                          ? historyEffectiveness
+                          : currentPlayerEffect
                     };
 
                     logs.push(payload);
@@ -413,7 +456,10 @@ const useTournamentData = (tournamentId: string) => {
                     pairP2Id: pair[1].id,
                     name: pair[0]?.name + ' - ' + pair[1]?.name,
                     pair: pairIdx + 1,
-                    table: resultsToCalculate.tables.tables.findIndex(({tableId}) => tableId === key) + 1,
+                    table:
+                      resultsToCalculate.tables.tables.findIndex(
+                        ({ tableId }) => tableId === key
+                      ) + 1,
                     points: currentPairPoints,
                     wins: currentPlayerWins,
                     defeats: currentPlayerDefeats,
@@ -446,7 +492,7 @@ const useTournamentData = (tournamentId: string) => {
           if (type === 'tables') {
             const logs: any[] = [];
 
-            tableKeys.forEach((key) => {
+            tableKeys.forEach(key => {
               let currentTableIndex = 0;
               const currentTable = thisTablePairsMapped.find(
                 ({ tableId }, index) => {
@@ -565,12 +611,14 @@ const useTournamentData = (tournamentId: string) => {
                   }
                 );
 
-
                 const payload = {
                   id: player.id,
                   name: player.name,
                   pair: pairIdx + 1,
-                  table: tournament.tables.tables.findIndex(({tableId}: any) => tableId === key) + 1,
+                  table:
+                    tournament.tables.tables.findIndex(
+                      ({ tableId }: any) => tableId === key
+                    ) + 1,
                   points: currentPlayerPoints,
                   wins: currentPlayerWins,
                   defeats: currentPlayerDefeats,
@@ -629,7 +677,10 @@ const useTournamentData = (tournamentId: string) => {
                 pairP2Id: pair[1].id,
                 name: pair[0].name + ' - ' + pair[1].name,
                 pair: pairIdx + 1,
-                table: tournament.tables.tables.findIndex(({tableId}: any) => tableId === key) + 1,
+                table:
+                  tournament.tables.tables.findIndex(
+                    ({ tableId }: any) => tableId === key
+                  ) + 1,
                 points: currentPairPoints,
                 wins: currentPlayerWins,
                 defeats: currentPlayerDefeats,
@@ -661,7 +712,7 @@ const useTournamentData = (tournamentId: string) => {
         if (type === 'tables') {
           const logs: any[] = [];
 
-          tableKeys.forEach((key) => {
+          tableKeys.forEach(key => {
             let currentTableIndex = 0;
             const currentTable = thisTablePairsMapped.find(
               ({ tableId }, index) => {
@@ -722,10 +773,14 @@ const useTournamentData = (tournamentId: string) => {
 
       const newPlayersLayout: any =
         organizeTournamentsPlayersWithSimilarPerformanceArray(
-          calculateTablePositions(tournament.format, storedRoundPayload, tournamentData.storedRounds),
+          calculateTablePositions(
+            tournament.format,
+            storedRoundPayload,
+            tournamentData.storedRounds
+          ),
           tournamentData.tables,
           tournament.format,
-          tournament.currentGlobalRound 
+          tournament.currentGlobalRound
         );
 
       if (!newPlayersLayout.error) {
@@ -845,7 +900,6 @@ const useTournamentData = (tournamentId: string) => {
             return b.points - a.points;
           }
           return 1;
-          // return b.points - a.points;
         });
 
         return {
@@ -862,49 +916,95 @@ const useTournamentData = (tournamentId: string) => {
     [tournament, tournamentData]
   );
 
-  const handleSumWinsAndDefeatsOfStoredResults = useCallback((storedRounds: StoredRoundDataInterface[], calculationType: TournamentFormat) => {
-    if(calculationType === "individual") {
-      const mappedData = storedRounds.map((round) => ({
-        currentRoundId: round.currentRoundId,
-        resultsInIndividualFormat: calculateTablePositions(calculationType, round)
-      }))
+  const handleSumWinsAndDefeatsOfStoredResults = useCallback(
+    (
+      storedRounds: StoredRoundDataInterface[],
+      calculationType: TournamentFormat
+    ) => {
+      if (calculationType === 'individual') {
+        const mappedData = storedRounds.map(round => ({
+          currentRoundId: round.currentRoundId,
+          resultsInIndividualFormat: calculateTablePositions(
+            calculationType,
+            round
+          )
+        }));
 
-      const response = mappedData.map(({ resultsInIndividualFormat, currentRoundId }, index) => {
-        const resultsInIndividualFormatModified: any = resultsInIndividualFormat.map(({ id: playerId, ...player}) => {
-          let currentPlayerAccumulationOfWins = 0;
-          let currentPlayerAccumulationOfDefeats = 0;
-          let currentPlayerAccumulationOfEffectiveness = 0;
-          let currentPlayerAccumulationOfPoints = 0;
-          
-          const previousRounds = index > 0 ? [...mappedData].splice(0, index) : [mappedData.map((s) => ({...s, resultsInIndividualFormat: s.resultsInIndividualFormat.map((w) => ({ ...w, wins: 0, defeats: 0, effectiveness: 0, points: 0 }))}))[0]]
+        const response = mappedData.map(
+          ({ resultsInIndividualFormat, currentRoundId }, index) => {
+            const resultsInIndividualFormatModified: any =
+              resultsInIndividualFormat.map(({ id: playerId, ...player }) => {
+                let currentPlayerAccumulationOfWins = 0;
+                let currentPlayerAccumulationOfDefeats = 0;
+                let currentPlayerAccumulationOfEffectiveness = 0;
+                let currentPlayerAccumulationOfPoints = 0;
 
-          
-          previousRounds.forEach(({ resultsInIndividualFormat: p }) => {
-            currentPlayerAccumulationOfWins+=p.find(({id}) => id === playerId).wins+ player.wins
-            currentPlayerAccumulationOfDefeats+=p.find(({id}) => id === playerId).defeats+ player.defeats
-            currentPlayerAccumulationOfEffectiveness+=p.find(({id}) => id === playerId).effectiveness+ player.effectiveness
-            currentPlayerAccumulationOfPoints+=p.find(({id}) => id === playerId).points+ player.points
-          })
+                const previousRounds =
+                  index > 0
+                    ? [...mappedData].splice(0, index)
+                    : [
+                        mappedData.map(s => ({
+                          ...s,
+                          resultsInIndividualFormat:
+                            s.resultsInIndividualFormat.map(w => ({
+                              ...w,
+                              wins: 0,
+                              defeats: 0,
+                              effectiveness: 0,
+                              points: 0
+                            }))
+                        }))[0]
+                      ];
 
-          return {
-            ...player,
-            id: playerId,
-            wins:currentPlayerAccumulationOfWins,
-            defeats:currentPlayerAccumulationOfDefeats,
-            effectiveness: currentPlayerAccumulationOfEffectiveness,
-            points: currentPlayerAccumulationOfPoints,
+                previousRounds.forEach(({ resultsInIndividualFormat: p }) => {
+                  currentPlayerAccumulationOfWins += p.find(
+                    ({ id }) => id === playerId
+                  ).wins;
+                  currentPlayerAccumulationOfDefeats += p.find(
+                    ({ id }) => id === playerId
+                  ).defeats;
+                  currentPlayerAccumulationOfEffectiveness += p.find(
+                    ({ id }) => id === playerId
+                  ).effectiveness;
+                  currentPlayerAccumulationOfPoints += p.find(
+                    ({ id }) => id === playerId
+                  ).points;
+                });
+
+                currentPlayerAccumulationOfWins += player.wins;
+                currentPlayerAccumulationOfDefeats += player.defeats;
+                currentPlayerAccumulationOfEffectiveness +=
+                  player.effectiveness;
+                currentPlayerAccumulationOfPoints += player.points;
+
+                return {
+                  ...player,
+                  id: playerId,
+                  wins: currentPlayerAccumulationOfWins,
+                  defeats: currentPlayerAccumulationOfDefeats,
+                  effectiveness: currentPlayerAccumulationOfEffectiveness,
+                  points: currentPlayerAccumulationOfPoints
+                };
+              });
+
+            return {
+              currentRoundId,
+              resultsInIndividualFormat: resultsInIndividualFormatModified
+            };
           }
-        });
+        );
 
-        return {
-          currentRoundId,
-          resultsInIndividualFormat: resultsInIndividualFormatModified
-        }
-      })
+        console.log('response', response);
 
-      return response
-    }
-  },[calculateTablePositions,positionsTableIndividualColumns,positionsTableIndividualMapper])
+        return response;
+      }
+    },
+    [
+      calculateTablePositions,
+      positionsTableIndividualColumns,
+      positionsTableIndividualMapper
+    ]
+  );
 
   return {
     tournamentData,
