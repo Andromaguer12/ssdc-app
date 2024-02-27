@@ -20,6 +20,7 @@ import React, { useEffect, useState } from 'react';
 import styles from '../styles/TableComponent.module.scss';
 import { UserInterface } from '@/typesDefs/constants/users/types';
 import {
+  ChangeCircle,
   EditNote,
   EmojiEvents,
   KeyboardArrowDown,
@@ -107,6 +108,7 @@ interface TableComponentProps {
   tableNumber?: number;
   showHUD: boolean;
   setOpenUpdateResults?: () => any;
+  setOpenChangePlayerTablePositions?: () => any;
 }
 
 const TableComponent: React.FC<TableComponentProps> = ({
@@ -115,7 +117,8 @@ const TableComponent: React.FC<TableComponentProps> = ({
   thisTablePairs,
   tableNumber,
   showHUD,
-  setOpenUpdateResults
+  setOpenUpdateResults,
+  setOpenChangePlayerTablePositions
 }) => {
   const p1 = thisTablePairs[0][0];
   const p2 = thisTablePairs[0][1];
@@ -602,10 +605,7 @@ const TableComponent: React.FC<TableComponentProps> = ({
             }}
           >
             <Tooltip title="Ver resultados recientes">
-              <IconButton
-                onClick={() => setOpenCollapse(!openCollapse)}
-                style={{ marginRight: '10px' }}
-              >
+              <IconButton onClick={() => setOpenCollapse(!openCollapse)}>
                 <KeyboardArrowDown
                   className={styles.transition}
                   sx={{
@@ -614,6 +614,16 @@ const TableComponent: React.FC<TableComponentProps> = ({
                 />
               </IconButton>
             </Tooltip>
+            {tableData.currentTableRound === 1 && (
+              <Tooltip title="Cambiar posicion de los jugadores">
+                <IconButton
+                  onClick={setOpenChangePlayerTablePositions}
+                  color="primary"
+                >
+                  <ChangeCircle />
+                </IconButton>
+              </Tooltip>
+            )}
             <Tooltip title="Registrar resultados">
               <IconButton onClick={setOpenUpdateResults} color="primary">
                 <EditNote />
@@ -643,4 +653,4 @@ const TableComponent: React.FC<TableComponentProps> = ({
   );
 };
 
-export default TableComponent;
+export default React.memo(TableComponent);

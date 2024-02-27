@@ -62,8 +62,6 @@ function organizeTournamentsPlayersWithSimilarPerformanceArray(
       pairs
     };
 
-    // console.log(tablePrev)
-
     return tablePrev;
   }
 
@@ -72,24 +70,5 @@ function organizeTournamentsPlayersWithSimilarPerformanceArray(
     pairs: []
   };
 }
-
-// function arraysEqual(arr1: any[], arr2: any[]): boolean {
-//   return (
-//     arr1.length === arr2.length &&
-//     arr1.every((value, index) => value === arr2[index])
-//   );
-// }
-
-const existEqualPairInTables = (
-  pairToFind: string[],
-  previousTables: any[]
-) => {
-  const samePairFound = previousTables.find(
-    (pair: any) =>
-      pair.pair.includes(pairToFind[0]) && pair.pair.includes(pairToFind[1])
-  );
-  // console.log("pareja igual, a esta", pairToFind, "encontrada en", samePairFound)
-  return Boolean(samePairFound);
-};
 
 export default organizeTournamentsPlayersWithSimilarPerformanceArray;

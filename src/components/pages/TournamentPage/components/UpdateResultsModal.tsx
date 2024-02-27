@@ -148,14 +148,20 @@ const UpdateTournamentModal: React.FC<ModalProps> = ({
         );
       }
     },
-    [currentTableData, successUpdateTournament, currentTableData, tournament]
+    [
+      currentTableData,
+      successUpdateTournament,
+      currentTableData,
+      tournament,
+      tournamentAPI
+    ]
   );
 
   React.useEffect(() => {
     if (successUpdateTournament) {
       setTimeout(() => {
         handleCleanClose();
-      }, 1500);
+      }, 1000);
     }
   }, [successUpdateTournament]);
 
@@ -209,7 +215,7 @@ const UpdateTournamentModal: React.FC<ModalProps> = ({
                       variant="h4"
                       fontWeight={'bold'}
                     >
-                      Resultados Ronda {currentTableData.currentTableRound}
+                      Resultados Ronda {tournament.currentGlobalRound}
                     </Typography>
                     {currentTableData?.thisTablePairs.map(
                       (pair: any, index: number) => {

@@ -40,7 +40,7 @@
   }
 
   .header {
-    padding: 20px;
+    padding: 20px 0;
     width: 100%;
     box-sizing: border-box;
     display: flex;
@@ -87,7 +87,6 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    padding: 0 20px;
     box-sizing: border-box;
 
     .panelTitle {
@@ -210,32 +209,6 @@
         text-align: center;
         font-size: 20px;
         margin-top: 10px;
-      }
-    }
-
-    .paginationDiv {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-
-      @media screen and (max-width: 600px) {
-        padding: 0 20px;
-      }
-
-      .container {
-        display: flex;
-        padding: 10px;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        background-color: #ffffff;
-        border-radius: 7px;
-        
-        @media screen and (max-width: 600px) {
-          width: 100%;
-        }
       }
     }
 
@@ -501,8 +474,9 @@
     border-radius: 15px;
     display: flex;
     flex-direction: column;
-    width: 95%;
+    width: 100%;
     align-self: center;
+    box-sizing: border-box;
 
     .title {
       width: fit-content;

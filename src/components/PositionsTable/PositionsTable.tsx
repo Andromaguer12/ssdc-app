@@ -1,20 +1,20 @@
 import { StoredRoundDataInterface } from '@/typesDefs/constants/tournaments/types';
 import { Tab, Tabs, Typography } from '@mui/material';
 import React, { ReactNode, useState } from 'react';
-import styles from '../styles/PositionsTable.module.scss';
+import styles from './styles/PositionsTable.module.scss';
+import SwipeableViews from 'react-swipeable-views';
+import ReactTable from '@/components/ReactTable/ReactTable';
+import { ErrorOutline } from '@mui/icons-material';
 import {
   positionsTableByPairsColumns,
   positionsTableByTablesColumns,
   positionsTableIndividualColumns
-} from '../constants/positionsTableColumns';
+} from './constants/positionsTableColumns';
 import {
   positionsTableByPairsMapper,
   positionsTableByTablesMapper,
   positionsTableIndividualMapper
-} from '../constants/mapper';
-import SwipeableViews from 'react-swipeable-views';
-import ReactTable from '@/components/ReactTable/ReactTable';
-import { ErrorOutline } from '@mui/icons-material';
+} from './constants/mapper';
 
 interface PositionsTableProps {
   calculateTablePositions?: any;
@@ -80,9 +80,10 @@ const PositionsTable: React.FC<PositionsTableProps> = ({
         <SwipeableViews
           style={{ width: '100%', marginTop: '20px', height: '100%' }}
           index={performancesBy}
+          onChangeIndex={index => setPerformancesBy(index)}
         >
           {
-            modes.map(({ name, data, columns }) => {
+            modes.map(({ name, data, columns }, index) => {
               if (data.length === 0) {
                 return (
                   <div className={styles.message}>
@@ -96,7 +97,13 @@ const PositionsTable: React.FC<PositionsTableProps> = ({
                 );
               }
 
-              return <ReactTable key={name} columns={columns} data={data} />;
+              return (
+                <>
+                  {performancesBy === index && (
+                    <ReactTable key={name} columns={columns} data={data} />
+                  )}
+                </>
+              );
             }) as any
           }
         </SwipeableViews>

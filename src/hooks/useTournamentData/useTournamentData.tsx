@@ -21,6 +21,7 @@ import {
   TournamentInterface,
   TournamentState
 } from '@/typesDefs/constants/tournaments/types';
+import { arraySplitter } from '@/utils/array-splitter';
 import organizeTournamentsPlayersWithSimilarPerformanceArray from '@/utils/organize-tournaments-players-with-similar-performance-array';
 import { collection, doc, getDoc, onSnapshot } from 'firebase/firestore';
 import { useCallback, useEffect, useState } from 'react';
@@ -140,7 +141,13 @@ const useTournamentData = (tournamentId: string) => {
           const pair2Results = p3;
           const currentWinner = pair2Results > pair1Results ? 1 : 0;
           const effectiveness =
-            currentWinner === 0 ? 100 - pair2Results : 100 - pair1Results;
+            currentWinner === 0
+              ? pair1Results >= 100
+                ? 100 - pair2Results
+                : pair1Results - pair2Results
+              : pair2Results >= 100
+                ? 100 - pair1Results
+                : pair2Results - pair1Results;
           const effectivenessPair1 =
             currentWinner === 0 ? effectiveness : effectiveness * -1;
           const effectivenessPair2 =
@@ -994,8 +1001,6 @@ const useTournamentData = (tournamentId: string) => {
           }
         );
 
-        console.log('response', response);
-
         return response;
       }
     },
@@ -1004,6 +1009,64 @@ const useTournamentData = (tournamentId: string) => {
       positionsTableIndividualColumns,
       positionsTableIndividualMapper
     ]
+  );
+
+  const handleChangePlayersPositionInTable = useCallback(
+    (newOrder: string[], tableId: string) => {
+      const newOrderSplitted = arraySplitter(newOrder, 2);
+
+      //pairs changes
+      const tournamentPairsWithoutCurrentTable = [
+        ...tournament.tables.pairs
+      ].filter(({ table }) => table !== tableId);
+      const currentOrderPair1 = {
+        pair: newOrderSplitted[0],
+        table: tableId
+      };
+      const currentOrderPair2 = {
+        pair: newOrderSplitted[1],
+        table: tableId
+      };
+
+      tournamentPairsWithoutCurrentTable.push(
+        currentOrderPair1,
+        currentOrderPair2
+      );
+
+      //tables changes
+
+      const tournamentTables = [...tournament.tables.tables];
+
+      const updatedTable = {
+        ...[...tournament.tables.tables].find(tab => tab.tableId === tableId),
+        table: newOrder
+      };
+
+      const indexToChange = [...tournament.tables.tables].findIndex(
+        tab => tab.tableId === tableId
+      );
+
+      tournamentTables.splice(indexToChange, 1, updatedTable);
+
+      const payloadTables = {
+        pairs: tournamentPairsWithoutCurrentTable,
+        tables: tournamentTables
+      };
+
+      const completePayload: TournamentInterface = {
+        ...tournament,
+        tables: payloadTables
+      };
+
+      dispatch(
+        updateTournament({
+          context: fContext,
+          id: tournament?.id,
+          body: completePayload
+        })
+      );
+    },
+    [tournament]
   );
 
   return {
@@ -1015,7 +1078,8 @@ const useTournamentData = (tournamentId: string) => {
       updateTournamentStatus,
       calculateTablePositions,
       handleNextGlobalRound,
-      calculateFinalResults
+      calculateFinalResults,
+      handleChangePlayersPositionInTable
     }
   };
 };
